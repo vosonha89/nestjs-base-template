@@ -15,8 +15,6 @@ The common directory provides reusable domain components that:
 ```
 common/
 ├── base/           # Base classes and interfaces
-│   ├── entity/     # Base entity implementations
-│   └── value/      # Base value object implementations
 ├── events/         # Domain event definitions
 ├── exceptions/     # Domain-specific exceptions
 └── validators/     # Domain validation rules

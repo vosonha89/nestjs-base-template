@@ -1,6 +1,8 @@
 import { Module } from "@nestjs/common";
 import { HelloWorldController } from "./helloWorld.controller";
 import { HelloWorldService, IHelloWorldService } from "./helloWorld.service";
+import { RequestContextService } from 'src/core/application/services/requestContext.service';
+import { IRequestContextService } from 'src/core/application/interfaces/requestContext.interface';
 
 @Module({
   imports: [],
@@ -11,7 +13,11 @@ import { HelloWorldService, IHelloWorldService } from "./helloWorld.service";
     {
       provide: IHelloWorldService,
       useClass: HelloWorldService
-    }
+    },
+    {
+      provide: IRequestContextService,
+      useClass: RequestContextService
+    },
   ],
 })
 export class HelloWorldModule { }
