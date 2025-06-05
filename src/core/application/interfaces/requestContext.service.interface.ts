@@ -1,5 +1,5 @@
-import { RequestWithUser } from 'src/core/domain/types/requestWithUser';
-import { UserInfo } from 'src/core/domain/types/userInfo';
+import { RequestWithUser } from 'src/core/domain/types/requestWithUser.type';
+import { UserInfo } from 'src/core/domain/types/userInfo.type';
 
 /**
  * Service symbol for DI register

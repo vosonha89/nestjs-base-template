@@ -1,7 +1,7 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { RequestWithUser } from 'src/core/domain/types/requestWithUser';
-import { UserInfo } from 'src/core/domain/types/userInfo';
+import { RequestWithUser } from 'src/core/domain/types/requestWithUser.type';
+import { UserInfo } from 'src/core/domain/types/userInfo.type';
 import { IRequestContextService } from '../interfaces/requestContext.service.interface';
 
 /**

@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { UserInfo } from './userInfo';
+import { UserInfo } from './userInfo.type';
 
 /**
  * Request with user

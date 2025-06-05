@@ -1,24 +1,34 @@
-export class BaseException extends Error {
-    constructor(
-        public readonly message: string,
-        public readonly code: string,
-        public readonly statusCode: number = 500,
-        public readonly details?: unknown
-    ) {
-        super(message);
-        this.name = this.constructor.name;
-        Error.captureStackTrace(this, this.constructor);
-    }
+import { ErrorResponse } from '../../types/errorResponse.type';
 
-    public toJSON() {
-        const jsonObject = {
-            error: {
-                code: this.code,
-                message: this.message,
-                detail: this.details
-            },
-            statusCode: this.statusCode,
-        };
-        return jsonObject;
+/**
+ * Normal error message
+ */
+export interface ErrorMessage {
+    code: number;
+    msg: string;
+}
+
+/**
+ * Error definition for client side
+ */
+export interface ClientError {
+    errorCode: string;
+    errorMessage: string;
+}
+
+/**
+ * Error
+ */
+export class AppError extends Error {
+    public exception: ErrorResponse;
+
+    /**
+     * Constructor
+     * @param exception 
+     * @param message 
+     */
+    constructor(exception: ErrorResponse, message?: string) {
+        super(message);
+        this.exception = exception;
     }
 }
