@@ -2,7 +2,7 @@ import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { RequestWithUser } from 'src/core/domain/types/requestWithUser';
 import { UserInfo } from 'src/core/domain/types/userInfo';
-import { IRequestContextService } from '../interfaces/requestContext.interface';
+import { IRequestContextService } from '../interfaces/requestContext.service.interface';
 
 /**
  * Service for handling request context information

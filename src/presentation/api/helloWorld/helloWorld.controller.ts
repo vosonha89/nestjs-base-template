@@ -1,6 +1,6 @@
 import { Controller, Get, Inject } from "@nestjs/common";
-import { IHelloWorldService } from './helloWorld.service';
-import { IRequestContextService } from 'src/core/application/interfaces/requestContext.interface';
+import { IHelloWorldService } from 'src/core/application/interfaces/helloWorld.service.interface';
+import { IRequestContextService } from 'src/core/application/interfaces/requestContext.service.interface';
 
 @Controller()
 export class HelloWorldController {
