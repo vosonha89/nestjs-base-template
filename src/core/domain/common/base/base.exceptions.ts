@@ -1,4 +1,4 @@
-import { ErrorResponse } from '../../types/errorResponse.type';
+import { AnyType } from './base.type';
 
 /**
  * Normal error message
@@ -20,14 +20,14 @@ export interface ClientError {
  * Error
  */
 export class AppError extends Error {
-    public exception: ErrorResponse;
+    public exception: AnyType;
 
     /**
      * Constructor
      * @param exception 
      * @param message 
      */
-    constructor(exception: ErrorResponse, message?: string) {
+    constructor(exception: AnyType, message?: string) {
         super(message);
         this.exception = exception;
     }
