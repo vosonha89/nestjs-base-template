@@ -2,16 +2,15 @@ import { Controller, Get, Inject } from "@nestjs/common";
 import { IHelloWorldService } from 'src/core/application/interfaces/helloWorld.service.interface';
 import { IRequestContextService } from 'src/core/application/interfaces/requestContext.service.interface';
 
-@Controller()
+@Controller('hello')
 export class HelloWorldController {
   constructor(
     @Inject(IHelloWorldService) private readonly helloWorldService: IHelloWorldService,
     @Inject(IRequestContextService) private readonly requestContextService: IRequestContextService
   ) { }
 
-  @Get()
+  @Get('get-hello')
   public getHello(): string {
-    console.log(this.requestContextService.getRequest());
     return this.helloWorldService.getHello();
   }
 }
