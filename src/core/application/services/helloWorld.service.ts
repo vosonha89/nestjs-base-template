@@ -12,4 +12,16 @@ export class HelloWorldService extends BaseService implements IHelloWorldService
     console.log(this.context.getRequest());
     return "Hello World!";
   }
+
+  postHello(): string {
+    return "POST Hello World";
+  }
+
+  putHello(): string {
+    return "PUT Hello World";
+  }
+
+  deleteHello(): string {
+    return "DELETE Hello World";
+  }
 }
