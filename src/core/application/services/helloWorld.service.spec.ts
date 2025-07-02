@@ -31,9 +31,29 @@ describe('HelloWorldService', () => {
             expect(service.validationEmail(email)).toBe(true);
         });
 
-        it('should return true for an invalid email as the method is stubbed to always return true', () => {
+        it('should return false for an email without @ symbol', () => {
             const email = 'invalid-email';
-            expect(service.validationEmail(email)).toBe(true);
+            expect(service.validationEmail(email)).toBe(false);
+        });
+
+        it('should return false for an email without domain', () => {
+            const email = 'user@';
+            expect(service.validationEmail(email)).toBe(false);
+        });
+
+        it('should return false for an email without username', () => {
+            const email = '@example.com';
+            expect(service.validationEmail(email)).toBe(false);
+        });
+
+        it('should return false for an email with spaces', () => {
+            const email = 'user name@example.com';
+            expect(service.validationEmail(email)).toBe(false);
+        });
+
+        it('should return false for an empty string', () => {
+            const email = '';
+            expect(service.validationEmail(email)).toBe(false);
         });
     });
 });

@@ -25,8 +25,17 @@ export class HelloWorldService extends BaseService implements IHelloWorldService
     return "DELETE Hello World";
   }
 
+  /**
+   * Validates if the provided string is a properly formatted email address
+   * @param email - The email string to validate
+   * @returns {boolean} True if email is valid, false otherwise
+   */
   validationEmail(email: string): boolean {
-    console.log(email);
-    return true;
+    if (!email || email.trim() === '') {
+      return false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
 }
