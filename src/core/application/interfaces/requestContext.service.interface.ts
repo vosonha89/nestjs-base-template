@@ -4,7 +4,7 @@ import { UserInfo } from 'src/core/domain/types/userInfo.type';
 /**
  * Service symbol for DI register
  */
-export const IRequestContextService = Symbol("IRequestContextService");
+export const IRequestContextServiceSymbol = Symbol("IRequestContextService");
 
 /**
  * Interface for handling request context operations

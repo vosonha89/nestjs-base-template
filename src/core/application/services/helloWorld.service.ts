@@ -4,7 +4,7 @@ import { BaseService } from 'src/core/domain/common/base/base.service';
 
 /**
  * Service responsible for handling hello world functionality
- * @implements {IHelloWorldService}
+ * @implements {IHelloWorldServiceSymbol}
  */
 @Injectable({ scope: Scope.REQUEST })
 export class HelloWorldService extends BaseService implements IHelloWorldService {
@@ -23,5 +23,10 @@ export class HelloWorldService extends BaseService implements IHelloWorldService
 
   deleteHello(): string {
     return "DELETE Hello World";
+  }
+
+  validationEmail(email: string): boolean {
+    console.log(email);
+    return true;
   }
 }

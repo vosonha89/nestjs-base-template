@@ -2,7 +2,7 @@
  * Symbol and interface definition for Hello World service
  * @namespace HelloWorld
  */
-export const IHelloWorldService = Symbol("IHelloWorldService");
+export const IHelloWorldServiceSymbol = Symbol("IHelloWorldService");
 
 /**
  * Interface for the Hello World service

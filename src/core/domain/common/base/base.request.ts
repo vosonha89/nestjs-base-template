@@ -2,7 +2,10 @@ import validator from 'validator';
 import { FilterCondition } from '../constant/filterCondition';
 import { UserInfo } from '../../types/userInfo.type';
 import { Inject } from '@nestjs/common';
-import { IRequestContextService } from 'src/core/application/interfaces/requestContext.service.interface';
+import {
+    IRequestContextService,
+    IRequestContextServiceSymbol
+} from 'src/core/application/interfaces/requestContext.service.interface';
 import { ConstantValue } from '../constant/constantValue';
 import { BadRequest, ErrorResponse } from '../../types/errorResponse.type';
 import { GlobalError } from '../../types/globalError.type';
@@ -54,7 +57,7 @@ export abstract class BaseAuthorizedRequest extends BaseRequest {
      * @param requestContextService 
      */
     constructor(
-        @Inject(IRequestContextService) protected readonly requestContextService: IRequestContextService
+        @Inject(IRequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService
     ) {
         super();
         this.currentUser = requestContextService.getUser(); // get current user logged in
@@ -74,7 +77,7 @@ export abstract class BaseSearchRequest extends BaseAuthorizedRequest {
      * Constructor
      */
     constructor(
-        @Inject(IRequestContextService) protected readonly requestContextService: IRequestContextService) {
+        @Inject(IRequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
         super(requestContextService);
         this.page = ConstantValue.pageIndex;
         this.size = ConstantValue.pageSize;
@@ -142,7 +145,7 @@ export abstract class BaseGetById extends BaseAuthorizedRequest {
     * Constructor
     */
     constructor(
-        @Inject(IRequestContextService) protected readonly requestContextService: IRequestContextService
+        @Inject(IRequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService
     ) {
         super(requestContextService);
         this.mapRequest(requestContextService.getRequest());
@@ -174,7 +177,7 @@ export abstract class BaseCreateRequest extends BaseAuthorizedRequest {
     * Constructor
     */
     constructor(
-        @Inject(IRequestContextService) protected readonly requestContextService: IRequestContextService) {
+        @Inject(IRequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
         super(requestContextService);
         this.mapRequest(requestContextService.getRequest());
     }
@@ -189,7 +192,7 @@ export abstract class BaseUpdateRequest extends BaseAuthorizedRequest {
     * Constructor
     */
     constructor(
-        @Inject(IRequestContextService) protected readonly requestContextService: IRequestContextService) {
+        @Inject(IRequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
         super(requestContextService);
         this.mapRequest(requestContextService.getRequest());
     }
@@ -222,7 +225,7 @@ export abstract class BaseDeleteRequest extends BaseAuthorizedRequest {
     * Constructor
     */
     constructor(
-        @Inject(IRequestContextService) protected readonly requestContextService: IRequestContextService) {
+        @Inject(IRequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
         super(requestContextService);
         this.mapRequest(requestContextService.getRequest());
     }
