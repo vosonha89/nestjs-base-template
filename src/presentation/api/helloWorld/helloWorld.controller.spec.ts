@@ -7,10 +7,12 @@ describe("HelloWorldController", () => {
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      imports: [HelloWorldModule]
+      imports: [
+          HelloWorldModule
+      ]
     }).compile();
 
-    helloWorldController = app.get<HelloWorldController>(HelloWorldController);
+    helloWorldController = await app.resolve<HelloWorldController>(HelloWorldController);
   });
 
   describe("root", () => {

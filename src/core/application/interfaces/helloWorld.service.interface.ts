@@ -14,4 +14,12 @@ export interface IHelloWorldService {
      * @returns {string} A greeting message
      */
     getHello(): string;
+
+    postHello(): string;
+
+    putHello(): string;
+
+    deleteHello(): string;
+
+    validationEmail(email: string): boolean;
 }
