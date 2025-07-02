@@ -1,99 +1,119 @@
+# NestJS Base Template
+
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/XezpwfPi1US9RhS159vdjh/Xkysgexu81sGiFtzJyFTrK/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/XezpwfPi1US9RhS159vdjh/Xkysgexu81sGiFtzJyFTrK/tree/main)
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+<p align="center">A modern TypeScript NestJS application template using clean architecture principles.</p>
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This project is a robust NestJS application template that follows clean architecture principles. It's built with TypeScript 5.7.3 and NestJS 11, providing a solid foundation for building scalable and maintainable server-side applications.
 
-## Project setup
+## Features
+
+- **Clean Architecture** - Structured in core, presentation, and infrastructure layers
+- **TypeScript 5.7.3** - Latest TypeScript features and type safety
+- **NestJS 11** - Modern framework for building server-side applications
+- **Comprehensive Testing** - Jest testing framework with example tests
+- **Code Quality Tools** - ESLint 9.18.0 for code linting
+- **CI/CD Integration** - CircleCI pipeline for continuous integration
+
+## Project Setup
 
 ```bash
+# Install dependencies
 $ npm install
 ```
 
-## Compile and run the project
+## Running the Application
 
 ```bash
-# development
+# Development mode
 $ npm run start
 
-# watch mode
+# Watch mode for development
 $ npm run start:dev
 
-# production mode
+# Debug mode
+$ npm run start:debug
+
+# Production mode
 $ npm run start:prod
 ```
 
-## Run tests
+## Testing
 
 ```bash
-# unit tests
+# Run unit tests
 $ npm run test
 
-# e2e tests
-$ npm run test:e2e
+# Run tests in watch mode
+$ npm run test:watch
 
-# test coverage
+# Generate test coverage report
 $ npm run test:cov
+
+# Debug tests
+$ npm run test:debug
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Code Quality
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Lint and fix code
+$ npm run lint
+
+# Build with linting and testing
+$ npm run build
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## Project Structure
+
+The application follows clean architecture principles with a clear separation of concerns:
+
+```
+src/
+├── core/               # Core business logic and domain models
+│   ├── application/    # Application services and use cases
+│   └── domain/        # Domain entities and business rules
+├── presentation/      # Controllers and API endpoints
+├── infrastructure/    # External services, database, etc.
+└── app.module.ts      # Main application module
+```
+
+## Architecture
+
+This template follows the principles of clean architecture with three main layers:
+
+1. **Core Layer** - Contains domain entities, business rules, and application services
+2. **Presentation Layer** - Handles HTTP requests and responses through controllers
+3. **Infrastructure Layer** - Implements external services, database access, etc.
+
+This architecture promotes:
+- Separation of concerns
+- Testability
+- Maintainability
+- Independence from external frameworks
 
 ## Resources
 
-Check out a few resources that may come in handy when working with NestJS:
+- [NestJS Documentation](https://docs.nestjs.com) - Official NestJS documentation
+- [TypeScript Documentation](https://www.typescriptlang.org/docs/) - Official TypeScript documentation
+- [Jest Documentation](https://jestjs.io/docs/getting-started) - Jest testing framework documentation
+- [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) - Learn more about clean architecture principles
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## Contributing
 
-## Support
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Author
 
-## Stay in touch
-
-- Author - [Vo Son Ha](https://github.com/vosonha)
+- [Vo Son Ha](https://github.com/vosonha)
 - Project Repository - [GitHub](https://github.com/vosonha89/nestjs-base-template)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is [MIT licensed](LICENSE).
