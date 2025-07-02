@@ -1,6 +1,6 @@
 /**
  * Symbol and interface definition for Hello World service
- * @namespace HelloWorld
+ * @namespace HelloWorldService
  */
 export const IHelloWorldServiceSymbol = Symbol("IHelloWorldService");
 
