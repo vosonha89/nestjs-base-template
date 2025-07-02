@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "npm run lint & nest build",
+    "build": "npm run lint & npm run test & nest build",
     "start": "npm run lint & nest start",
     "start:dev": "npm start --watch",
     "start:debug": "npm start --debug --watch",

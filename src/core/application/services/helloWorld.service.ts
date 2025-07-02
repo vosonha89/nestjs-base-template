@@ -9,7 +9,6 @@ import { BaseService } from 'src/core/domain/common/base/base.service';
 @Injectable({ scope: Scope.REQUEST })
 export class HelloWorldService extends BaseService implements IHelloWorldService {
   getHello(): string {
-    console.log(this.context.getRequest());
     return "Hello World!";
   }
 
