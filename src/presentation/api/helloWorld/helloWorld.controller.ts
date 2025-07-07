@@ -6,7 +6,7 @@ import {
 import {
   IRequestContextService,
   IRequestContextServiceSymbol
-} from 'src/core/application/interfaces/requestContext.service.interface';
+} from 'src/core/domain/common/service/interfaces/requestContext.service.interface';
 
 @Controller('hello')
 export class HelloWorldController {

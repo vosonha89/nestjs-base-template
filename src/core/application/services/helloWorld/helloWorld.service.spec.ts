@@ -1,9 +1,9 @@
 // helloWorld.service.spec.ts
 import {Test, TestingModule} from '@nestjs/testing';
 import {HelloWorldService} from './helloWorld.service';
-import {IHelloWorldService, IHelloWorldServiceSymbol} from "../interfaces/helloWorld.service.interface";
-import {IRequestContextServiceSymbol} from "../interfaces/requestContext.service.interface";
-import {RequestContextService} from "./requestContext.service";
+import {IHelloWorldService, IHelloWorldServiceSymbol} from "../../interfaces/helloWorld.service.interface";
+import {IRequestContextServiceSymbol} from "../../../domain/common/service/interfaces/requestContext.service.interface";
+import {RequestContextService} from "../../../domain/common/service/requestContext.service";
 
 describe('HelloWorldService', () => {
     let service: IHelloWorldService;
