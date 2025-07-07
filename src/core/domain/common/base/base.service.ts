@@ -2,7 +2,7 @@ import { Inject } from '@nestjs/common';
 import {
     IRequestContextService,
     IRequestContextServiceSymbol
-} from 'src/core/application/interfaces/requestContext.service.interface';
+} from 'src/core/domain/common/service/interfaces/requestContext.service.interface';
 
 export abstract class BaseService {
     protected context: IRequestContextService;

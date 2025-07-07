@@ -5,7 +5,7 @@ import { Inject } from '@nestjs/common';
 import {
     IRequestContextService,
     IRequestContextServiceSymbol
-} from 'src/core/application/interfaces/requestContext.service.interface';
+} from 'src/core/domain/common/service/interfaces/requestContext.service.interface';
 import { ConstantValue } from '../constant/constantValue';
 import { BadRequest, ErrorResponse } from '../../types/errorResponse.type';
 import { GlobalError } from '../../types/globalError.type';

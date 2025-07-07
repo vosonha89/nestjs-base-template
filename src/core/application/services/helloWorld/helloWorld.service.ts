@@ -1,5 +1,5 @@
 import { Injectable, Scope } from "@nestjs/common";
-import { IHelloWorldService } from '../interfaces/helloWorld.service.interface';
+import { IHelloWorldService } from '../../interfaces/helloWorld.service.interface';
 import { BaseService } from 'src/core/domain/common/base/base.service';
 
 /**

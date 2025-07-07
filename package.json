@@ -6,13 +6,13 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "npm run lint & npm run test & nest build",
-    "start": "npm run lint & nest start",
+    "build": "npm run lint && npm run test && nest build",
+    "start": "npm run lint && nest start",
     "start:dev": "npm start --watch",
     "start:debug": "npm start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
+    "test": "jest --no-watch",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
