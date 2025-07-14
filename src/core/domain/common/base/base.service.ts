@@ -1,18 +1,16 @@
-import { Inject } from '@nestjs/common';
-import {
-    IRequestContextService,
-    IRequestContextServiceSymbol
-} from 'src/core/domain/common/service/interfaces/requestContext.service.interface';
+import {Inject} from '@nestjs/common';
+import {IRequestContextService} from 'src/core/domain/common/service/interfaces/requestContext.service.interface';
+import {RequestContextServiceSymbol} from "../service/requestContext.service";
 
 export abstract class BaseService {
     protected context: IRequestContextService;
 
     /**
      * Constructor with request
-     * @param requestContextService 
+     * @param requestContextService
      */
     constructor(
-        @Inject(IRequestContextServiceSymbol) private readonly requestContextService: IRequestContextService
+        @Inject(RequestContextServiceSymbol) private readonly requestContextService: IRequestContextService
     ) {
         this.context = requestContextService;
     }

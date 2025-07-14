@@ -1,3 +1,5 @@
+import {AnyType} from "./base.type";
+
 export interface IBaseRepository<T, ID> {
     /**
      * Find entity by id
@@ -9,6 +11,11 @@ export interface IBaseRepository<T, ID> {
      * Find all entities
      */
     findAll(): Promise<T[]>;
+
+    /**
+     * Find entities by condition
+     */
+    find(condition: AnyType): Promise<T[]>;
 
     /**
      * Save entity

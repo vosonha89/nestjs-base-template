@@ -1,9 +1,11 @@
 // helloWorld.service.spec.ts
 import {Test, TestingModule} from '@nestjs/testing';
-import {HelloWorldService} from './helloWorld.service';
-import {IHelloWorldService, IHelloWorldServiceSymbol} from "../../interfaces/helloWorld.service.interface";
-import {IRequestContextServiceSymbol} from "../../../domain/common/service/interfaces/requestContext.service.interface";
-import {RequestContextService} from "../../../domain/common/service/requestContext.service";
+import {HelloWorldService, HelloWorldServiceSymbol} from './helloWorld.service';
+import {IHelloWorldService} from "../../interfaces/helloWorld.service.interface";
+import {
+    RequestContextService,
+    RequestContextServiceSymbol
+} from "../../../domain/common/service/requestContext.service";
 
 describe('HelloWorldService', () => {
     let service: IHelloWorldService;
@@ -12,17 +14,17 @@ describe('HelloWorldService', () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
                 {
-                    provide: IRequestContextServiceSymbol,
+                    provide: RequestContextServiceSymbol,
                     useClass: RequestContextService
                 },
                 {
-                    provide: IHelloWorldServiceSymbol,
+                    provide: HelloWorldServiceSymbol,
                     useClass: HelloWorldService
                 }
             ],
         }).compile();
 
-        service = await module.resolve<HelloWorldService>(IHelloWorldServiceSymbol);
+        service = await module.resolve<HelloWorldService>(HelloWorldServiceSymbol);
     });
 
     describe('validationEmail', () => {

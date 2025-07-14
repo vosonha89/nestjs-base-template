@@ -2,11 +2,6 @@ import { RequestWithUser } from 'src/core/domain/types/requestWithUser.type';
 import { UserInfo } from 'src/core/domain/types/userInfo.type';
 
 /**
- * Service symbol for DI register
- */
-export const IRequestContextServiceSymbol = Symbol("IRequestContextService");
-
-/**
  * Interface for handling request context operations
  */
 export interface IRequestContextService {

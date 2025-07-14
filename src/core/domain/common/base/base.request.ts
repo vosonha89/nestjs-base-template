@@ -1,16 +1,14 @@
 import validator from 'validator';
-import { FilterCondition } from '../constant/filterCondition';
-import { UserInfo } from '../../types/userInfo.type';
-import { Inject } from '@nestjs/common';
-import {
-    IRequestContextService,
-    IRequestContextServiceSymbol
-} from 'src/core/domain/common/service/interfaces/requestContext.service.interface';
-import { ConstantValue } from '../constant/constantValue';
-import { BadRequest, ErrorResponse } from '../../types/errorResponse.type';
-import { GlobalError } from '../../types/globalError.type';
-import { ClientError } from './base.exceptions';
-import { RequestWithUser } from '../../types/requestWithUser.type';
+import {FilterCondition} from '../constant/filterCondition';
+import {UserInfo} from '../../types/userInfo.type';
+import {Inject} from '@nestjs/common';
+import {IRequestContextService} from 'src/core/domain/common/service/interfaces/requestContext.service.interface';
+import {ConstantValue} from '../constant/constantValue';
+import {BadRequest, ErrorResponse} from '../../types/errorResponse.type';
+import {GlobalError} from '../../types/globalError.type';
+import {ClientError} from './base.exceptions';
+import {RequestWithUser} from '../../types/requestWithUser.type';
+import {RequestContextServiceSymbol} from "../service/requestContext.service";
 
 /**
  * Base filter
@@ -30,14 +28,15 @@ export interface BaseSort {
 }
 
 /**
- * Base request from client side
+ * Base request from the client side
  */
 export abstract class BaseRequest {
     public currentError?: ErrorResponse;
+
     /**
-       * Map request from client side
-       * @param req 
-       */
+     * Map request from the client side
+     * @param req
+     */
     public abstract mapRequest(req: RequestWithUser): void;
 
     /**
@@ -47,17 +46,17 @@ export abstract class BaseRequest {
 }
 
 /**
- * Base authorized request from client side
+ * Base authorized request from the client side
  */
 export abstract class BaseAuthorizedRequest extends BaseRequest {
     public currentUser: UserInfo;
 
     /**
      * Constructor with authorized user
-     * @param requestContextService 
+     * @param requestContextService
      */
     constructor(
-        @Inject(IRequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService
+        @Inject(RequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService
     ) {
         super();
         this.currentUser = requestContextService.getUser(); // get current user logged in
@@ -77,7 +76,7 @@ export abstract class BaseSearchRequest extends BaseAuthorizedRequest {
      * Constructor
      */
     constructor(
-        @Inject(IRequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
+        @Inject(RequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
         super(requestContextService);
         this.page = ConstantValue.pageIndex;
         this.size = ConstantValue.pageSize;
@@ -90,8 +89,8 @@ export abstract class BaseSearchRequest extends BaseAuthorizedRequest {
     }
 
     /**
-     * Map request from client side
-     * @param req 
+     * Map request from the client side
+     * @param req
      */
     public mapRequest(req: RequestWithUser): void {
         const me = this;
@@ -113,22 +112,20 @@ export abstract class BaseSearchRequest extends BaseAuthorizedRequest {
         const me = this;
         if (!me.page) {
             const error = GlobalError.RequiredError('Page');
-            me.currentError = BadRequest({ errorCode: error.code.toString(), errorMessage: error.msg } as ClientError);
+            me.currentError = BadRequest({errorCode: error.code.toString(), errorMessage: error.msg} as ClientError);
             return false;
-        }
-        else if (!validator.isNumeric(me.page.toString())) {
+        } else if (!validator.isNumeric(me.page.toString())) {
             const error = GlobalError.TypeError('Page', 'number');
-            me.currentError = BadRequest({ errorCode: error.code.toString(), errorMessage: error.msg } as ClientError);
+            me.currentError = BadRequest({errorCode: error.code.toString(), errorMessage: error.msg} as ClientError);
             return false;
         }
         if (!me.size) {
             const error = GlobalError.RequiredError('Size');
-            me.currentError = BadRequest({ errorCode: error.code.toString(), errorMessage: error.msg } as ClientError);
+            me.currentError = BadRequest({errorCode: error.code.toString(), errorMessage: error.msg} as ClientError);
             return false;
-        }
-        else if (!validator.isNumeric(me.size.toString())) {
+        } else if (!validator.isNumeric(me.size.toString())) {
             const error = GlobalError.TypeError('Size', 'number');
-            me.currentError = BadRequest({ errorCode: error.code.toString(), errorMessage: error.msg } as ClientError);
+            me.currentError = BadRequest({errorCode: error.code.toString(), errorMessage: error.msg} as ClientError);
             return false;
         }
         return true;
@@ -142,10 +139,10 @@ export abstract class BaseGetById extends BaseAuthorizedRequest {
     public id!: string;
 
     /**
-    * Constructor
-    */
+     * Constructor
+     */
     constructor(
-        @Inject(IRequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService
+        @Inject(RequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService
     ) {
         super(requestContextService);
         this.mapRequest(requestContextService.getRequest());
@@ -162,7 +159,7 @@ export abstract class BaseGetById extends BaseAuthorizedRequest {
         const me = this;
         if (!me.id) {
             const error = GlobalError.RequiredError('Id');
-            me.currentError = BadRequest({ errorCode: error.code.toString(), errorMessage: error.msg } as ClientError);
+            me.currentError = BadRequest({errorCode: error.code.toString(), errorMessage: error.msg} as ClientError);
             return false;
         }
         return true;
@@ -174,10 +171,10 @@ export abstract class BaseGetById extends BaseAuthorizedRequest {
  */
 export abstract class BaseCreateRequest extends BaseAuthorizedRequest {
     /**
-    * Constructor
-    */
+     * Constructor
+     */
     constructor(
-        @Inject(IRequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
+        @Inject(RequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
         super(requestContextService);
         this.mapRequest(requestContextService.getRequest());
     }
@@ -188,11 +185,12 @@ export abstract class BaseCreateRequest extends BaseAuthorizedRequest {
  */
 export abstract class BaseUpdateRequest extends BaseAuthorizedRequest {
     public id!: string;
+
     /**
-    * Constructor
-    */
+     * Constructor
+     */
     constructor(
-        @Inject(IRequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
+        @Inject(RequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
         super(requestContextService);
         this.mapRequest(requestContextService.getRequest());
     }
@@ -208,7 +206,7 @@ export abstract class BaseUpdateRequest extends BaseAuthorizedRequest {
         const me = this;
         if (!me.id) {
             const error = GlobalError.RequiredError('Id');
-            me.currentError = BadRequest({ errorCode: error.code.toString(), errorMessage: error.msg } as ClientError);
+            me.currentError = BadRequest({errorCode: error.code.toString(), errorMessage: error.msg} as ClientError);
             return false;
         }
         return true;
@@ -221,11 +219,12 @@ export abstract class BaseUpdateRequest extends BaseAuthorizedRequest {
 export abstract class BaseDeleteRequest extends BaseAuthorizedRequest {
     public id!: string;
     public readonly softDelete = true;
+
     /**
-    * Constructor
-    */
+     * Constructor
+     */
     constructor(
-        @Inject(IRequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
+        @Inject(RequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
         super(requestContextService);
         this.mapRequest(requestContextService.getRequest());
     }
@@ -241,7 +240,7 @@ export abstract class BaseDeleteRequest extends BaseAuthorizedRequest {
         const me = this;
         if (!me.id) {
             const error = GlobalError.RequiredError('Id');
-            me.currentError = BadRequest({ errorCode: error.code.toString(), errorMessage: error.msg } as ClientError);
+            me.currentError = BadRequest({errorCode: error.code.toString(), errorMessage: error.msg} as ClientError);
             return false;
         }
         return true;

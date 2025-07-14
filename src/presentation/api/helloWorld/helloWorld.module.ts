@@ -1,24 +1,29 @@
-import { Module } from "@nestjs/common";
-import { HelloWorldController } from "./helloWorld.controller";
-import { HelloWorldService } from "../../../core/application/services/helloWorld/helloWorld.service";
-import { RequestContextService } from 'src/core/domain/common/service/requestContext.service';
-import { IRequestContextServiceSymbol } from 'src/core/domain/common/service/interfaces/requestContext.service.interface';
-import { IHelloWorldServiceSymbol } from 'src/core/application/interfaces/helloWorld.service.interface';
+import {Module} from "@nestjs/common";
+import {HelloWorldController} from "./helloWorld.controller";
+import {
+    HelloWorldService,
+    HelloWorldServiceSymbol
+} from "../../../core/application/services/helloWorld/helloWorld.service";
+import {
+    RequestContextService,
+    RequestContextServiceSymbol
+} from 'src/core/domain/common/service/requestContext.service';
 
 @Module({
-  imports: [],
-  controllers: [
-    HelloWorldController
-  ],
-  providers: [
-    {
-      provide: IHelloWorldServiceSymbol,
-      useClass: HelloWorldService
-    },
-    {
-      provide: IRequestContextServiceSymbol,
-      useClass: RequestContextService
-    },
-  ],
+    imports: [],
+    controllers: [
+        HelloWorldController
+    ],
+    providers: [
+        {
+            provide: HelloWorldServiceSymbol,
+            useClass: HelloWorldService
+        },
+        {
+            provide: RequestContextServiceSymbol,
+            useClass: RequestContextService
+        },
+    ],
 })
-export class HelloWorldModule { }
+export class HelloWorldModule {
+}

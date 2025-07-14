@@ -1,9 +1,4 @@
 /**
- * Service symbol for DI register
- */
-export const ILoggingServiceSymbol = Symbol("ILoggingService");
-
-/**
  * Interface for logging operations
  */
 export interface ILoggingService {

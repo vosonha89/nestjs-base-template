@@ -5,6 +5,11 @@ import { UserInfo } from 'src/core/domain/types/userInfo.type';
 import {IRequestContextService} from './interfaces/requestContext.service.interface';
 
 /**
+ * Service symbol for DI register
+ */
+export const RequestContextServiceSymbol = Symbol("RequestContextService");
+
+/**
  * Service for handling request context information
  * Provides methods to access request-specific data such as user information, headers, and language
  */
