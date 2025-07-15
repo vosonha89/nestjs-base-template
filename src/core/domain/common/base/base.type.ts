@@ -17,6 +17,6 @@ export type AnyType = any;
 /**
  * Base object type
  */
-export class BaseType<IDType> {
-    public id!: IDType;
+export abstract class BaseType<IDType> {
+    abstract id: IDType;
 }

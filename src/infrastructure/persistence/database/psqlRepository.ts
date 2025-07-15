@@ -1,16 +1,14 @@
 import {Repository, EntityTarget, FindOptionsWhere, FindManyOptions} from 'typeorm';
-import {Injectable, Scope} from '@nestjs/common';
 import {IBaseRepository} from 'src/core/domain/common/base/base.repository';
-import {AnyType, BaseType} from 'src/core/domain/common/base/base.type';
+import {AnyType} from 'src/core/domain/common/base/base.type';
 import {PsqlContext} from "./psqlContext";
+import {BaseEntity} from "../../../core/domain/common/base/base.entity";
 
-export const PsqlRepositorySymbol = Symbol("PsqlRepository");
 /**
  * PostgresQL repository implementation
  * Extends the BaseRepository interface to provide PostgresQL specific implementation
  */
-@Injectable({ scope: Scope.REQUEST })
-export class PsqlRepository<T extends BaseType<ID>, ID> implements IBaseRepository<T, ID> {
+export abstract class PsqlRepository<T extends BaseEntity<ID>, ID> implements IBaseRepository<T, ID> {
     protected repository: Repository<T>;
 
     constructor(

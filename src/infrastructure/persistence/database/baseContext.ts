@@ -1,13 +1,12 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { IDatabaseService } from 'src/core/domain/common/service/interfaces/database.service.interface';
 import { ILoggingService } from 'src/core/domain/common/service/interfaces/logging.service.interface';
 
 /**
  * Base context for database connections using TypeORM
  */
 @Injectable()
-export abstract class BaseContext implements IDatabaseService, OnModuleInit, OnModuleDestroy {
+export abstract class BaseContext implements OnModuleInit, OnModuleDestroy {
   protected dataSource!: DataSource;
   protected isInitialized = false;
 
@@ -34,7 +33,6 @@ export abstract class BaseContext implements IDatabaseService, OnModuleInit, OnM
       if (!this.dataSource) {
         this.dataSource = new DataSource(this.options);
       }
-
       if (!this.dataSource.isInitialized) {
         await this.dataSource.initialize();
         this.isInitialized = true;

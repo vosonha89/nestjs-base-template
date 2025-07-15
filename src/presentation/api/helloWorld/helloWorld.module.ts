@@ -25,5 +25,6 @@ import {
         },
     ],
 })
+
 export class HelloWorldModule {
 }

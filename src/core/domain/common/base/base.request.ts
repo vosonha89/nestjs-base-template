@@ -78,8 +78,8 @@ export abstract class BaseSearchRequest extends BaseAuthorizedRequest {
     constructor(
         @Inject(RequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
         super(requestContextService);
-        this.page = ConstantValue.pageIndex;
-        this.size = ConstantValue.pageSize;
+        this.page = ConstantValue.PAGE_INDEX;
+        this.size = ConstantValue.PAGE_SIZE;
         this.filters = [];
         this.sort = {
             sortField: 'created',
