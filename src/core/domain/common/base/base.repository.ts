@@ -1,4 +1,5 @@
-import {AnyType} from "./base.type";
+import { AnyType } from "./base.type";
+import { FindOptionsWhere } from "typeorm";
 
 export interface IBaseRepository<T, ID> {
     /**
@@ -6,11 +7,6 @@ export interface IBaseRepository<T, ID> {
      * @param id Entity id
      */
     findById(id: ID): Promise<T | null>;
-
-    /**
-     * Find all entities
-     */
-    findAll(): Promise<T[]>;
 
     /**
      * Find entities by condition
@@ -21,13 +17,13 @@ export interface IBaseRepository<T, ID> {
      * Save entity
      * @param entity Entity to save
      */
-    save(entity: T): Promise<T>;
+    save(entity: Partial<T>): Promise<T>;
 
     /**
      * Update entity
      * @param entity Entity to update
      */
-    update(entity: T): Promise<T>;
+    update(entity: Partial<T>): Promise<T>;
 
     /**
      * Delete entity by id
@@ -40,4 +36,10 @@ export interface IBaseRepository<T, ID> {
      * @param id Entity id
      */
     exists(id: ID): Promise<boolean>;
+
+    /**
+     * Check if entity exists by condition
+     * @param condition Entity condition
+     */
+    existsBy(condition: FindOptionsWhere<T> | undefined): Promise<boolean>;
 }

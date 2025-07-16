@@ -1,8 +1,8 @@
-import {Repository, EntityTarget, FindOptionsWhere, FindManyOptions} from 'typeorm';
-import {IBaseRepository} from 'src/core/domain/common/base/base.repository';
-import {AnyType} from 'src/core/domain/common/base/base.type';
-import {PsqlContext} from "./psqlContext";
-import {BaseEntity} from "../../../core/domain/common/base/base.entity";
+import { Repository, EntityTarget, FindOptionsWhere, FindManyOptions } from 'typeorm';
+import { IBaseRepository } from 'src/core/domain/common/base/base.repository';
+import { AnyType } from 'src/core/domain/common/base/base.type';
+import { PsqlContext } from "./psqlContext";
+import { BaseEntity } from "../../../core/domain/common/base/base.entity";
 
 /**
  * PostgresQL repository implementation
@@ -11,7 +11,7 @@ import {BaseEntity} from "../../../core/domain/common/base/base.entity";
 export abstract class PsqlRepository<T extends BaseEntity<ID>, ID> implements IBaseRepository<T, ID> {
     protected repository: Repository<T>;
 
-    constructor(
+    protected constructor(
         protected readonly psqlContext: PsqlContext,
         protected readonly entityTarget: EntityTarget<T>
     ) {
@@ -23,15 +23,8 @@ export abstract class PsqlRepository<T extends BaseEntity<ID>, ID> implements IB
      * @param id Entity id
      */
     async findById(id: ID): Promise<T | null> {
-        const condition = {id} as unknown as FindOptionsWhere<T>;
-        return this.repository.findOne({where: condition});
-    }
-
-    /**
-     * Find all entities
-     */
-    async findAll(): Promise<T[]> {
-        return this.repository.find();
+        const condition = { id } as FindOptionsWhere<T>;
+        return this.repository.findOne({ where: condition });
     }
 
     /**
@@ -55,7 +48,10 @@ export abstract class PsqlRepository<T extends BaseEntity<ID>, ID> implements IB
      * @param entity Entity to update
      */
     async update(entity: T): Promise<T> {
-        await this.repository.update(entity.id as unknown as AnyType, entity as AnyType);
+        const id = entity.id;
+        const condition = { id } as FindOptionsWhere<T>;
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        await this.repository.update(condition, entity as AnyType);
         return entity;
     }
 
@@ -64,7 +60,8 @@ export abstract class PsqlRepository<T extends BaseEntity<ID>, ID> implements IB
      * @param id Entity id
      */
     async delete(id: ID): Promise<boolean> {
-        const result = await this.repository.delete(id as unknown as AnyType);
+        const condition = { id } as FindOptionsWhere<T>;
+        const result = await this.repository.delete(condition);
         return result.affected !== 0;
     }
 
@@ -73,8 +70,17 @@ export abstract class PsqlRepository<T extends BaseEntity<ID>, ID> implements IB
      * @param id Entity id
      */
     async exists(id: ID): Promise<boolean> {
-        const condition = {id} as unknown as FindOptionsWhere<T>;
-        const count = await this.repository.count({where: condition});
+        const condition = { id } as FindOptionsWhere<T>;
+        const count = await this.repository.count({ where: condition });
+        return count > 0;
+    }
+
+    /**
+     * Check if entity exists by condition
+     * @param condition Entity condition
+     */
+    async existsBy(condition: FindOptionsWhere<T> | undefined): Promise<boolean> {
+        const count = await this.repository.count({ where: condition });
         return count > 0;
     }
 }

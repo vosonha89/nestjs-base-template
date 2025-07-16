@@ -1,5 +1,5 @@
-import {BaseEntity} from "../../../core/domain/common/base/base.entity";
-import {Column, PrimaryGeneratedColumn} from "typeorm";
+import { BaseEntity } from "../../../core/domain/common/base/base.entity";
+import { Column, PrimaryGeneratedColumn } from "typeorm";
 
 /**
  * Represents a base entity for a PostgreSQL database with common fields.
@@ -20,10 +20,10 @@ import {Column, PrimaryGeneratedColumn} from "typeorm";
 export class PsqlEntity<ID> extends BaseEntity<ID> {
     @PrimaryGeneratedColumn('increment')
     id!: ID;
-    @Column({type: 'date', nullable: true})
+    @Column({ type: 'date', nullable: true })
     createdAt!: Date;
-    @Column({type: 'date', nullable: true})
+    @Column({ type: 'date', nullable: true })
     updatedAt!: Date;
-    @Column({type: 'date', nullable: true})
+    @Column({ type: 'date', nullable: true })
     deletedAt?: Date;
 }

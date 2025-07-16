@@ -1,7 +1,7 @@
-import {PsqlRepository} from "../database/psqlRepository";
-import {ProductEntity} from "../entities/product.entity";
-import {Inject, Injectable} from "@nestjs/common";
-import {PsqlContext, PsqlContextSymbol} from "../database/psqlContext";
+import { PsqlRepository } from "../database/psqlRepository";
+import { ProductEntity } from "../entities/product.entity";
+import { Inject, Injectable } from "@nestjs/common";
+import { PsqlContext, PsqlContextSymbol } from "../database/psqlContext";
 
 /**
  * A unique symbol used as an identifier for the ProductRepository.

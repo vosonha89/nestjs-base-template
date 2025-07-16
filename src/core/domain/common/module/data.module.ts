@@ -1,4 +1,4 @@
-import {Module} from "@nestjs/common";
+import { Module } from "@nestjs/common";
 import {
     UserRepository,
     UserRepositorySymbol
@@ -7,16 +7,15 @@ import {
     ProductRepository,
     ProductRepositorySymbol
 } from "../../../../infrastructure/persistence/repositories/product.repository";
-import {LoggingService, LoggingServiceSymbol} from "../service/logging.service";
-import {PsqlContext, PsqlContextSymbol} from "../../../../infrastructure/persistence/database/psqlContext";
+import { LoggingService, LoggingServiceSymbol } from "../service/logging.service";
+import { PsqlContext, PsqlContextSymbol } from "../../../../infrastructure/persistence/database/psqlContext";
+import { CommonModule } from "./common.module";
 
 @Module({
-    imports: [],
+    imports: [
+		CommonModule
+	],
     providers: [
-        {
-            provide: LoggingServiceSymbol,
-            useClass: LoggingService
-        },
         {
             provide: PsqlContextSymbol,
             // useClass: PsqlContext,
@@ -36,6 +35,10 @@ import {PsqlContext, PsqlContextSymbol} from "../../../../infrastructure/persist
             useClass: ProductRepository
         },
     ],
+	exports: [
+		UserRepositorySymbol,
+		ProductRepositorySymbol
+	]
 })
 
 export class DataModule {

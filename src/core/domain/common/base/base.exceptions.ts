@@ -9,7 +9,7 @@ export interface ErrorMessage {
 }
 
 /**
- * Error definition for client side
+ * Error definition for the client side
  */
 export interface ClientError {
     errorCode: string;
@@ -24,8 +24,8 @@ export class AppError extends Error {
 
     /**
      * Constructor
-     * @param exception 
-     * @param message 
+     * @param exception
+     * @param message
      */
     constructor(exception: AnyType, message?: string) {
         super(message);
