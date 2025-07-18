@@ -1,0 +1,34 @@
+import { BaseCreateRequest } from "../../../../core/domain/common/base/base.request";
+
+export class ProductCreateRequest extends BaseCreateRequest {
+	title!: string;
+	description!: string;
+	category!: string;
+	price!: number;
+	discountPercentage!: number;
+	rating!: number;
+	stock!: number;
+	tags!: any;
+	brand!: string;
+	sku!: string;
+	weight!: number;
+	dimensionsWidth!: number;
+	dimensionsHeight!: number;
+	dimensionsDepth!: number;
+	warrantyInformation!: string;
+	shippingInformation!: string;
+	availabilityStatus!: string;
+	reviews!: any;
+	returnPolicy!: string;
+	minimumOrderQuantity!: number;
+	metaCreatedAt!: string;
+	metaUpdatedAt!: string;
+	metaBarcode!: string;
+	metaQrCode!: string;
+	images!: any;
+	thumbnail!: string;
+
+	public isValid(): boolean {
+		return true;
+	}
+}

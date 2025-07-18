@@ -10,6 +10,8 @@ import { ClientError } from './base.exceptions';
 import { RequestWithUser } from '../../types/requestWithUser.type';
 import { RequestContextServiceSymbol } from "../service/requestContext.service";
 import { ApiProperty } from "@nestjs/swagger";
+import { ObjectHelper } from "../../helpers/objectHelper";
+
 /**
  * Base filter
  */
@@ -194,6 +196,11 @@ export abstract class BaseCreateRequest extends BaseAuthorizedRequest {
 		super(requestContextService);
 		this.mapRequest(requestContextService.getRequest());
 	}
+
+	public mapRequest(req: RequestWithUser): void {
+		const me = this;
+		ObjectHelper.map(req.body, me);
+	}
 }
 
 /**
@@ -205,7 +212,7 @@ export abstract class BaseUpdateRequest extends BaseAuthorizedRequest {
 	/**
 	 * Constructor
 	 */
-	constructor(
+	protected constructor(
 		@Inject(RequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
 		super(requestContextService);
 		this.mapRequest(requestContextService.getRequest());
@@ -216,6 +223,7 @@ export abstract class BaseUpdateRequest extends BaseAuthorizedRequest {
 		if (req.query.id) {
 			me.id = req.query.id as string;
 		}
+		ObjectHelper.map(req.body, me);
 	}
 
 	public isValid(): boolean {
@@ -239,7 +247,7 @@ export abstract class BaseDeleteRequest extends BaseAuthorizedRequest {
 	/**
 	 * Constructor
 	 */
-	constructor(
+	protected constructor(
 		@Inject(RequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
 		super(requestContextService);
 		this.mapRequest(requestContextService.getRequest());
