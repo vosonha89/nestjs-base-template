@@ -14,7 +14,8 @@ async function bootstrap() {
         .addTag(AppEnvironment.APP_NAME)
         .build();
 
-    const documentFactory = () => SwaggerModule.createDocument(app, config);
+    const documentFactory = () =>
+		SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api/doc', app, documentFactory);
     await app.listen(AppEnvironment.PORT ?? 3000);
 }

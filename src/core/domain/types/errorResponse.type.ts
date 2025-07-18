@@ -35,7 +35,7 @@ export class ErrorResponse extends BaseResponseData<AnyType> {
 /**
  * Not found error
  */
-export const NotFound = new ErrorResponse(HttpStatus.NOT_FOUND,
+export const NotFound = () => new ErrorResponse(HttpStatus.NOT_FOUND,
 	'The requested resource could not be found.',
 	{
 		errorCode: GlobalError.NotFoundError.code.toString(),
@@ -46,7 +46,7 @@ export const NotFound = new ErrorResponse(HttpStatus.NOT_FOUND,
 /**
  * Unauthorized error
  */
-export const Unauthorized = new ErrorResponse(HttpStatus.UNAUTHORIZED,
+export const Unauthorized = () =>  new ErrorResponse(HttpStatus.UNAUTHORIZED,
 	'The user does not have the necessary credentials.',
 	{
 		errorCode: GlobalError.UnauthorizedError.code.toString(),
@@ -57,7 +57,7 @@ export const Unauthorized = new ErrorResponse(HttpStatus.UNAUTHORIZED,
 /**
  * Forbidden error
  */
-export const Forbidden = new ErrorResponse(HttpStatus.FORBIDDEN,
+export const Forbidden = () => new ErrorResponse(HttpStatus.FORBIDDEN,
 	'The user might not have the necessary permissions for a resource.',
 	{
 		errorCode: GlobalError.ForbiddenError.code.toString(),

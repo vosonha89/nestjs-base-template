@@ -11,9 +11,9 @@ export interface ErrorMessage {
 /**
  * Error definition for the client side
  */
-export interface ClientError {
-    errorCode: string;
-    errorMessage: string;
+export class ClientError {
+    errorCode!: string;
+    errorMessage!: string;
 }
 
 /**

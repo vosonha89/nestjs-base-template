@@ -13,6 +13,11 @@ export interface IBaseRepository<T, ID> {
      */
     find(condition: AnyType): Promise<T[]>;
 
+	/**
+	 * Count entities by condition
+	 */
+	count(condition: AnyType): Promise<number>;
+
     /**
      * Save entity
      * @param entity Entity to save

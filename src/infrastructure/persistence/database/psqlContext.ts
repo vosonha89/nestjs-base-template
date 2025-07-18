@@ -27,7 +27,7 @@ export class PsqlContext extends BaseContext {
             ssl: {
                 rejectUnauthorized: false, // only for self-signed certs
             },
-            entities: [__dirname + '/entities/**/*.entity{.ts,.js}'],
+            entities: [__dirname + '/../entities/**/*.entity{.ts,.js}'],
             synchronize: process.env.NODE_ENV !== 'production',
             logging: process.env.NODE_ENV !== 'production',
         } as DataSourceOptions;

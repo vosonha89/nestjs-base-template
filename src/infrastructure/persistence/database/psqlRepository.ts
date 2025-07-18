@@ -35,6 +35,14 @@ export abstract class PsqlRepository<T extends BaseEntity<ID>, ID> implements IB
         return this.repository.find(condition);
     }
 
+	/**
+	 * Count entities with conditions
+	 * @param condition
+	 */
+	count(condition: FindManyOptions<T> | undefined): Promise<number> {
+		return this.repository.count(condition);
+	}
+
     /**
      * Save entity
      * @param entity Entity to save

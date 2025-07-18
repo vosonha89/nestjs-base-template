@@ -4,7 +4,7 @@ import { BaseType } from "../../domain/common/base/base.type";
  * Response DTO for product data that matches the structure of ProductEntity
  */
 export class ProductDto extends BaseType<number> {
-    id!: number;
+	id!: number;
     title?: string;
     description?: string;
     category?: string;
