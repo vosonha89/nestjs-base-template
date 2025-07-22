@@ -73,7 +73,7 @@ export abstract class BaseAuthorizedRequest extends BaseRequest {
 	 * Constructor with authorized user
 	 * @param requestContextService
 	 */
-	constructor(
+	protected constructor(
 		@Inject(RequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService
 	) {
 		super();
@@ -252,7 +252,6 @@ export abstract class BaseUpdateRequest extends BaseAuthorizedRequest {
  */
 export abstract class BaseDeleteRequest extends BaseAuthorizedRequest {
 	public id!: AnyType;
-	public readonly softDelete = true;
 
 	/**
 	 * Constructor
