@@ -131,8 +131,6 @@ export class BaseListResponse<T> {
  */
 export class BaseItemResponse<T extends SourceObject> extends GenericObject<T> {
 	public id = '';
-	public created = new Date();
-	public updated = new Date();
 
 	public override map(object: T): void {
 		ObjectHelper.map(object, this);

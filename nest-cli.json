@@ -12,7 +12,6 @@
 					"introspectComments": true,
 					"dtoFileNameSuffix": [
 						".dto.ts",
-						".entity.ts",
 						".model.ts",
 						".response.ts"
 					]

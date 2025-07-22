@@ -18,7 +18,7 @@ import { Column, PrimaryGeneratedColumn } from "typeorm";
  * - deletedAt: The date when the entity was marked for deletion. Nullable.
  */
 export class PsqlEntity<ID> extends BaseEntity<ID> {
-    @PrimaryGeneratedColumn('increment')
+    @PrimaryGeneratedColumn('increment', { type: 'bigint' })
     id!: ID;
     @Column({ type: 'date', nullable: true })
     createdAt!: Date;

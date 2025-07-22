@@ -11,6 +11,7 @@ import { RequestWithUser } from '../../types/requestWithUser.type';
 import { RequestContextServiceSymbol } from "../service/requestContext.service";
 import { ApiProperty } from "@nestjs/swagger";
 import { ObjectHelper } from "../../helpers/objectHelper";
+import { AnyType } from "./base.type";
 
 /**
  * Base filter
@@ -22,6 +23,16 @@ export class BaseFilter {
 	public fieldValue!: string | [];
 	@ApiProperty()
 	public filterCondition!: FilterCondition;
+}
+
+/**
+ * BaseFilterWhere
+ */
+export class BaseFilterWhere {
+	@ApiProperty()
+	public fieldName!: string;
+	@ApiProperty()
+	public fieldValue!: string;
 }
 
 /**
@@ -100,7 +111,6 @@ export class BaseSearchRequest extends BaseAuthorizedRequest {
 			sortField: 'created',
 			sortType: 'DESC'
 		};
-		this.mapRequest(requestContextService.getRequest());
 	}
 
 	/**
@@ -207,12 +217,12 @@ export abstract class BaseCreateRequest extends BaseAuthorizedRequest {
  * Base edit request
  */
 export abstract class BaseUpdateRequest extends BaseAuthorizedRequest {
-	public id!: string;
+	public id!: AnyType;
 
 	/**
 	 * Constructor
 	 */
-	protected constructor(
+	constructor(
 		@Inject(RequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
 		super(requestContextService);
 		this.mapRequest(requestContextService.getRequest());
@@ -241,13 +251,13 @@ export abstract class BaseUpdateRequest extends BaseAuthorizedRequest {
  * Base delete request
  */
 export abstract class BaseDeleteRequest extends BaseAuthorizedRequest {
-	public id!: string;
+	public id!: AnyType;
 	public readonly softDelete = true;
 
 	/**
 	 * Constructor
 	 */
-	protected constructor(
+	constructor(
 		@Inject(RequestContextServiceSymbol) protected readonly requestContextService: IRequestContextService) {
 		super(requestContextService);
 		this.mapRequest(requestContextService.getRequest());

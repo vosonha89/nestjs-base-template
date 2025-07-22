@@ -10,13 +10,19 @@ import { LoggingServiceSymbol } from "../../../core/domain/common/service/loggin
 import { ApiExtraModels } from "@nestjs/swagger";
 import { ProductDto } from "../../../core/application/dtos/product.dto";
 import { BaseDataController } from "../../../core/domain/common/base/base.Data.Controller";
+import { ProductCreateRequest } from "./requests/productCreate.request";
+import { ProductUpdateRequest } from "./requests/productUpdate.request";
+import { ProductDeleteRequest } from "./requests/productDelete.request";
 
 @ApiExtraModels(ProductListResponse)
 @Controller('product')
-export class ProductController extends BaseDataController<ProductSearchRequest, ProductDto, number>
+export class ProductController extends BaseDataController<ProductDto, number, ProductSearchRequest, ProductCreateRequest, ProductUpdateRequest, ProductDeleteRequest>
 (
+	ProductDto,
 	ProductSearchRequest,
-	ProductDto
+	ProductCreateRequest,
+	ProductUpdateRequest,
+	ProductDeleteRequest
 ) {
 	constructor(
 		@Inject(LoggingServiceSymbol) public readonly loggingService: ILoggingService,

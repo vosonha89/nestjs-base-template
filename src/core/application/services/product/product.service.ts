@@ -1,6 +1,4 @@
 import { ProductDto } from "../../dtos/product.dto";
-import { IProductService } from "../../interfaces/product.service.interface";
-import { BaseDataService } from "../../../domain/common/base/baseData.service";
 import { Inject, Injectable, Scope } from "@nestjs/common";
 import { RequestContextServiceSymbol } from "../../../domain/common/service/requestContext.service";
 import { IRequestContextService } from "../../../domain/common/service/interfaces/requestContext.service.interface";
@@ -8,6 +6,9 @@ import {
 	ProductRepository,
 	ProductRepositorySymbol
 } from "../../../../infrastructure/persistence/repositories/product.repository";
+import { ProductEntity } from "../../../../infrastructure/persistence/entities/product.entity";
+import { BaseDataService } from "src/core/domain/common/base/baseData.service";
+import { IProductService } from "../../interfaces/product.service.interface";
 
 /**
  * Symbol and interface definition for Hello World service
@@ -32,7 +33,9 @@ export const ProductServiceSymbol = Symbol("ProductService");
  * @implements IProductService
  */
 @Injectable({ scope: Scope.REQUEST })
-export class ProductService extends BaseDataService<ProductDto, number> implements IProductService {
+export class ProductService
+	extends BaseDataService<ProductDto, ProductEntity, number>(ProductDto, ProductEntity)
+	implements IProductService {
 	constructor(
 		@Inject(RequestContextServiceSymbol) private readonly requestContext: IRequestContextService,
 		@Inject(ProductRepositorySymbol) private readonly productRepository: ProductRepository

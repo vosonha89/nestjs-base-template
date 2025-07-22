@@ -1,7 +1,8 @@
 import { AnyType } from "./base.type";
 import { FindOptionsWhere } from "typeorm";
+import { BaseEntity } from "./base.entity";
 
-export interface IBaseRepository<T, ID> {
+export interface IBaseRepository<T extends BaseEntity<ID>, ID> {
     /**
      * Find entity by id
      * @param id Entity id

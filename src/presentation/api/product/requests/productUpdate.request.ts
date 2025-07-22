@@ -1,11 +1,11 @@
-import { BaseCreateRequest } from "../../../../core/domain/common/base/base.request";
 import validator from "validator";
 import { GlobalError } from "../../../../core/domain/types/globalError.type";
 import { BadRequest } from "../../../../core/domain/types/errorResponse.type";
 import { ClientError } from "../../../../core/domain/common/base/base.exceptions";
 import { ApiProperty } from "@nestjs/swagger";
+import { BaseUpdateRequest } from "../../../../core/domain/common/base/base.request";
 
-export class ProductCreateRequest extends BaseCreateRequest {
+export class ProductUpdateRequest extends BaseUpdateRequest {
 	@ApiProperty()
 	public title!: string;
 	@ApiProperty()
@@ -69,11 +69,7 @@ export class ProductCreateRequest extends BaseCreateRequest {
 			const error = GlobalError.RequiredError('category');
 			me.currentError = BadRequest({ errorCode: error.code.toString(), errorMessage: error.msg } as ClientError);
 			return false;
-		} else if (!me.price) {
-			const error = GlobalError.RequiredError('price');
-			me.currentError = BadRequest({ errorCode: error.code.toString(), errorMessage: error.msg } as ClientError);
-			return false;
-		} else if (!validator.isNumeric(me.price.toString())) {
+		} else if (me.price && !validator.isNumeric(me.price.toString())) {
 			const error = GlobalError.TypeError('price', 'number');
 			me.currentError = BadRequest({ errorCode: error.code.toString(), errorMessage: error.msg } as ClientError);
 		}
