@@ -5,13 +5,10 @@
 export abstract class BaseEntity<ID> {
     /** Unique identifier for the entity */
     abstract id: ID;
-    
+
     /** Timestamp when the entity was created */
     abstract createdAt: Date;
-    
+
     /** Timestamp when the entity was last updated */
     abstract updatedAt: Date;
-    
-    /** Timestamp when the entity was soft deleted, null if not deleted */
-    abstract deletedAt?: Date;
 }

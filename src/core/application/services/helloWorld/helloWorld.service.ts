@@ -3,8 +3,14 @@ import { IHelloWorldService } from '../../interfaces/helloWorld.service.interfac
 import { BaseService } from 'src/core/domain/common/base/base.service';
 
 /**
+ * Symbol and interface definition for Hello World service
+ * @namespace HelloWorldService
+ */
+export const HelloWorldServiceSymbol = Symbol("HelloWorldService");
+
+/**
  * Service responsible for handling hello world functionality
- * @implements {IHelloWorldServiceSymbol}
+ * @implements {HelloWorldServiceSymbol}
  */
 @Injectable({ scope: Scope.REQUEST })
 export class HelloWorldService extends BaseService implements IHelloWorldService {

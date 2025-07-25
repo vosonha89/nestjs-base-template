@@ -1,10 +1,4 @@
 /**
- * Symbol and interface definition for Hello World service
- * @namespace HelloWorldService
- */
-export const IHelloWorldServiceSymbol = Symbol("IHelloWorldService");
-
-/**
  * Interface for the Hello World service
  * @interface IHelloWorldService
  */

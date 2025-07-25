@@ -6,7 +6,7 @@ This directory contains service implementations that orchestrate business operat
 
 Application services:
 - Execute use cases and business operations
-- Coordinate between different domain objects
+- Coordinate between different domain objectsFindManyOptions
 - Transform data between layers using DTOs
 - Maintain transaction boundaries
 
