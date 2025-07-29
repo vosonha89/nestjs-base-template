@@ -1,6 +1,7 @@
 # NestJS Base Template
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/XezpwfPi1US9RhS159vdjh/Xkysgexu81sGiFtzJyFTrK/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/XezpwfPi1US9RhS159vdjh/Xkysgexu81sGiFtzJyFTrK/tree/main)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fvosonha89%2Fnestjs-base-template.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fvosonha89%2Fnestjs-base-template?ref=badge_shield)
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
@@ -117,3 +118,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 This project is [MIT licensed](LICENSE).
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fvosonha89%2Fnestjs-base-template.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fvosonha89%2Fnestjs-base-template?ref=badge_large)
