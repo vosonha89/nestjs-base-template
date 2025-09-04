@@ -48,6 +48,7 @@ export abstract class PsqlRepository<T extends BaseEntity<ID>, ID> implements IB
      * @param entity Entity to save
      */
     async save(entity: T): Promise<T> {
+		entity.createdAt = new Date();
         return this.repository.save(entity);
     }
 
@@ -58,6 +59,7 @@ export abstract class PsqlRepository<T extends BaseEntity<ID>, ID> implements IB
     async update(entity: T): Promise<T> {
         const id = entity.id;
         const condition = { id } as FindOptionsWhere<T>;
+		entity.updatedAt = new Date();
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         await this.repository.update(condition, entity as AnyType);
         return entity;

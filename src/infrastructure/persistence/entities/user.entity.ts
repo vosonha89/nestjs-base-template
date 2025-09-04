@@ -1,8 +1,11 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { PsqlEntity } from "../database/psqlEntity";
 
 @Entity({ name: 'user', schema: 'public' })
 export class UserEntity extends PsqlEntity<number> {
+	@PrimaryGeneratedColumn('increment', { type: 'bigint' })
+	id!: number;
+
     @Column({ name: 'firstName', type: 'text', nullable: true })
     firstName?: string;
 

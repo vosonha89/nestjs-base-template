@@ -1,5 +1,5 @@
 import { BaseEntity } from "../../../core/domain/common/base/base.entity";
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Column } from "typeorm";
 
 /**
  * Represents a base entity for a PostgreSQL database with common fields.
@@ -17,9 +17,8 @@ import { Column, PrimaryGeneratedColumn } from "typeorm";
  * - updatedAt: The date when the entity was last updated. This field is optional.
  * - deletedAt: The date when the entity was marked for deletion. Nullable.
  */
-export class PsqlEntity<ID> extends BaseEntity<ID> {
-    @PrimaryGeneratedColumn('increment', { type: 'bigint' })
-    id!: ID;
+export abstract class PsqlEntity<ID> extends BaseEntity<ID> {
+    abstract id: ID;
     @Column({ type: 'date', nullable: true })
     createdAt!: Date;
     @Column({ type: 'date', nullable: true })
