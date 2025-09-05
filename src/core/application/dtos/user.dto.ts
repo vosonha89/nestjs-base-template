@@ -13,7 +13,6 @@ export class UserDto extends BaseType<number> {
 	email?: string;
 	phone?: string;
 	username?: string;
-	password?: string;
 	birthDate?: string;
 	image?: string;
 	bloodGroup?: string;
@@ -34,10 +33,8 @@ export class UserDto extends BaseType<number> {
 	macAddress?: string;
 	university?: string;
 	bankCardExpire?: string;
-	bankCardNumber?: string;
 	bankCardType?: string;
 	bankCurrency?: string;
-	bankIban?: string;
 	companyDepartment?: string;
 	companyName?: string;
 	companyTitle?: string;
@@ -50,7 +47,6 @@ export class UserDto extends BaseType<number> {
 	companyAddressCoordinatesLng?: number;
 	companyAddressCountry?: string;
 	ein?: string;
-	ssn?: string;
 	userAgent?: string;
 	cryptoCoin?: string;
 	cryptoWallet?: string;
