@@ -21,7 +21,6 @@ export class UserDto extends BaseType<number> {
 	eyeColor?: string;
 	hairColor?: string;
 	hairType?: string;
-	ip?: string;
 	addressAddress?: string;
 	addressCity?: string;
 	addressState?: string;
@@ -30,11 +29,7 @@ export class UserDto extends BaseType<number> {
 	addressCoordinatesLat?: number;
 	addressCoordinatesLng?: number;
 	addressCountry?: string;
-	macAddress?: string;
 	university?: string;
-	bankCardExpire?: string;
-	bankCardType?: string;
-	bankCurrency?: string;
 	companyDepartment?: string;
 	companyName?: string;
 	companyTitle?: string;
@@ -46,11 +41,6 @@ export class UserDto extends BaseType<number> {
 	companyAddressCoordinatesLat?: number;
 	companyAddressCoordinatesLng?: number;
 	companyAddressCountry?: string;
-	ein?: string;
-	userAgent?: string;
-	cryptoCoin?: string;
-	cryptoWallet?: string;
-	cryptoNetwork?: string;
 	role?: string;
 	createdAt?: Date;
 	updatedAt?: Date;
