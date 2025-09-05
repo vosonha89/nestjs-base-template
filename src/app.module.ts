@@ -4,6 +4,7 @@ import { ConfigModule } from "@nestjs/config";
 import { ProductModule } from "./presentation/api/product/product.module";
 import { APP_INTERCEPTOR, Reflector } from "@nestjs/core";
 import { ResponseTransformInterceptor } from "./core/domain/helpers/responseTransformInterceptor.service";
+import { UserModule } from "./presentation/api/user/user.module";
 
 @Module({
 	imports: [
@@ -16,7 +17,8 @@ import { ResponseTransformInterceptor } from "./core/domain/helpers/responseTran
 			expandVariables: true,
 		}),
 		HelloWorldModule,
-		ProductModule
+		ProductModule,
+		UserModule,
 	],
 	providers: [
 		Reflector,

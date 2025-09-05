@@ -2,7 +2,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { HelloWorldController } from "./helloWorld.controller";
 import { HelloWorldModule } from './helloWorld.module';
 
-describe("ProductController", () => {
+describe("UserController", () => {
   let helloWorldController: HelloWorldController;
 
   beforeEach(async () => {

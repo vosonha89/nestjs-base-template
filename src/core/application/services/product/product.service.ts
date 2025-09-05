@@ -17,12 +17,12 @@ import { IProductService } from "../../interfaces/product.service.interface";
 export const ProductServiceSymbol = Symbol("ProductService");
 
 /**
- * ProductService class extends the BaseDataService to provide specific functionality
+ * UserService class extends the BaseDataService to provide specific functionality
  * for managing product data. This class is responsible for implementing operations
  * related to products, such as CRUD operations, and ensuring compliance with
  * the IProductService interface.
  *
- * The ProductService is designed to handle business logic associated with
+ * The UserService is designed to handle business logic associated with
  * managing product entities and acts as an intermediary between the application's
  * higher-level components and the data layer.
  *
