@@ -173,7 +173,7 @@ export class UserUpdateRequest extends BaseUpdateRequest {
 			const error = GlobalError.RequiredError('phone');
 			me.currentError = BadRequest({ errorCode: error.code.toString(), errorMessage: error.msg } as ClientError);
 			return false;
-		} else if (!validator.isNumeric(me.age.toString())) {
+		} else if (!validator.isNumeric(String(me.age))) {
 			const error = GlobalError.TypeError('age', 'number');
 			me.currentError = BadRequest({ errorCode: error.code.toString(), errorMessage: error.msg } as ClientError);
 		}
