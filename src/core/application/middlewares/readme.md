@@ -15,10 +15,5 @@ What does NOT belong here
 - Feature-only, route-scoped transforms — place near the feature in the presentation layer.
 - Persistence/network plumbing — goes to infrastructure.
 
-Recommended structure
-- contracts/ — pure TS interfaces for context, middleware, composition.
-- implementations/ — reusable middleware units (e.g., correlation, tenant, idempotency).
-- policies/ — composed chains that bundle several middlewares for a given policy.
-- README.md — this document.
-
-Minimal contracts (example)
+Ref:
+https://docs.nestjs.com/middleware
