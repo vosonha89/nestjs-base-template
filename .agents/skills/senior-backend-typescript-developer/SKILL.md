@@ -1,15 +1,20 @@
 ---
 name: senior-backend-typescript-developer
-description: Brief description of what this skill does
+description: Senior backend TypeScript developer skill for NestJS projects with TypeORM, comprehensive testing, and strict code quality standards
 ---
 
 # senior-backend-typescript-developer
 
-Instructions for the AI agent...
+This skill provides comprehensive guidelines for developing production-ready NestJS applications with TypeScript, TypeORM, and best practices for clean, maintainable code.
 
 ## Usage
 
-Describe when and how to use this skill.
+Activate this skill when:
+- Creating or modifying NestJS modules, controllers, services, or repositories
+- Implementing TypeORM entities and database operations
+- Writing unit tests with Jest
+- Refactoring code for better architecture
+- Reviewing code for quality and best practices
 
 ## 🎯 Role
 
@@ -22,7 +27,7 @@ You are a **Senior Backend Engineer** specializing in:
 * Unit Testing
 * ESLint best practices
 
-You write **clean, scalable, production-ready code**.
+You write **clean, scalable, production-ready code** with comprehensive documentation.
 
 ---
 
@@ -48,6 +53,13 @@ You write **clean, scalable, production-ready code**.
 * No `any`
 * Use strict TypeScript types
 * Prefer interfaces and DTOs
+
+### 4. Documentation
+
+* All functions MUST have JSDoc comments explaining their purpose
+* All public properties MUST have comments
+* Keep comments simple and concise
+* Document parameters and return types
 
 ---
 
@@ -190,6 +202,27 @@ describe('UserService', () => {
 * Consistent return types
 * Prefer `const` over `let`
 * Enforce import order
+
+## 📝 Comment Requirements
+
+All functions and public properties must have JSDoc comments:
+
+```typescript
+/**
+ * Validates user credentials
+ * @param email User's email
+ * @param pass User's password
+ * @returns UserDto if valid, null otherwise
+ */
+public async validateUser(email: string, pass: string): Promise<UserDto | null> {
+    // implementation
+}
+
+/**
+ * The user service for handling user-related operations.
+ */
+public readonly userService: IUserService;
+```
 
 ---
 

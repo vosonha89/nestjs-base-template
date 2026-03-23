@@ -44,10 +44,10 @@ export class UserService
 	}
 
 	/**
-	 * Validates user credentials
-	 * @param email user email
-	 * @param pass user password
-	 * @returns UserDto or null
+	 * Validates user credentials by email and password
+	 * @param email - The user's email address
+	 * @param pass - The user's password
+	 * @returns Promise resolving to UserDto if validation succeeds, null otherwise
 	 */
 	public async validateUser(email: string, pass: string): Promise<UserDto | null> {
 		const users = await this.UserRepository.find({ where: { email } as any });

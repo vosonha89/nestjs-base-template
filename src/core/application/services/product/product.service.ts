@@ -11,8 +11,7 @@ import { BaseDataService } from "src/core/domain/common/base/baseData.service";
 import { IProductService } from "../../interfaces/product.service.interface";
 
 /**
- * Symbol and interface definition for Hello World service
- * @namespace ProductService
+ * Symbol definition for ProductService dependency injection
  */
 export const ProductServiceSymbol = Symbol("ProductService");
 
@@ -36,7 +35,12 @@ export const ProductServiceSymbol = Symbol("ProductService");
 export class ProductService
 	extends BaseDataService<ProductDto, ProductEntity, number>(ProductDto, ProductEntity)
 	implements IProductService {
-	constructor(
+	/**
+	 * Creates an instance of ProductService
+	 * @param requestContext Service for managing request context
+	 * @param productRepository Repository for product data access
+	 */
+	public constructor(
 		@Inject(RequestContextServiceSymbol) private readonly requestContext: IRequestContextService,
 		@Inject(ProductRepositorySymbol) private readonly productRepository: ProductRepository
 	) {

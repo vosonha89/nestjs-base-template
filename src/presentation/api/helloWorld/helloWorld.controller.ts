@@ -7,12 +7,21 @@ import { Public } from "../../../core/application/decorators/public.decorator";
 
 @Controller('hello')
 export class HelloWorldController {
-    constructor(
+    /**
+     * Creates an instance of HelloWorldController
+     * @param helloWorldService - Service for hello world operations
+     * @param requestContextService - Service for managing request context
+     */
+    public constructor(
         @Inject(HelloWorldServiceSymbol) private readonly helloWorldService: IHelloWorldService,
         @Inject(RequestContextServiceSymbol) private readonly requestContextService: IRequestContextService
     ) {
     }
 
+    /**
+     * Returns a hello world message
+     * @returns A greeting string
+     */
     @Public()
     @Get('get-hello')
     public getHello(): string {

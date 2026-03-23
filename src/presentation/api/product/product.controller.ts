@@ -24,7 +24,13 @@ export class ProductController extends BaseDataController<ProductDto, number, Pr
 	ProductUpdateRequest,
 	ProductDeleteRequest
 ) {
-	constructor(
+	/**
+	 * Creates an instance of ProductController
+	 * @param loggingService - Service for logging operations
+	 * @param context - Service for managing request context
+	 * @param dataService - Service for product data operations
+	 */
+	public constructor(
 		@Inject(LoggingServiceSymbol) public readonly loggingService: ILoggingService,
 		@Inject(RequestContextServiceSymbol) public readonly context: IRequestContextService,
 		@Inject(ProductServiceSymbol) public readonly dataService: IProductService,

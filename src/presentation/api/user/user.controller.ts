@@ -24,7 +24,13 @@ export class UserController extends BaseDataController<UserDto, number, UserSear
 	UserUpdateRequest,
 	UserDeleteRequest
 ) {
-	constructor(
+	/**
+	 * Creates an instance of UserController
+	 * @param loggingService - Service for logging operations
+	 * @param context - Service for managing request context
+	 * @param dataService - Service for user data operations
+	 */
+	public constructor(
 		@Inject(LoggingServiceSymbol) public readonly loggingService: ILoggingService,
 		@Inject(RequestContextServiceSymbol) public readonly context: IRequestContextService,
 		@Inject(UserServiceSymbol) public readonly dataService: IUserService,

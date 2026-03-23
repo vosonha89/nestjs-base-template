@@ -26,6 +26,9 @@ import { UserService, UserServiceSymbol } from "../../../core/application/servic
 			useClass: UserService,
 		},
 	],
+	exports: [
+		UserServiceSymbol
+	]
 })
 
 export class UserModule {

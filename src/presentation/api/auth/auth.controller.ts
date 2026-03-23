@@ -6,7 +6,12 @@ import { UserServiceSymbol } from '../../../core/application/services/user/user.
 
 @Controller('auth')
 export class AuthController {
-  constructor(
+  /**
+   * Creates an instance of AuthController
+   * @param userService - Service for user operations
+   * @param jwtService - Service for JWT token operations
+   */
+  public constructor(
     @Inject(UserServiceSymbol) private readonly userService: IUserService,
     private readonly jwtService: JwtService
   ) {}

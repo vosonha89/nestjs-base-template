@@ -1,0 +1,52 @@
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { PsqlEntity } from "../database/psqlEntity";
+import { CartEntity } from './cart.entity';
+import { ProductEntity } from './product.entity';
+
+/**
+ * Represents an item in a shopping cart.
+ * Each cart item links a product to a cart with a specific quantity and price snapshot.
+ */
+@Entity({ name: 'cart_item', schema: 'public' })
+export class CartItemEntity extends PsqlEntity<number> {
+    @PrimaryGeneratedColumn('increment', { type: 'bigint' })
+    id!: number;
+
+    /**
+     * Foreign key to the cart this item belongs to
+     */
+    @Column({ type: 'bigint' })
+    cartId!: number;
+
+    /**
+     * Foreign key to the product this item represents
+     */
+    @Column({ type: 'bigint' })
+    productId!: number;
+
+    /**
+     * Quantity of this product in the cart
+     */
+    @Column({ type: 'integer' })
+    quantity!: number;
+
+    /**
+     * Price of the product at the time it was added to the cart (snapshot)
+     */
+    @Column({ type: 'float' })
+    priceAtAdd!: number;
+
+    /**
+     * Reference to the cart this item belongs to
+     */
+    @ManyToOne(() => CartEntity, (cart) => cart.items, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'cartId' })
+    cart!: CartEntity;
+
+    /**
+     * Reference to the product this item represents
+     */
+    @ManyToOne(() => ProductEntity, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'productId' })
+    product!: ProductEntity;
+}

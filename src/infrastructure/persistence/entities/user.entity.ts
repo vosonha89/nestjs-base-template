@@ -1,8 +1,15 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { PsqlEntity } from "../database/psqlEntity";
 
+/**
+ * Represents a user entity in the database.
+ * Contains all user information including personal details, address, and company information.
+ */
 @Entity({ name: 'user', schema: 'public' })
 export class UserEntity extends PsqlEntity<number> {
+	/**
+	 * Unique identifier for the user
+	 */
 	@PrimaryGeneratedColumn('increment', { type: 'bigint' })
 	id!: number;
 

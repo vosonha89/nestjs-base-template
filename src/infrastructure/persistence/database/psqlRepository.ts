@@ -28,6 +28,14 @@ export abstract class PsqlRepository<T extends BaseEntity<ID>, ID> implements IB
     }
 
     /**
+     * Find entity by condition
+     * @param condition Entity condition
+     */
+    async findOne(condition: FindOptionsWhere<T> | undefined): Promise<T | null> {
+        return this.repository.findOne({ where: condition });
+    }
+
+    /**
      * Find entities with conditions
      * @param condition
      */
