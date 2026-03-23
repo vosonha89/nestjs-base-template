@@ -23,13 +23,15 @@ import { ObjectHelper } from "../../helpers/objectHelper";
 
 export function BaseDataService<T extends BaseType<ID>, TEntity extends BaseEntity<ID>, ID>(dto: Type<T>, entity: Type<TEntity>) {
 	abstract class BaseDataServiceWrapper implements IBaseDataService<T, ID> {
-		context: IRequestContextService;
-		repository: IBaseRepository<TEntity, ID>;
+		/** The request context service */
+		public readonly context: IRequestContextService;
+		/** The data repository */
+		public readonly repository: IBaseRepository<TEntity, ID>;
 
 		/**
 		 * Constructor
-		 * @param requestContextService
-		 * @param dataRepository
+		 * @param requestContextService - Service for managing request context
+		 * @param dataRepository - Repository for data access
 		 */
 		protected constructor(
 			requestContextService: IRequestContextService,
@@ -39,6 +41,11 @@ export function BaseDataService<T extends BaseType<ID>, TEntity extends BaseEnti
 			this.repository = dataRepository;
 		}
 
+		/**
+		 * Finds an entity by its ID
+		 * @param id - The ID of the entity to find
+		 * @returns Promise resolving to the entity DTO or undefined
+		 */
 		public async findById(id: ID): Promise<T | undefined> {
 			const entity: TEntity | null = await this.repository.findById(id);
 			if (!entity) return undefined;
@@ -121,6 +128,11 @@ export function BaseDataService<T extends BaseType<ID>, TEntity extends BaseEnti
 			return { data: elementDtos, totalRecord: result[1] };
 		}
 
+		/**
+		 * Creates a new entity
+		 * @param data - Partial data for the new entity
+		 * @returns Promise resolving to the created entity DTO
+		 */
 		public async create(data: Partial<T>): Promise<T> {
 			let entityInDB: TEntity = new entity();
 			ObjectHelper.map(data, entityInDB);
@@ -131,6 +143,12 @@ export function BaseDataService<T extends BaseType<ID>, TEntity extends BaseEnti
 			return returnDto;
 		}
 
+		/**
+		 * Updates an existing entity
+		 * @param id - The ID of the entity to update
+		 * @param data - Partial data to update
+		 * @returns Promise resolving to the updated entity DTO
+		 */
 		public async update(id: ID, data: Partial<T>): Promise<T> {
 			let entityInDB: TEntity | null = await this.repository.findById(id);
 			if (!entityInDB) throw new Error('Entity not found');
@@ -142,6 +160,11 @@ export function BaseDataService<T extends BaseType<ID>, TEntity extends BaseEnti
 			return returnDto;
 		}
 
+		/**
+		 * Deletes an entity by ID
+		 * @param id - The ID of the entity to delete
+		 * @returns Promise resolving to true if deleted, false if not found
+		 */
 		public async delete(id: ID): Promise<boolean | void> {
 			const entityInDB: TEntity | null = await this.repository.findById(id);
 			if (!entityInDB) return false;
@@ -151,6 +174,11 @@ export function BaseDataService<T extends BaseType<ID>, TEntity extends BaseEnti
 			}
 		}
 
+		/**
+		 * Checks if an entity exists by ID
+		 * @param id - The ID of the entity to check
+		 * @returns Promise resolving to true if exists, false otherwise
+		 */
 		public async exists(id: ID): Promise<boolean> {
 			const entityInDB: TEntity | null = await this.repository.findById(id);
 			if (!entityInDB) return false;
@@ -159,7 +187,12 @@ export function BaseDataService<T extends BaseType<ID>, TEntity extends BaseEnti
 			}
 		}
 
-public existsBy(filters: BaseFilterWhere[]): Promise<boolean> {
+		/**
+		 * Checks if entities exist by filter conditions
+		 * @param filters - Array of filter conditions
+		 * @returns Promise resolving to true if entities exist, false otherwise
+		 */
+		public existsBy(filters: BaseFilterWhere[]): Promise<boolean> {
 			const condition: FindOptionsWhere<TEntity> = {};
 			if (filters && filters.length > 0) {
 				for (const filter of filters) {

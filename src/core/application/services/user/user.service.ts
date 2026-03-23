@@ -36,11 +36,16 @@ export const UserServiceSymbol = Symbol("UserService");
 export class UserService
 	extends BaseDataService<UserDto, UserEntity, number>(UserDto, UserEntity)
 	implements IUserService {
-	constructor(
+	/**
+	 * Creates an instance of UserService
+	 * @param requestContext Service for managing request context
+	 * @param userRepository Repository for user data access
+	 */
+	public constructor(
 		@Inject(RequestContextServiceSymbol) private readonly requestContext: IRequestContextService,
-		@Inject(UserRepositorySymbol) private readonly UserRepository: UserRepository
+		@Inject(UserRepositorySymbol) private readonly userRepository: UserRepository
 	) {
-		super(requestContext, UserRepository);
+		super(requestContext, userRepository);
 	}
 
 	/**
@@ -50,7 +55,7 @@ export class UserService
 	 * @returns Promise resolving to UserDto if validation succeeds, null otherwise
 	 */
 	public async validateUser(email: string, pass: string): Promise<UserDto | null> {
-		const users = await this.UserRepository.find({ where: { email } as any });
+		const users = await this.userRepository.find({ where: { email } as any });
 		const user = users.length > 0 ? users[0] : null;
 		if (user?.password === pass) {
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
