@@ -3,6 +3,7 @@ import { IHelloWorldService } from 'src/core/application/interfaces/helloWorld.s
 import { IRequestContextService } from 'src/core/domain/common/service/interfaces/requestContext.service.interface';
 import { HelloWorldServiceSymbol } from "../../../core/application/services/helloWorld/helloWorld.service";
 import { RequestContextServiceSymbol } from "../../../core/domain/common/service/requestContext.service";
+import { Public } from "../../../core/application/decorators/public.decorator";
 
 @Controller('hello')
 export class HelloWorldController {
@@ -12,6 +13,7 @@ export class HelloWorldController {
     ) {
     }
 
+    @Public()
     @Get('get-hello')
     public getHello(): string {
         return this.helloWorldService.getHello();

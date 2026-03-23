@@ -110,7 +110,7 @@ export function BaseDataService<T extends BaseType<ID>, TEntity extends BaseEnti
 				result = await Promise.all([data, count]);
 
 			} else {
-				result = await Promise.all([data, 0]);
+				result = await Promise.all([data, Promise.resolve(0)]);
 			}
 			const elements: TEntity[] = result[0];
 			const elementDtos: T[] = elements.map((entity: TEntity) => {
@@ -144,21 +144,22 @@ export function BaseDataService<T extends BaseType<ID>, TEntity extends BaseEnti
 
 		public async delete(id: ID): Promise<boolean | void> {
 			const entityInDB: TEntity | null = await this.repository.findById(id);
-			if (!entityInDB) throw new Error('Entity not found');
+			if (!entityInDB) return false;
 			else {
-				await this.repository.delete(id);
+				const result = await this.repository.delete(id);
+				return result;
 			}
 		}
 
 		public async exists(id: ID): Promise<boolean> {
 			const entityInDB: TEntity | null = await this.repository.findById(id);
-			if (!entityInDB) throw new Error('Entity not found');
+			if (!entityInDB) return false;
 			else {
 				return this.repository.exists(id);
 			}
 		}
 
-		public existsBy(filters: BaseFilterWhere[]): Promise<boolean> {
+public existsBy(filters: BaseFilterWhere[]): Promise<boolean> {
 			const condition: FindOptionsWhere<TEntity> = {};
 			if (filters && filters.length > 0) {
 				for (const filter of filters) {

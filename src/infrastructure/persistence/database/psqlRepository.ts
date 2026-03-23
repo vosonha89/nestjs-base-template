@@ -1,6 +1,6 @@
 import { Repository, EntityTarget, FindOptionsWhere, FindManyOptions } from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { IBaseRepository } from 'src/core/domain/common/base/base.repository';
-import { AnyType } from 'src/core/domain/common/base/base.type';
 import { PsqlContext } from "./psqlContext";
 import { BaseEntity } from "../../../core/domain/common/base/base.entity";
 
@@ -59,9 +59,17 @@ export abstract class PsqlRepository<T extends BaseEntity<ID>, ID> implements IB
     async update(entity: T): Promise<T> {
         const id = entity.id;
         const condition = { id } as FindOptionsWhere<T>;
-		entity.updatedAt = new Date();
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        await this.repository.update(condition, entity as AnyType);
+        entity.updatedAt = new Date();
+
+        // Create a plain object with only the fields we want to update
+        const updateData: QueryDeepPartialEntity<T> = {} as QueryDeepPartialEntity<T>;
+        Object.keys(entity).forEach(key => {
+            if (key !== 'id' && key !== 'createdAt') {
+                (updateData as any)[key] = (entity as any)[key];
+            }
+        });
+
+        await this.repository.update(condition, updateData);
         return entity;
     }
 

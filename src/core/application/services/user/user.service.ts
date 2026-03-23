@@ -42,4 +42,21 @@ export class UserService
 	) {
 		super(requestContext, UserRepository);
 	}
+
+	/**
+	 * Validates user credentials
+	 * @param email user email
+	 * @param pass user password
+	 * @returns UserDto or null
+	 */
+	public async validateUser(email: string, pass: string): Promise<UserDto | null> {
+		const users = await this.UserRepository.find({ where: { email } as any });
+		const user = users.length > 0 ? users[0] : null;
+		if (user?.password === pass) {
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			const { password, ...result } = user;
+			return result as UserDto;
+		}
+		return null;
+	}
 }
