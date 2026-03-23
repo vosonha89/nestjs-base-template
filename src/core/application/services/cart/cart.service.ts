@@ -1,4 +1,4 @@
-import { Inject, Injectable, Scope } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, Scope } from "@nestjs/common";
 import { RequestContextServiceSymbol } from "../../../domain/common/service/requestContext.service";
 import { IRequestContextService } from "../../../domain/common/service/interfaces/requestContext.service.interface";
 import { CartRepository, CartRepositorySymbol } from "../../../../infrastructure/persistence/repositories/cart.repository";
@@ -35,11 +35,37 @@ export class CartService implements ICartService {
 	/**
 	 * Adds a product to the user's cart. If the product already exists in the cart,
 	 * it will increment the quantity. Otherwise, it creates a new cart item.
+	 * Validates product stock and availability before adding.
 	 * @param userId - The ID of the user who owns the cart
 	 * @param dto - Data transfer object containing productId and quantity
 	 * @returns Promise resolving to the created or updated cart item
+	 * @throws BadRequestException if product is unavailable or insufficient stock
 	 */
 	public async addToCart(userId: number, dto: AddToCartDto): Promise<CartItemDto> {
+		// Fetch product to validate stock and availability
+		const product = await this.productRepository.findById(dto.productId);
+		if (!product) {
+			throw new BadRequestException('Product not found');
+		}
+
+		// Validate product availability status
+		if (!product.availabilityStatus || product.availabilityStatus !== 'In Stock') {
+			throw new BadRequestException(
+				`Product is not available for purchase. Current status: ${product.availabilityStatus || 'Unknown'}`
+			);
+		}
+
+		// Validate stock quantity
+		if (product.stock === null || product.stock === undefined) {
+			throw new BadRequestException('Product stock information is unavailable');
+		}
+
+		if (product.stock < dto.quantity) {
+			throw new BadRequestException(
+				`Insufficient stock. Available: ${product.stock}, Requested: ${dto.quantity}`
+			);
+		}
+
 		// Find or create cart for the user
 		const carts = await this.cartRepository.find({
 			where: { userId }
@@ -59,16 +85,17 @@ export class CartService implements ICartService {
 		let cartItem = cartItems.length > 0 ? cartItems[0] : null;
 
 		if (cartItem) {
-			// Item exists, increment quantity
-			cartItem.quantity += dto.quantity;
+			// Item exists, validate total quantity against stock
+			const newQuantity = cartItem.quantity + dto.quantity;
+			if (product.stock < newQuantity) {
+				throw new BadRequestException(
+					`Insufficient stock. Available: ${product.stock}, Requested total: ${newQuantity}`
+				);
+			}
+			cartItem.quantity = newQuantity;
 			cartItem = await this.cartItemRepository.save(cartItem);
 		} else {
 			// Item doesn't exist, create new cart item
-			const product = await this.productRepository.findById(dto.productId);
-			if (!product) {
-				throw new Error('Product not found');
-			}
-
 			cartItem = new CartItemEntity();
 			cartItem.cartId = cart.id;
 			cartItem.productId = dto.productId;
@@ -176,5 +203,19 @@ export class CartService implements ICartService {
 		});
 
 		return cartItemDtos;
+	}
+
+	/**
+	 * Retrieves the current price of a product for snapshot purposes.
+	 * This method is used to capture the price at the time of adding to cart.
+	 * @param productId - The ID of the product to get the price for
+	 * @returns Promise resolving to the current product price, or 0 if not found
+	 */
+	public async getProductPriceSnapshot(productId: number): Promise<number> {
+		const product = await this.productRepository.findById(productId);
+		if (!product) {
+			return 0;
+		}
+		return product.price || 0;
 	}
 }

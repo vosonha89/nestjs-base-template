@@ -39,4 +39,12 @@ export interface ICartService {
      * @returns Promise resolving to an array of cart items
      */
     getCart(userId: number): Promise<CartItemDto[]>;
+
+    /**
+     * Retrieves the current price of a product for snapshot purposes.
+     * This method is used to capture the price at the time of adding to cart.
+     * @param productId The ID of the product to get the price for
+     * @returns Promise resolving to the current product price, or 0 if not found
+     */
+    getProductPriceSnapshot(productId: number): Promise<number>;
 }
