@@ -9,19 +9,19 @@ import { ProductEntity } from './product.entity';
  */
 @Entity({ name: 'cart_item', schema: 'public' })
 export class CartItemEntity extends PsqlEntity<number> {
-    @PrimaryGeneratedColumn('increment', { type: 'bigint' })
+    @PrimaryGeneratedColumn({ type: 'bigint', transformer: { to: (value: number) => value, from: (value: string) => parseInt(value, 10) } } as any)
     id!: number;
 
     /**
      * Foreign key to the cart this item belongs to
      */
-    @Column({ type: 'bigint' })
+    @Column({ type: 'bigint', transformer: { to: (value: number) => value, from: (value: string) => parseInt(value, 10) } })
     cartId!: number;
 
     /**
      * Foreign key to the product this item represents
      */
-    @Column({ type: 'bigint' })
+    @Column({ type: 'bigint', transformer: { to: (value: number) => value, from: (value: string) => parseInt(value, 10) } })
     productId!: number;
 
     /**

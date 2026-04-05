@@ -12,7 +12,7 @@ export class ProductDto extends BaseType<number> {
 	discountPercentage?: number;
 	rating?: number;
 	stock?: number;
-	tags?: any;
+	tags?: string[];
 	brand?: string;
 	sku?: string;
 	weight?: number;
@@ -22,13 +22,13 @@ export class ProductDto extends BaseType<number> {
 	warrantyInformation?: string;
 	shippingInformation?: string;
 	availabilityStatus?: string;
-	reviews?: any;
+	reviews?: { rating: number; comment: string; date: string; reviewerName: string }[];
 	returnPolicy?: string;
 	minimumOrderQuantity?: number;
 	metaCreatedAt?: string;
 	metaUpdatedAt?: string;
 	metaBarcode?: string;
 	metaQrCode?: string;
-	images?: any;
+	images?: string[];
 	thumbnail?: string;
 }

@@ -3,7 +3,7 @@ import { BaseContext } from './baseContext';
 import { ILoggingService } from 'src/core/domain/common/service/interfaces/logging.service.interface';
 import { DataSourceOptions } from "typeorm";
 import { LoggingServiceSymbol } from "../../../core/domain/common/service/logging.service";
-import { AppEnvironment } from "../../../core/domain/configuration/appEnvironment";
+import { ConfigService } from "@nestjs/config";
 
 /**
  * Service symbol for DI register
@@ -17,21 +17,23 @@ export const PsqlContextSymbol = Symbol("PsqlContext");
 export class PsqlContext extends BaseContext {
     constructor(
         @Inject(LoggingServiceSymbol) readonly loggingService: ILoggingService,
+        private readonly configService: ConfigService,
     ) {
-		console.log('ENV - ' +  AppEnvironment.value.ENV);
+		const env = configService.get<string>('ENV');
+		console.log('ENV - ' +  env);
         const options = {
             type: 'postgres',
-            host: AppEnvironment.value.DB_HOST || 'localhost',
-            port: parseInt(AppEnvironment.value.DB_PORT || '5432', 10),
-            username: AppEnvironment.value.DB_USERNAME || 'postgres',
-            password: AppEnvironment.value.DB_PASSWORD || 'postgres',
-            database: AppEnvironment.value.DB_DATABASE || 'nestjs_db',
+            host: configService.get<string>('DB_HOST') || 'localhost',
+            port: parseInt(configService.get<string>('DB_PORT') || '5432', 10),
+            username: configService.get<string>('DB_USERNAME') || 'postgres',
+            password: configService.get<string>('DB_PASSWORD') || 'postgres',
+            database: configService.get<string>('DB_DATABASE') || 'nestjs_db',
             ssl: {
                 rejectUnauthorized: false, // only for self-signed certs
             },
             entities: [__dirname + '/../entities/**/*.entity{.ts,.js}'],
-            synchronize: AppEnvironment.value.ENV === 'production',
-            logging: AppEnvironment.value.ENV === 'production',
+            synchronize: env === 'production',
+            logging: env === 'production',
         } as DataSourceOptions;
         console.log(options);
         super(options, loggingService);

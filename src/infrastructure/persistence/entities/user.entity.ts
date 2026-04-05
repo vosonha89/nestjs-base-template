@@ -10,7 +10,7 @@ export class UserEntity extends PsqlEntity<number> {
 	/**
 	 * Unique identifier for the user
 	 */
-	@PrimaryGeneratedColumn('increment', { type: 'bigint' })
+	@PrimaryGeneratedColumn({ type: 'bigint', transformer: { to: (value: number) => value, from: (value: string) => parseInt(value, 10) } } as any)
 	id!: number;
 
     @Column({ name: 'firstName', type: 'text', nullable: true })

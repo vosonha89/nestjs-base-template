@@ -31,9 +31,9 @@ export class UserController extends BaseDataController<UserDto, number, UserSear
 	 * @param dataService - Service for user data operations
 	 */
 	public constructor(
-		@Inject(LoggingServiceSymbol) public readonly loggingService: ILoggingService,
-		@Inject(RequestContextServiceSymbol) public readonly context: IRequestContextService,
-		@Inject(UserServiceSymbol) public readonly dataService: IUserService,
+		@Inject(LoggingServiceSymbol) loggingService: ILoggingService,
+		@Inject(RequestContextServiceSymbol) context: IRequestContextService,
+		@Inject(UserServiceSymbol) dataService: IUserService,
 	) {
 		super(loggingService, context, dataService);
 	}

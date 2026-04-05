@@ -8,13 +8,13 @@ import { CartItemEntity } from './cart-item.entity';
  */
 @Entity({ name: 'cart', schema: 'public' })
 export class CartEntity extends PsqlEntity<number> {
-    @PrimaryGeneratedColumn('increment', { type: 'bigint' })
+    @PrimaryGeneratedColumn({ type: 'bigint', transformer: { to: (value: number) => value, from: (value: string) => parseInt(value, 10) } } as any)
     id!: number;
 
     /**
      * Foreign key to the user who owns this cart
      */
-    @Column({ type: 'bigint' })
+    @Column({ type: 'bigint', transformer: { to: (value: number) => value, from: (value: string) => parseInt(value, 10) } })
     userId!: number;
 
     /**

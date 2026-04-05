@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { NestFactory, Reflector } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import { AppEnvironment } from "./core/domain/configuration/appEnvironment";
+import { ConfigService } from "@nestjs/config";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { ValidationPipe } from "@nestjs/common";
 import { ResponseTransformInterceptor } from "./core/domain/helpers/responseTransformInterceptor.service";
@@ -20,23 +20,26 @@ async function bootstrap() {
 		}),
 	);
 
+	const configService = app.get(ConfigService);
+	const appName = configService.get<string>('APP_NAME') ?? 'nestjs-base-template';
+	const port = configService.get<number>('PORT') ?? 3000;
+
 	const config = new DocumentBuilder()
-		.setTitle(AppEnvironment.value.APP_NAME)
-		.setDescription('The ' + AppEnvironment.value.APP_NAME + ' API description')
+		.setTitle(appName)
+		.setDescription('The ' + appName + ' API description')
 		.setVersion('1.0')
-		.addTag(AppEnvironment.value.APP_NAME)
+		.addTag(appName)
 		.build();
 
 	const documentFactory = () =>
 		SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup('api/doc', app, documentFactory);
-	await app.listen(AppEnvironment.value.PORT ?? 3000);
+	await app.listen(port);
+	console.log('App started with url: http://localhost:' + port);
 }
 
 function startApp(): void {
-	bootstrap().then(() => {
-		console.log('App started with url: http://localhost:' + AppEnvironment.value.PORT);
-	}).catch((err) => {
+	bootstrap().catch((err) => {
 		console.log('App error. Error: ' + err);
 	});
 }

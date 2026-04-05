@@ -31,9 +31,9 @@ export class ProductController extends BaseDataController<ProductDto, number, Pr
 	 * @param dataService - Service for product data operations
 	 */
 	public constructor(
-		@Inject(LoggingServiceSymbol) public readonly loggingService: ILoggingService,
-		@Inject(RequestContextServiceSymbol) public readonly context: IRequestContextService,
-		@Inject(ProductServiceSymbol) public readonly dataService: IProductService,
+		@Inject(LoggingServiceSymbol) loggingService: ILoggingService,
+		@Inject(RequestContextServiceSymbol) context: IRequestContextService,
+		@Inject(ProductServiceSymbol) dataService: IProductService,
 	) {
 		super(loggingService, context, dataService);
 	}
