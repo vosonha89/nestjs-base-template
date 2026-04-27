@@ -14,7 +14,9 @@ export class ObjectHelper {
     public static map(source: AnyType, dest: AnyType): AnyType {
         const keys = Object.getOwnPropertyNames(dest);
         for (const key of keys) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             if (source[key] !== undefined && source[key] !== null) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
                 dest[key] = JSON.parse(JSON.stringify(source[key]));
             }
         }

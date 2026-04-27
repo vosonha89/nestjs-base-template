@@ -13,7 +13,7 @@ import { AuthGuard } from "./core/application/guards/auth.guard";
 	imports: [
 		ConfigModule.forRoot({
 			// Optional: specify the path to your .env file
-			envFilePath: ['env/.env'],
+			envFilePath: [`env/.env.${process.env.NODE_ENV || 'development'}`],
 			// Optional: make ConfigModule global so you don't need to import it in other modules
 			isGlobal: true,
 			// Optional: enable variable expansion within .env files

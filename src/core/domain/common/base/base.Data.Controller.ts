@@ -4,7 +4,7 @@ import { ILoggingService } from "../service/interfaces/logging.service.interface
 import { RequestContextServiceSymbol } from "../service/requestContext.service";
 import { IRequestContextService } from "../service/interfaces/requestContext.service.interface";
 import { ApiBody, ApiParam, ApiResponse } from "@nestjs/swagger";
-import { BadRequest, ErrorResponse, InternalServerError, NotFound } from "../../types/errorResponse.type";
+import { ErrorResponse, InternalServerError, NotFound } from "../../types/errorResponse.type";
 import { BaseListResponse, OKResponse, BaseResponse, ApiOkSearchResponseCustom } from "./base.response";
 import { ClientError } from "./base.exceptions";
 import { BaseCreateRequest, BaseDeleteRequest, BaseSearchRequest, BaseUpdateRequest } from "./base.request";
@@ -60,7 +60,6 @@ export function BaseDataController<
 			const me = this;
 			const request = new searchRequest(me.context);
 			request.mapRequest(me.context.getRequest());
-			let response = BadRequest();
 			try {
 				if (!request.isValid()) {
 					return request.currentError as ErrorResponse;
@@ -72,15 +71,15 @@ export function BaseDataController<
 					request.size,
 					request.count
 				);
-				response = OKResponse<BaseListResponse<TDto>>();
-				response.data = new BaseListResponse<TDto>();
-				response.data.page = request.page;
-				response.data.size = request.size;
-				response.data.elements = result.data;
+				const successResponse = OKResponse<BaseListResponse<TDto>>();
+				successResponse.data = new BaseListResponse<TDto>();
+				successResponse.data.page = request.page;
+				successResponse.data.size = request.size;
+				successResponse.data.elements = result.data;
 				if (request.count) {
-					response.data.setTotalElements(result.totalRecord);
+					successResponse.data.setTotalElements(result.totalRecord);
 				}
-				return response;
+				return successResponse;
 			} catch (ex) {
 				const error = ex as Error;
 				me.loggingService.error(error.message, error, me.loggingService.requestToString((me.context.getRequest())));
@@ -97,15 +96,14 @@ export function BaseDataController<
 			const me = this;
 			const request = new createRequest(me.context);
 			request.mapRequest(me.context.getRequest());
-			let response = BadRequest();
 			try {
 				if (!request.isValid()) {
 					return request.currentError as ErrorResponse;
 				}
 				const result = await this.dataService.create(me.requestToDto(request));
-				response = OKResponse<TDto>();
-				response.data = result;
-				return response;
+				const successResponse = OKResponse<TDto>();
+				successResponse.data = result;
+				return successResponse;
 			} catch (ex) {
 				const error = ex as Error;
 				me.loggingService.error(error.message, error, me.loggingService.requestToString((me.context.getRequest())));
@@ -126,15 +124,14 @@ export function BaseDataController<
 			if (!request.id) {
 				request.id = id;
 			}
-			let response = BadRequest();
 			try {
 				if (!request.isValid()) {
 					return request.currentError as ErrorResponse;
 				}
 				const result = await this.dataService.update(request.id as ID, me.requestToDto(request));
-				response = OKResponse<TDto>();
-				response.data = result;
-				return response;
+				const successResponse = OKResponse<TDto>();
+				successResponse.data = result;
+				return successResponse;
 			} catch (ex) {
 				const error = ex as Error;
 				me.loggingService.error(error.message, error, me.loggingService.requestToString((me.context.getRequest())));
@@ -145,7 +142,7 @@ export function BaseDataController<
 		@Post('delete/:id')
 		@ApiParam({ name: 'id', required: true })
 		@ApiBody({ type: deteleRequest })
-		public async delete(@Param('id') id: ID): Promise<BaseResponse<TDto> | ErrorResponse> {
+		public async delete(@Param('id') id: ID): Promise<BaseResponse<boolean> | ErrorResponse> {
 			if (!deteleRequest) {
 				return NotFound();
 			}
@@ -155,15 +152,14 @@ export function BaseDataController<
 			if (!request.id) {
 				request.id = id;
 			}
-			let response = BadRequest();
 			try {
 				if (!request.isValid()) {
 					return request.currentError as ErrorResponse;
 				}
 				const result = await this.dataService.delete(request.id as ID);
-				response = OKResponse<TDto>();
-				response.data = result;
-				return response;
+				const successResponse = OKResponse<boolean>();
+				successResponse.data = result || true;
+				return successResponse;
 			} catch (ex) {
 				const error = ex as Error;
 				me.loggingService.error(error.message, error, me.loggingService.requestToString((me.context.getRequest())));

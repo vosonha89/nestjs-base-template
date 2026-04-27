@@ -73,6 +73,7 @@ export abstract class PsqlRepository<T extends BaseEntity<ID>, ID> implements IB
         const updateData: QueryDeepPartialEntity<T> = {} as QueryDeepPartialEntity<T>;
         Object.keys(entity).forEach(key => {
             if (key !== 'id' && key !== 'createdAt') {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
                 (updateData as any)[key] = (entity as any)[key];
             }
         });

@@ -29,6 +29,7 @@ export class AppError extends Error {
      */
     constructor(exception: AnyType, message?: string) {
         super(message);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         this.exception = exception;
     }
 }

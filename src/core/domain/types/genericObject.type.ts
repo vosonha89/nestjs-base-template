@@ -19,6 +19,7 @@ export abstract class GenericObject<T extends SourceObject> {
         for (const key of keys) {
             if (object[key])
             {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 this[key] = JSON.parse(JSON.stringify(object[key]));
             }
         }

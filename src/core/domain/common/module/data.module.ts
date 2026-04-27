@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import {
     UserRepository,
     UserRepositorySymbol
@@ -19,12 +20,12 @@ import { CommonModule } from "./common.module";
         {
             provide: PsqlContextSymbol,
             // useClass: PsqlContext,
-            useFactory: async (loggingService: LoggingService) => {
-                const psqlContext = new PsqlContext(loggingService);
+            useFactory: async (loggingService: LoggingService, configService: ConfigService) => {
+                const psqlContext = new PsqlContext(loggingService, configService);
                 await psqlContext.initialize();
                 return psqlContext;
             },
-            inject: [LoggingServiceSymbol]
+            inject: [LoggingServiceSymbol, ConfigService]
         },
         {
             provide: UserRepositorySymbol,

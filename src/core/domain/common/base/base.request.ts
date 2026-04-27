@@ -119,20 +119,21 @@ export class BaseSearchRequest extends BaseAuthorizedRequest {
 	 */
 	public mapRequest(req: RequestWithUser): void {
 		const me = this;
-		if (req.body.page) {
-			me.page = req.body.page;
+		const body = req.body as Record<string, unknown>;
+		if (body.page) {
+			me.page = body.page as number;
 		}
-		if (req.body.size) {
-			me.size = req.body.size;
+		if (body.size) {
+			me.size = body.size as number;
 		}
-		if (req.body.count) {
-			me.count = req.body.count;
+		if (body.count) {
+			me.count = body.count as boolean;
 		}
-		if (req.body.filters) {
-			me.filters = req.body.filters;
+		if (body.filters) {
+			me.filters = body.filters as BaseFilter[];
 		}
-		if (req.body.sort) {
-			me.sort = req.body.sort;
+		if (body.sort) {
+			me.sort = body.sort as BaseSort;
 		}
 	}
 

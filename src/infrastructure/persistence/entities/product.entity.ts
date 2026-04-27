@@ -10,6 +10,7 @@ export class ProductEntity extends PsqlEntity<number> {
     /**
      * Unique identifier for the product
      */
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     @PrimaryGeneratedColumn({ type: 'bigint', transformer: { to: (value: number) => value, from: (value: string) => parseInt(value, 10) } } as any)
     id!: number;
 

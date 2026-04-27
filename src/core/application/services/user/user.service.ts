@@ -55,7 +55,7 @@ export class UserService
 	 * @returns Promise resolving to UserDto if validation succeeds, null otherwise
 	 */
 	public async validateUser(email: string, pass: string): Promise<UserDto | null> {
-		const users = await this.userRepository.find({ where: { email } as any });
+		const users = await this.userRepository.find({ where: { email } });
 		const user = users.length > 0 ? users[0] : null;
 		if (user?.password === pass) {
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
