@@ -1,0 +1,13 @@
+node_modules
+dist
+coverage
+.git
+.gitignore
+.vscode
+.idea
+env
+*.log
+*.md
+Dockerfile
+docker-compose.yml
+.circleci
