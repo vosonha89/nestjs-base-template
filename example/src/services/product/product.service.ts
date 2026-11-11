@@ -63,7 +63,10 @@ export class ProductService extends BaseDataService<ProductDto, ProductEntity, n
 			const next = entity.stock + delta;
 
 			if (next < 0) {
-				const message = GlobalError.InsufficientQuantityError(entity.stock, Math.abs(delta));
+				const message = GlobalError.BusinessRuleError(
+					'Insufficient stock',
+					`available ${entity.stock}, requested ${Math.abs(delta)}`
+				);
 				throw new AppError(HttpStatus.BAD_REQUEST, new ClientError(String(message.code), message.msg));
 			}
 

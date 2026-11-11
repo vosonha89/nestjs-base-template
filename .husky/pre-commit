@@ -1,0 +1,7 @@
+#!/bin/sh
+# Managed by the template. Activated with:
+#   git config core.hooksPath .husky
+# No npm package required — plain POSIX shell + Node.
+set -e
+
+node tools/check-secrets.mjs

@@ -5,32 +5,32 @@ SQL.
 
 | Feature | Files |
 | --- | --- |
-| `auth/` | `auth.dto.ts` (`AuthTokenDto`), `auth.service.interface.ts`, `auth.service.ts` |
-| `user/` | `user.dto.ts`, `user.service.interface.ts`, `user.service.ts` |
-| `product/` | `product.dto.ts`, `product.service.interface.ts`, `product.service.ts` |
+| `<feature>/` | `<feature>.dto.ts`, `<feature>.service.interface.ts`, `<feature>.service.ts`, `<feature>.service.spec.ts` |
+
+No service ships with the template. `example/src/services/` shows `auth`,
+`user` and `product`, including a service that hashes a secret field and one
+that orchestrates a locked read-then-write.
 
 ## Anatomy of a service
 
 ```ts
 @Injectable()
-export class UserService
-  extends BaseDataService<UserDto, UserEntity, number>
-  implements IUserService {
+export class <Name>Service
+  extends BaseDataService<<Name>Dto, <Name>Entity, number>
+  implements I<Name>Service {
 
   public constructor(
     @Inject(RequestContextServiceSymbol) requestContext: IRequestContextService,
-    @Inject(UserRepositorySymbol) private readonly userRepository: UserRepository,
-    @Inject(HashServiceSymbol) private readonly hashService: IHashService
+    @Inject(<Name>RepositorySymbol) protected readonly <name>Repository: <Name>Repository
   ) {
-    super(requestContext, userRepository, {
-      dto: UserDto,
-      entity: UserEntity,
-      searchableFields: ['id', 'email', 'fullName', 'role', 'isActive', 'createdAt']
+    super(requestContext, <name>Repository, {
+      dto: <Name>Dto,
+      entity: <Name>Entity,
+      searchableFields: ['id', 'name', 'isActive', 'createdAt'],
+      sortableFields: ['id', 'name', 'createdAt'],
+      defaultSortField: 'id',
+      defaultSortDirection: 'DESC'
     });
-  }
-
-  public async validateUser(email: string, password: string): Promise<UserDto | null> {
-    // …
   }
 }
 ```
@@ -43,17 +43,18 @@ inherited.
 
 - `searchableFields` is a **security whitelist**. Anything not listed is a
   `4007`; never widen it to `Object.keys(entity)`.
-- Override a base method only to add a rule, then delegate with `super.*` —
-  `UserService.create` hashes the password, `UserService.update` refuses to
-  overwrite with an empty string.
+- Override a base method only to add a rule, then delegate with `super.*` — the
+  example's `UserService.create` hashes the password, its `update` refuses to
+  overwrite a field with an empty string.
 - Business errors are `AppError` with a `GlobalError` code. Never a bare
   `Error`, never an HTTP response.
 - A DTO field needs `@Expose()` to be returned. A field accepted on input but
-  never returned simply has none (`UserDto.password`).
+  never returned simply has none (the example's `UserDto` has no `password`).
 - Passwords are hashed with `HashServiceSymbol`; never compare plain text.
 - A read-then-write rule that lives in the repository (row lock) is orchestrated
-  here, e.g. `ProductService.adjustStock` validates the delta and the resulting
-  quantity while `ProductRepository.withLockedProduct` owns the transaction.
+  here — the example's `ProductService.adjustStock` validates the delta and the
+  resulting quantity while `ProductRepository.withLockedProduct` owns the
+  transaction.
 - Must not import `@presentation` — ESLint enforces it.
 
 ## Tests

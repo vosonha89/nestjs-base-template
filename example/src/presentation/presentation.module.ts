@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from './api/v1/auth/auth.module';
 import { HealthModule } from './api/v1/health/health.module';
-import { ProductModule } from './api/v1/product/product.module';
-import { UserModule } from './api/v1/user/user.module';
+import { FEATURE_MODULES } from './feature.registry';
 
 /**
  * Single entry point for the HTTP layer.
  *
- * Adding a feature means creating its module under `api/v1/<feature>/` and
- * appending it to the `imports` array below — nothing else changes.
+ * Feature modules are imported from {@link FEATURE_MODULES} rather than being
+ * listed inline. Adding a feature therefore means appending one entry to
+ * `feature.registry.ts`, which keeps this file identical between `template/`
+ * and `example/` so the two can be kept in sync.
  */
 @Module({
-	imports: [AuthModule, UserModule, ProductModule, HealthModule]
+	imports: [...FEATURE_MODULES, HealthModule]
 })
 export class PresentationModule {}

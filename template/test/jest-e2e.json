@@ -1,0 +1,23 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "..",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": [
+      "ts-jest",
+      {
+        "tsconfig": "tsconfig.json"
+      }
+    ]
+  },
+  "moduleNameMapper": {
+    "^@config/(.*)$": "<rootDir>/src/config/$1",
+    "^@common/(.*)$": "<rootDir>/src/common/$1",
+    "^@data/(.*)$": "<rootDir>/src/data/$1",
+    "^@services/(.*)$": "<rootDir>/src/services/$1",
+    "^@presentation/(.*)$": "<rootDir>/src/presentation/$1",
+    "^@test/(.*)$": "<rootDir>/test/$1"
+  },
+  "testTimeout": 30000
+}

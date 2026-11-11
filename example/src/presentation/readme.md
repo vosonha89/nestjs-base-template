@@ -5,38 +5,44 @@ Thin by design: validate, call one service, wrap the result.
 
 ```
 api/v1/
-  auth/     AuthController, LoginRequest/LoginResponse, AuthModule
-  user/     UserController, request/*, response/*, UserModule
-  product/  ProductController (+ adjust-stock), request/*, response/*, ProductModule
-  health/   HealthController, HealthModule
+  <feature>/   <Name>Controller, request/*, response/*, <Name>Module
+  health/      HealthController, HealthModule
+feature.registry.ts   FEATURE_MODULES, SWAGGER_TAGS
 presentation.module.ts
 ```
+
+No feature ships with the template. `example/src/presentation/api/v1/` shows
+`auth`, `user` and `product`, including a non-CRUD endpoint (`adjust-stock`).
 
 ## Feature module
 
 ```ts
 @Module({
-  controllers: [UserController],
-  providers: [{ provide: UserServiceSymbol, useClass: UserService }],
-  exports: [UserServiceSymbol]
+  controllers: [<Name>Controller],
+  providers: [{ provide: <Name>ServiceSymbol, useClass: <Name>Service }],
+  exports: [<Name>ServiceSymbol]
 })
-export class UserModule {}
+export class <Name>Module {}
 ```
 
 Nothing else. `CommonModule` and `DataModule` are global, so there is no
 `RequestContextService` re-registration here — the old template did that and
 ended up with several instances of the same request context.
 
+The module is mounted by appending one entry to
+`src/presentation/feature.registry.ts`; `presentation.module.ts` imports that
+array and never lists modules itself.
+
 ## Controller
 
 ```ts
-@ApiTags('user')
-@Controller({ path: 'user', version: '1' })
-export class UserController extends BaseDataController<
-  UserDto, number,
-  UserSearchRequest, UserCreateRequest, UserUpdateRequest, UserDeleteRequest,
-  IUserService
->(UserDto, UserSearchRequest, UserCreateRequest, UserUpdateRequest, UserDeleteRequest) { … }
+@ApiTags('<feature>')
+@Controller({ path: '<feature>', version: '1' })
+export class <Name>Controller extends BaseDataController<
+  <Name>Dto, number,
+  <Name>SearchRequest, <Name>CreateRequest, <Name>UpdateRequest, <Name>DeleteRequest,
+  I<Name>Service
+>(<Name>Dto, <Name>SearchRequest, <Name>CreateRequest, <Name>UpdateRequest, <Name>DeleteRequest) { … }
 ```
 
 Endpoints inherited from the factory:
@@ -49,8 +55,10 @@ Endpoints inherited from the factory:
 | `PUT` | `/:id` | 200 |
 | `DELETE` | `/:id` | 200 |
 
-A feature specific endpoint is a normal method, e.g. `adjust-stock`, and must
-declare `@HttpCode`, `@ApiOperation`, `@ApiBody` and the error responses.
+A feature specific endpoint is a normal method on the controller — declare
+`@HttpCode`, `@ApiOperation`, `@ApiBody` and the error responses, and let the
+service own the rule. There is a worked example in
+`example/src/presentation/api/v1/product/` (`POST /:id/adjust-stock`).
 
 ## Rules
 

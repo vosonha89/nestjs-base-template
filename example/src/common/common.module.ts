@@ -6,6 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { ThrottlerGuard, ThrottlerModule, seconds } from '@nestjs/throttler';
 import { LoggerModule } from 'nestjs-pino';
 import { IAppConfig, IJwtConfig } from '@config/config.type';
+import { AppEnvironment } from '@config/app-environment.enum';
 import { BcryptHashService, HashServiceSymbol } from './service/bcrypt-hash.service';
 import { LoggingService, LoggingServiceSymbol } from './service/logging.service';
 import { RequestContextService, RequestContextServiceSymbol } from './service/request-context.service';
@@ -37,30 +38,38 @@ import { AppValidationPipe } from './pipe/app-validation.pipe';
 @Global()
 @Module({
 	imports: [
-		LoggerModule.forRoot({
-			pinoHttp: {
-				level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
-				// `autoLogging: false` because `LoggingInterceptor` already writes one
-				// access line per request; leaving it on would double every entry.
-				autoLogging: false,
-				quietReqLogger: true,
-				// Credentials must never reach the log sink.
-				redact: {
-					paths: [
-						'req.headers.authorization',
-						'req.headers.cookie',
-						'res.headers["set-cookie"]',
-						'req.body.password',
-						'*.password',
-						'*.accessToken'
-					],
-					censor: '[REDACTED]'
-				},
-				customProps: () => ({ service: 'nestjs-api-template' }),
-				transport:
-					process.env.NODE_ENV === 'production'
-						? undefined
-						: { target: 'pino-pretty', options: { singleLine: true, translateTime: 'SYS:standard' } }
+		LoggerModule.forRootAsync({
+			inject: [ConfigService],
+			useFactory: (configService: ConfigService) => {
+				const app = configService.getOrThrow<IAppConfig>('app');
+				const isProduction = app.env === AppEnvironment.PRODUCTION;
+
+				return {
+					pinoHttp: {
+						level: isProduction ? 'info' : 'debug',
+						// `autoLogging: false` because `LoggingInterceptor` already writes one
+						// access line per request; leaving it on would double every entry.
+						autoLogging: false,
+						quietReqLogger: true,
+						// Credentials must never reach the log sink.
+						redact: {
+							paths: [
+								'req.headers.authorization',
+								'req.headers.cookie',
+								'res.headers["set-cookie"]',
+								'req.body.password',
+								'*.password',
+								'*.accessToken'
+							],
+							censor: '[REDACTED]'
+						},
+						// From config, never a literal: a renamed app must rename its logs too.
+						customProps: () => ({ service: app.name }),
+						transport: isProduction
+							? undefined
+							: { target: 'pino-pretty', options: { singleLine: true, translateTime: 'SYS:standard' } }
+					}
+				};
 			}
 		}),
 		PassportModule.register({ defaultStrategy: 'jwt' }),

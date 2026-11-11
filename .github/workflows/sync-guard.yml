@@ -1,0 +1,34 @@
+name: Sync guard
+
+# The whole premise of this repository is "example/ is template/ plus a demo".
+# Without this job that premise rots silently: somebody fixes a bug in the
+# example copy, the template keeps the bug, and the next consumer inherits it.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: example/ matches template/
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Verify the sync contract
+        run: node tools/verify-sync.mjs
+
+      - name: Explain the fix when it fails
+        if: failure()
+        run: |
+          echo "::error::example/ has drifted from template/."
+          echo "Edit template/ (never example/), then run:"
+          echo "  node tools/sync-core.mjs"
+          echo "and commit the result."

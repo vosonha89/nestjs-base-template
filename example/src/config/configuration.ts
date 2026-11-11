@@ -84,6 +84,7 @@ export const dbConfig = registerAs('db', (): IDbConfig => ({
 	username: readString('DB_USERNAME', 'postgres'),
 	password: readString('DB_PASSWORD', 'postgres'),
 	database: readString('DB_DATABASE', 'nestjs_api'),
+	applicationName: readString('APP_NAME', 'nestjs-api-template'),
 	ssl: readBoolean('DB_SSL', false),
 	sslRejectUnauthorized: readBoolean('DB_SSL_REJECT_UNAUTHORIZED', true),
 	logging: readBoolean('DB_LOGGING', false),

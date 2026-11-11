@@ -1,16 +1,9 @@
 import { join } from 'node:path';
 import { DataSourceOptions } from 'typeorm';
 import { IDbConfig } from '@config/config.type';
-import { ProductEntity } from './entity/product.entity';
-import { UserEntity } from './entity/user.entity';
+import { ENTITIES } from './feature.registry';
 
-/**
- * Every entity the application manages.
- *
- * Declared explicitly instead of with a glob so a bundler cannot drop one and
- * so TypeORM fails loudly when a new entity is forgotten here.
- */
-export const ENTITIES = [UserEntity, ProductEntity];
+export { ENTITIES };
 
 /**
  * Builds the TypeORM options from the validated configuration.
@@ -40,7 +33,7 @@ export function buildDataSourceOptions(config: IDbConfig): DataSourceOptions {
 		logging: config.logging ? ['query', 'error', 'schema'] : ['error'],
 		extra: {
 			max: config.poolSize,
-			application_name: 'nestjs-api-template'
+			application_name: config.applicationName
 		}
 	};
 }

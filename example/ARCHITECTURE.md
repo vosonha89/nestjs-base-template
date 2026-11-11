@@ -284,22 +284,51 @@ this.context.getLanguage();
 
 ## 8. Adding a feature
 
-1. `src/data/entity/<name>.entity.ts` — extends `PsqlEntity<number>`
-2. add it to `ENTITIES` in `src/data/data-source-options.ts`
-3. `npm run migration:generate -- src/data/migration/Add<Name>` → review → run
-4. `src/data/repository/<name>.repository.ts` — extends `PsqlRepository`
-5. register the repository + symbol in `src/data/database.module.ts`
-6. `src/services/<name>/<name>.dto.ts` — `@Expose()` every exposed field
-7. `src/services/<name>/<name>.service.interface.ts`
-8. `src/services/<name>/<name>.service.ts` — extends `BaseDataService`
-9. `src/presentation/api/v1/<name>/request/*.request.ts`
-10. `src/presentation/api/v1/<name>/<name>.controller.ts`
-11. `src/presentation/api/v1/<name>/<name>.module.ts`
-12. add the module to `PresentationModule`
-13. add `*.spec.ts` next to the service and the controller
+One command:
 
-No other file changes. If a step forces you to touch `common/`, the abstraction
-is missing something — fix it there, not in the feature.
+```bash
+npm run generate:feature -- --name order --fields "code:string:unique,total:numeric(12,2),stock:integer,note:text:optional"
+npm run format
+npm run migration:generate -- src/data/migration/AddOrder   # review the SQL
+npm run migration:run
+```
+
+It writes twelve files:
+
+```
+src/data/entity/<name>.entity.ts
+src/data/repository/<name>.repository.ts
+src/services/<name>/<name>.dto.ts
+src/services/<name>/<name>.service.interface.ts
+src/services/<name>/<name>.service.ts
+src/services/<name>/<name>.service.spec.ts
+src/presentation/api/v1/<name>/request/<name>-create.request.ts
+src/presentation/api/v1/<name>/request/<name>-update.request.ts
+src/presentation/api/v1/<name>/request/<name>-search.request.ts
+src/presentation/api/v1/<name>/response/<name>-search.response.ts
+src/presentation/api/v1/<name>/<name>.controller.ts
+src/presentation/api/v1/<name>/<name>.module.ts
+```
+
+and edits exactly **two** files: `src/data/feature.registry.ts` and
+`src/presentation/feature.registry.ts`.
+
+Doing it by hand is the same list, with the registry edits replacing the five
+places the old template required:
+
+| What you add | File |
+| --- | --- |
+| the entity | `src/data/feature.registry.ts` → `ENTITIES` |
+| the repository provider and its export | same file → `REPOSITORY_PROVIDERS`, `REPOSITORY_EXPORTS` |
+| the module | `src/presentation/feature.registry.ts` → `FEATURE_MODULES` |
+| the Swagger tag | same file → `SWAGGER_TAGS` |
+
+`src/data/data-source-options.ts`, `src/data/database.module.ts`,
+`src/presentation/presentation.module.ts` and `src/main.ts` are never touched
+again. That is what lets every app built on this template share them verbatim.
+
+If a step forces you to edit `src/common/`, the abstraction is missing
+something — fix it there, not in the feature.
 
 ---
 

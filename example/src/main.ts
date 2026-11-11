@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 import { configureApplication } from './app.setup';
+import { SWAGGER_TAGS } from './presentation/feature.registry';
 
 /**
  * Boots the HTTP application.
@@ -21,19 +22,20 @@ async function bootstrap(): Promise<void> {
 	const config = configureApplication(app);
 
 	if (config.swaggerEnabled) {
-		const document = SwaggerModule.createDocument(
-			app,
-			new DocumentBuilder()
-				.setTitle(config.name)
-				.setDescription(`${config.name} API`)
-				.setVersion(config.version)
-				.addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
-				.addTag('auth')
-				.addTag('user')
-				.addTag('product')
-				.addTag('health')
-				.build()
-		);
+		const builder = new DocumentBuilder()
+			.setTitle(config.name)
+			.setDescription(`${config.name} API`)
+			.setVersion(config.version)
+			.addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' });
+
+		// Tags come from the feature registry, so a new feature never requires
+		// editing this file — which is what keeps it identical across template
+		// and example.
+		for (const tag of SWAGGER_TAGS) {
+			builder.addTag(tag);
+		}
+
+		const document = SwaggerModule.createDocument(app, builder.build());
 
 		SwaggerModule.setup(config.swaggerPath, app, document, {
 			swaggerOptions: { persistAuthorization: true, docExpansion: 'list' }

@@ -1,0 +1,63 @@
+{
+  "$comment": "Synchronisation contract between template/ and example/. `template/` is the single source of truth: a file in `walk` or `files` is copied verbatim into `example/` and CI fails if the two copies ever diverge. `diverge` lists the extension points each folder owns; `exampleOnly` lists the demo domain that must never leak back into the template.",
+  "walk": [
+    { "dir": ".agents" },
+    { "dir": ".clinerules" },
+    { "dir": ".vscode" },
+    { "dir": "src", "extensions": [".ts"] },
+    { "dir": "test/support" }
+  ],
+  "files": [
+    ".dockerignore",
+    ".editorconfig",
+    ".env.example",
+    ".gitignore",
+    ".prettierignore",
+    ".prettierrc",
+    "ARCHITECTURE.md",
+    "Dockerfile",
+    "STYLE_GUIDE.md",
+    "docker-compose.yml",
+    "eslint.config.mjs",
+    "nest-cli.json",
+    "src/common/readme.md",
+    "src/config/readme.md",
+    "src/data/readme.md",
+    "src/presentation/readme.md",
+    "src/services/readme.md",
+    "test/envelope.e2e-spec.ts",
+    "test/jest-e2e.json",
+    "tsconfig.build.json",
+    "tsconfig.json"
+  ],
+  "diverge": [
+    "src/data/feature.registry.ts",
+    "src/data/seed/seed.registry.ts",
+    "src/presentation/feature.registry.ts"
+  ],
+  "exampleOnly": [
+    "src/data/entity/product.entity.ts",
+    "src/data/entity/user.entity.ts",
+    "src/data/migration",
+    "src/data/repository/product.repository.ts",
+    "src/data/repository/user.repository.ts",
+    "src/data/seed/seeder/product.seeder.ts",
+    "src/data/seed/seeder/user.seeder.ts",
+    "src/presentation/api/v1/auth",
+    "src/presentation/api/v1/product",
+    "src/presentation/api/v1/user",
+    "src/services/auth",
+    "src/services/product",
+    "src/services/user",
+    "test/app.e2e-spec.ts",
+    "test/throttle.e2e-spec.ts"
+  ],
+  "$deliberatelyUnsynced": [
+    "package.json",
+    "package-lock.json",
+    "README.md",
+    "TEMPLATE.md",
+    "env/",
+    "scripts/init-app.sh"
+  ]
+}
