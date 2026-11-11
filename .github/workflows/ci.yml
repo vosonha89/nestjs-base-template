@@ -1,0 +1,134 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  # Runs the five gates in both folders. `example/` usually catches the
+  # regression first because it exercises the template through a real app.
+  quality:
+    name: quality (${{ matrix.app }}, node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [template, example]
+        node: ['22', '24']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: ${{ matrix.app }}/package-lock.json
+
+      - name: Install
+        working-directory: ${{ matrix.app }}
+        run: npm ci
+
+      - name: Format
+        working-directory: ${{ matrix.app }}
+        run: npm run format:check
+
+      - name: Lint
+        working-directory: ${{ matrix.app }}
+        run: npm run lint:check
+
+      - name: Typecheck
+        working-directory: ${{ matrix.app }}
+        run: npm run typecheck
+
+      - name: Unit tests with coverage
+        working-directory: ${{ matrix.app }}
+        run: npm run test:cov
+
+      # The template's e2e suite is deliberately database-free, so it runs
+      # here. The example's suite needs Postgres and lives in e2e.yml.
+      - name: End-to-end tests (template only, no database)
+        if: matrix.app == 'template'
+        working-directory: ${{ matrix.app }}
+        run: npm run test:e2e
+
+      - name: Build
+        working-directory: ${{ matrix.app }}
+        run: npm run build
+
+      - name: Store coverage
+        if: matrix.node == '22'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.app }}
+          path: ${{ matrix.app }}/coverage
+          retention-days: 7
+
+  # Proves `template/` stands on its own: a workspace would hoist a dependency
+  # that the template's package.json forgot to declare, and the consumer would
+  # only find out after `npx degit`. No workspace here, and that is the point.
+  standalone-template:
+    name: template installs and builds alone
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: template/package-lock.json
+
+      - name: Guard against the repository root leaking into the build
+        run: test ! -d node_modules
+
+      - name: Install
+        working-directory: template
+        run: npm ci
+
+      - name: Build
+        working-directory: template
+        run: npm run build
+
+  # Simulates the consumer path end to end: copy the template out, rename it,
+  # and require that the result still passes every gate.
+  consumer-flow:
+    name: init-app.sh produces a working app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: template/package-lock.json
+
+      - name: Install in the template
+        working-directory: template
+        run: npm ci
+
+      - name: Copy out and rename
+        run: |
+          mkdir -p "$RUNNER_TEMP/my-api"
+          tar -cf - --exclude=node_modules --exclude=dist --exclude=coverage --exclude=env \
+            -C template . | tar -xf - -C "$RUNNER_TEMP/my-api"
+          cd "$RUNNER_TEMP/my-api"
+          ./scripts/init-app.sh --name my-api --port 3010 --db my_api
+
+      - name: The renamed app must still be green
+        working-directory: ${{ runner.temp }}/my-api
+        run: |
+          cp -a "$GITHUB_WORKSPACE/template/node_modules" node_modules
+          npm run format:check
+          npm run lint:check
+          npm run typecheck
+          npm run test:e2e
+          npm run build
+
+      - name: The scaffolding must be gone
+        working-directory: ${{ runner.temp }}/my-api
+        run: test ! -d scripts

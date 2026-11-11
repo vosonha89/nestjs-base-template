@@ -1,7 +1,7 @@
 {
-  "name": "nestjs-api-template",
+  "name": "nestjs-api-example",
   "version": "1.0.0",
-  "description": "Production-ready NestJS N-layer API template with JWT auth, TypeORM migrations, Swagger and a unified response envelope",
+  "description": "Demo application built on the nestjs-api-template: JWT auth, users, products and a stock-adjustment transaction",
   "author": "vosonha89",
   "private": true,
   "license": "MIT",

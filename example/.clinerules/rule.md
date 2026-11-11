@@ -42,7 +42,8 @@ already enforce most of it — these are the decisions a machine cannot infer.
 
 - throw `AppError` carrying a `GlobalError` code; never `throw new Error(...)` in
   business code
-- new codes are appended to `GlobalError` (`4001`–`4008` are taken)
+- new codes are appended to `GlobalError` (`4001`–`4008` are taken; `4008` is
+  the generic `BusinessRuleError` and takes a rule name plus an optional detail)
 - a `500` returns an opaque message; the stack only reaches the log
 - filter and sort columns must be in `searchableFields` / `sortableFields`
 

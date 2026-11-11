@@ -5,15 +5,16 @@ only the row lock and the transaction that belongs to it.
 
 | Folder | Contents |
 | --- | --- |
-| `entity/` | `PsqlEntity` (audit columns, soft delete), `UserEntity`, `ProductEntity` |
-| `repository/` | `PsqlRepository` (generic CRUD), `UserRepository`, `ProductRepository` |
+| `entity/` | `PsqlEntity` (audit columns, soft delete). No concrete entity ships. |
+| `repository/` | `PsqlRepository` (generic CRUD). No concrete repository ships. |
 | `context/` | `BaseContext` (port), `PsqlContext` (facade over `DataSource`) |
 | `decorator/` | `@BigIntColumn()`, `@BigIntPrimaryColumn()`, `numericTransformer` |
 | `migration/` | generated, reviewed, committed |
-| `seed/` | `SeedService` + `run-seed.ts` (idempotent) |
+| `seed/` | `ISeeder` contract, `SeedService` + `run-seed.ts` (idempotent) |
+| `feature.registry.ts` | `ENTITIES`, `REPOSITORY_PROVIDERS`, `REPOSITORY_EXPORTS` |
 | `data-source-options.ts` | `buildDataSourceOptions()`, shared with the CLI |
 | `data-source.ts` | the `DataSource` the TypeORM CLI uses |
-| `database.module.ts` | `@Global()` — `TypeOrmModule.forRootAsync` + repositories |
+| `database.module.ts` | `@Global()` — `TypeOrmModule.forRootAsync` + registry providers |
 
 ## Conventions
 
@@ -31,18 +32,26 @@ only the row lock and the transaction that belongs to it.
 - `@DeleteDateColumn` = soft delete; `find`/`count` skip deleted rows
   automatically, query builders do not, so they filter `deletedAt IS NULL`
   manually.
-- A read-then-write rule locks the row inside a transaction
-  (`ProductRepository.withLockedProduct`).
-- Every repository is registered in `database.module.ts` and exported through
-  its `<Name>RepositorySymbol`.
+- A read-then-write rule locks the row inside a transaction: the repository owns
+  a `withLocked…` method, the service owns the rule (see the example's
+  `adjustStock`).
+- Every repository is listed in `src/data/feature.registry.ts` and exported
+  through its `<Name>RepositorySymbol`. `database.module.ts` reads that registry
+  and is never edited again.
 
 ## Adding an entity
 
+```bash
+npm run generate:feature -- --name <name> --fields "…"
+```
+
+Or by hand:
+
 1. create `entity/<name>.entity.ts` extending `PsqlEntity<number>`
-2. add it to `ENTITIES` in `data-source-options.ts`
+2. add it to `ENTITIES` in `feature.registry.ts`
 3. generate + review + run the migration
 4. create `repository/<name>.repository.ts` extending `PsqlRepository`
-5. register it in `database.module.ts`
+5. add the provider and the export to `feature.registry.ts`
 
 ## Rules
 

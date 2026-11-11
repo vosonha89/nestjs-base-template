@@ -94,10 +94,10 @@ export class GlobalError {
 		msg: `${fieldName.trim()} is not allowed in this operation.`
 	});
 
-	/** `4008` — a business rule about quantities was violated. */
-	public static readonly InsufficientQuantityError = (available: number, requested: number): ErrorMessage => ({
+	/** `4008` — a domain rule rejected the request. */
+	public static readonly BusinessRuleError = (rule: string, detail?: string): ErrorMessage => ({
 		code: HttpStatus.BAD_REQUEST * 10 + 8,
-		msg: `Insufficient quantity. Available: ${available}, requested: ${requested}.`
+		msg: detail === undefined || detail === '' ? `${rule.trim()} was violated.` : `${rule.trim()}: ${detail}`
 	});
 
 	/**

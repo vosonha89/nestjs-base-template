@@ -1,0 +1,32 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /template
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    ignore:
+      # Verified: TypeScript 7.0 ships only the `tsc` executable and no
+      # programmatic compiler API, so `nest build` and `typescript-eslint` both
+      # fail. Re-evaluate at 7.1, which restores the API.
+      - dependency-name: typescript
+        versions: ['>=7.0.0']
+      # `@types/node` must match the runtime major, not run ahead of it.
+      - dependency-name: '@types/node'
+        versions: ['>=25.0.0']
+
+  - package-ecosystem: npm
+    directory: /example
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: typescript
+        versions: ['>=7.0.0']
+      - dependency-name: '@types/node'
+        versions: ['>=25.0.0']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

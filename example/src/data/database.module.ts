@@ -4,8 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { IDbConfig } from '@config/config.type';
 import { PsqlContext, PsqlContextSymbol } from './context/psql.context';
 import { buildDataSourceOptions } from './data-source-options';
-import { ProductRepository, ProductRepositorySymbol } from './repository/product.repository';
-import { UserRepository, UserRepositorySymbol } from './repository/user.repository';
+import { REPOSITORY_EXPORTS, REPOSITORY_PROVIDERS } from './feature.registry';
 
 /**
  * Owns the database connection and exposes every repository.
@@ -35,11 +34,7 @@ import { UserRepository, UserRepositorySymbol } from './repository/user.reposito
 			}
 		})
 	],
-	providers: [
-		{ provide: PsqlContextSymbol, useClass: PsqlContext },
-		{ provide: UserRepositorySymbol, useClass: UserRepository },
-		{ provide: ProductRepositorySymbol, useClass: ProductRepository }
-	],
-	exports: [PsqlContextSymbol, UserRepositorySymbol, ProductRepositorySymbol]
+	providers: [{ provide: PsqlContextSymbol, useClass: PsqlContext }, ...REPOSITORY_PROVIDERS],
+	exports: [PsqlContextSymbol, ...REPOSITORY_EXPORTS]
 })
 export class DataModule {}

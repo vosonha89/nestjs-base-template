@@ -1,0 +1,19 @@
+{
+  "name": "nestjs-base-template",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production-ready NestJS N-layer API template, with a runnable example application that proves it works",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.13.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "sync": "node tools/sync-core.mjs",
+    "sync:check": "node tools/verify-sync.mjs",
+    "generate:feature": "node tools/generate-feature.mjs",
+    "secrets:check": "node tools/check-secrets.mjs",
+    "hooks:install": "git config core.hooksPath .husky",
+    "check": "node tools/verify-sync.mjs && node --check tools/sync-core.mjs && node --check tools/verify-sync.mjs"
+  }
+}

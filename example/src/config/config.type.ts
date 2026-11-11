@@ -57,6 +57,12 @@ export interface IDbConfig {
 	/** Database name. */
 	readonly database: string;
 
+	/**
+	 * `application_name` reported to Postgres, so `pg_stat_activity` shows which
+	 * app holds a connection. Taken from `APP_NAME`, not a literal.
+	 */
+	readonly applicationName: string;
+
 	/** Whether the connection is encrypted with TLS. */
 	readonly ssl: boolean;
 
