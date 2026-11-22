@@ -320,7 +320,7 @@ exits.
 | **`nestjs-pino`** | structured JSON logs with redaction, behind `ILoggingService` |
 | **`AsyncLocalStorage`** instead of `Scope.REQUEST` | request data without re-instantiating the DI graph per request |
 | **`--experimental-vm-modules` for Jest** | NestJS 12 is ESM-only; the flag lets Jest use Node's `require(esm)` while the project still compiles to CommonJS |
-| **Node ≥ 22.13** | first release with `require(esm)` on by default; also the floor ESLint 10 declares |
+| **Node ≥ 22.23.5 / 24.22.3 / 26.13.1** | per-line security floors from the 11 Nov 2026 Node.js security release; default runtime is Node 26 Active LTS (supported to Apr 2029). Node 22 reaches EOL 30 Apr 2027 |
 | **ESLint 10** | v9 is EOL; `typescript-eslint` 8.x declares `^10.0.0` |
 | **`no-restricted-imports`** | four layer patterns are enough; one less plugin than `eslint-plugin-boundaries` |
 
