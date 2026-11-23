@@ -1,6 +1,5 @@
 # NestJS API Template
 
-[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/XezpwfPi1US9RhS159vdjh/Xkysgexu81sGiFtzJyFTrK/tree/main.svg?style=svg)](https://app.circleci.com/pipelines/github/vosonha89/nestjs-base-template?branch=main)
 [![CI](https://github.com/vosonha89/nestjs-base-template/actions/workflows/ci.yml/badge.svg)](https://github.com/vosonha89/nestjs-base-template/actions/workflows/ci.yml)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fvosonha89%2Fnestjs-base-template.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fvosonha89%2Fnestjs-base-template?ref=badge_shield)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/vosonha89/nestjs-base-template/badge)](https://scorecard.dev/viewer/?uri=github.com/vosonha89/nestjs-base-template)
@@ -108,22 +107,26 @@ The full contract lives in [`tools/core-manifest.json`](./tools/core-manifest.js
 
 ## CI
 
-Two pipelines, each owning half of the proof — do not read one and assume it is
-the whole gate.
+GitHub Actions is the only pipeline. Each workflow owns one concern, so a red
+check tells you which guarantee broke.
 
-| Pipeline | Jobs | Owns |
-| --- | --- | --- |
-| CircleCI ([`.circleci/config.yml`](./.circleci/config.yml)) | `quality` × `template`/`example`, `e2e-template`, `license` | format, lint, typecheck, coverage, build, the DB-free template e2e suite, and the FOSSA license gate |
-| GitHub Actions ([`.github/workflows/`](./.github/workflows)) | `ci.yml`, `e2e.yml`, `sync-guard.yml`, `secret-scan.yml` | the same quality matrix, the example e2e suite against Postgres 17, `template/` ⇄ `example/` byte-identity, and gitleaks |
-| GitHub Actions — security | `codeql.yml`, `security.yml`, `scorecard.yml` | SAST, dependency vulnerabilities, Dockerfile lint, and the supply-chain posture score |
+| Workflow | Owns |
+| --- | --- |
+| [`ci.yml`](./.github/workflows/ci.yml) | format, lint, typecheck, coverage and build for both folders; the DB-free template e2e suite; the standalone-template and consumer-flow proofs |
+| [`e2e.yml`](./.github/workflows/e2e.yml) | the example e2e suite against Postgres 17 — migrations, seed, row locking |
+| [`sync-guard.yml`](./.github/workflows/sync-guard.yml) | `template/` ⇄ `example/` byte-identity |
+| [`secret-scan.yml`](./.github/workflows/secret-scan.yml) | gitleaks over the full history |
+| [`license.yml`](./.github/workflows/license.yml) | the FOSSA license gate |
+| [`codeql.yml`](./.github/workflows/codeql.yml), [`security.yml`](./.github/workflows/security.yml), [`scorecard.yml`](./.github/workflows/scorecard.yml) | security scanning — see below |
 
 The Node floor is **24**: `@nestjs/*` is ESM-only and Jest can only
 `require(esm)` it from Node 24.9 onwards, so Node 22 cannot run the test suite.
 `engines.node` in both folders says the same thing.
 
-The FOSSA job needs a `FOSSA_API_KEY` in the CircleCI project settings; the
-scan surface is pinned by [`.fossa.yml`](./.fossa.yml) because the lockfiles
-live in `template/` and `example/`, not at the repository root.
+The FOSSA job needs a `FOSSA_API_KEY` repository secret (Settings → Secrets and
+variables → Actions); the scan surface is pinned by [`.fossa.yml`](./.fossa.yml)
+because the lockfiles live in `template/` and `example/`, not at the repository
+root. It is skipped on pull requests from forks, which cannot read secrets.
 
 ### Security scanning
 

@@ -10,4 +10,3 @@ env
 *.md
 Dockerfile
 docker-compose.yml
-.circleci
