@@ -13,7 +13,7 @@ updates:
         versions: ['>=7.0.0']
       # `@types/node` must match the runtime major, not run ahead of it.
       - dependency-name: '@types/node'
-        versions: ['>=25.0.0']
+        versions: ['>=27.0.0']
 
   - package-ecosystem: npm
     directory: /example
@@ -24,9 +24,19 @@ updates:
       - dependency-name: typescript
         versions: ['>=7.0.0']
       - dependency-name: '@types/node'
-        versions: ['>=25.0.0']
+        versions: ['>=27.0.0']
 
   - package-ecosystem: github-actions
     directory: /
+    schedule:
+      interval: weekly
+
+  # Docker base-image digest bumps. template/ only: example/Dockerfile is a
+  # byte-identical synced copy, so a second ecosystem would open divergent PRs
+  # that fail sync-guard. Merge flow for these PRs: check out the Dependabot
+  # branch, run `npm run sync` from the repo root, push the sync commit to the
+  # same branch, then merge.
+  - package-ecosystem: docker
+    directory: /template
     schedule:
       interval: weekly

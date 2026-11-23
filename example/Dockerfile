@@ -5,13 +5,13 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 # ── Stage 1: install all dependencies (incl. dev, needed to compile) ─────────
-FROM node:26-alpine AS deps
+FROM node:26-alpine@sha256:6bd9ab43c0ec0190ca7b2d193906cb8b7edf6e7f4afa43ddeccd6452710bffb5 AS deps
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
 # ── Stage 2: compile TypeScript ─────────────────────────────────────────────
-FROM node:26-alpine AS build
+FROM node:26-alpine@sha256:6bd9ab43c0ec0190ca7b2d193906cb8b7edf6e7f4afa43ddeccd6452710bffb5 AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY package*.json tsconfig*.json nest-cli.json ./
@@ -19,13 +19,13 @@ COPY src ./src
 RUN npm run build
 
 # ── Stage 3: production dependencies only ───────────────────────────────────
-FROM node:26-alpine AS prod-deps
+FROM node:26-alpine@sha256:6bd9ab43c0ec0190ca7b2d193906cb8b7edf6e7f4afa43ddeccd6452710bffb5 AS prod-deps
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
 # ── Stage 4: runtime ────────────────────────────────────────────────────────
-FROM node:26-alpine AS runtime
+FROM node:26-alpine@sha256:6bd9ab43c0ec0190ca7b2d193906cb8b7edf6e7f4afa43ddeccd6452710bffb5 AS runtime
 ENV NODE_ENV=production
 WORKDIR /app
 

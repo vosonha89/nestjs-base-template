@@ -24,7 +24,7 @@ jobs:
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # Fail with a readable instruction rather than a 401 from the FOSSA API.
       - name: Require FOSSA_API_KEY
@@ -33,10 +33,17 @@ jobs:
         run: |
           : "${FOSSA_API_KEY:?FOSSA_API_KEY is not set. Add it under Settings > Secrets and variables > Actions}"
 
-      - name: Install FOSSA CLI
+      # Pinned release + published checksum: the old `curl install-latest.sh |
+      # bash` was a moving target (Scorecard downloadThenRun finding). Bump the
+      # version manually; Dependabot cannot track this URL.
+      - name: Install FOSSA CLI (pinned v3.20.13)
         run: |
-          curl -sSfL -H 'Cache-Control: no-cache' \
-            https://raw.githubusercontent.com/fossas/fossa-cli/master/install-latest.sh | bash -s -- -b /usr/local/bin
+          base=https://github.com/fossas/fossa-cli/releases/download/v3.20.13
+          curl -sSfL -o fossa.tar.gz "$base/fossa_3.20.13_linux_amd64.tar.gz"
+          curl -sSfL -o fossa.tar.gz.sha256 "$base/fossa_3.20.13_linux_amd64.tar.gz.sha256"
+          echo "$(awk '{print $1}' fossa.tar.gz.sha256)  fossa.tar.gz" | sha256sum -c -
+          tar -xzf fossa.tar.gz
+          sudo install -m 0755 fossa /usr/local/bin/fossa
           fossa --version
 
       - name: FOSSA analyze
