@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/vosonha89/nestjs-base-template/actions/workflows/ci.yml/badge.svg)](https://github.com/vosonha89/nestjs-base-template/actions/workflows/ci.yml)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fvosonha89%2Fnestjs-base-template.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fvosonha89%2Fnestjs-base-template?ref=badge_shield)
+[![FOSSA Security](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fvosonha89%2Fnestjs-base-template.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Fvosonha89%2Fnestjs-base-template?ref=badge_shield&issueType=security)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/vosonha89/nestjs-base-template/badge)](https://scorecard.dev/viewer/?uri=github.com/vosonha89/nestjs-base-template)
 
 A production-ready **N-layer** NestJS API: `Controller → Service → Repository`,
