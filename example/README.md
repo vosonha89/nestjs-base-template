@@ -36,7 +36,7 @@ Seeded accounts:
 
 | Bucket | Count | Rule |
 | --- | --- | --- |
-| **core** | 106 files | Copied from `template/`. **Never edit here** — `npm run verify:sync` fails CI. |
+| **core** | 112 files | Copied from `template/`. **Never edit here** — `npm run sync:check` fails CI. |
 | **diverge** | 3 files | Owned by each folder, see below. |
 | **example-only** | the demo domain | Cannot exist in the template. |
 

@@ -11,6 +11,8 @@ permissions:
 jobs:
   # Runs the five gates in both folders. `example/` usually catches the
   # regression first because it exercises the template through a real app.
+  # Node 24 is the floor: `@nestjs/*` is ESM-only and Jest can only
+  # `require(esm)` it from Node 24.9 onwards.
   quality:
     name: quality (${{ matrix.app }}, node ${{ matrix.node }})
     runs-on: ubuntu-latest
@@ -18,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         app: [template, example]
-        node: ['22', '24', '26']
+        node: ['24', '26']
     steps:
       - uses: actions/checkout@v4
 
@@ -47,6 +49,16 @@ jobs:
       - name: Unit tests with coverage
         working-directory: ${{ matrix.app }}
         run: npm run test:cov
+
+      # env/.env.* is git-ignored, so the boot-time env validation
+      # (src/config/env.validation.ts) has nothing to read in CI.
+      - name: Prepare env (template e2e boots the real config module)
+        if: matrix.app == 'template'
+        working-directory: template
+        run: |
+          mkdir -p env
+          sed -e 's|^JWT_SECRET=.*|JWT_SECRET=ci-only-secret-value-at-least-32-characters|' \
+            .env.example > env/.env.development
 
       # The template's e2e suite is deliberately database-free, so it runs
       # here. The example's suite needs Postgres and lives in e2e.yml.
@@ -110,6 +122,13 @@ jobs:
       - name: Install in the template
         working-directory: template
         run: npm ci
+
+      - name: The scaffolder must be executable
+        run: |
+          test -x template/scripts/init-app.sh || {
+            echo "::error::template/scripts/init-app.sh is not executable. Fix: git update-index --chmod=+x template/scripts/init-app.sh"
+            exit 1
+          }
 
       - name: Copy out and rename
         run: |

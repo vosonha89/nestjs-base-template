@@ -57,6 +57,7 @@
     "package-lock.json",
     "README.md",
     "TEMPLATE.md",
+    "LICENSE",
     "env/",
     "scripts/init-app.sh"
   ]

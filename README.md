@@ -1,5 +1,9 @@
 # NestJS API Template
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/XezpwfPi1US9RhS159vdjh/Xkysgexu81sGiFtzJyFTrK/tree/main.svg?style=svg)](https://app.circleci.com/pipelines/github/vosonha89/nestjs-base-template?branch=main)
+[![CI](https://github.com/vosonha89/nestjs-base-template/actions/workflows/ci.yml/badge.svg)](https://github.com/vosonha89/nestjs-base-template/actions/workflows/ci.yml)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fvosonha89%2Fnestjs-base-template.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fvosonha89%2Fnestjs-base-template?ref=badge_shield)
+
 A production-ready **N-layer** NestJS API: `Controller → Service → Repository`,
 TypeORM migrations, JWT authentication, one frozen response envelope, and an
 error catalogue clients can branch on.
@@ -93,11 +97,31 @@ What each folder owns:
 
 | Bucket | Files | Rule |
 | --- | --- | --- |
-| core | 106 | Byte-identical. Synced from `template/`. |
+| core | 112 | Byte-identical. Synced from `template/`. |
 | diverge | 3 registries | Each folder owns its own contents. |
 | example-only | ~40 | The demo domain. Never in the template. |
 
 The full contract lives in [`tools/core-manifest.json`](./tools/core-manifest.json).
+
+---
+
+## CI
+
+Two pipelines, each owning half of the proof — do not read one and assume it is
+the whole gate.
+
+| Pipeline | Jobs | Owns |
+| --- | --- | --- |
+| CircleCI ([`.circleci/config.yml`](./.circleci/config.yml)) | `quality` × `template`/`example`, `e2e-template`, `license` | format, lint, typecheck, coverage, build, the DB-free template e2e suite, and the FOSSA license gate |
+| GitHub Actions ([`.github/workflows/`](./.github/workflows)) | `ci.yml`, `e2e.yml`, `sync-guard.yml`, `secret-scan.yml` | the same quality matrix, the example e2e suite against Postgres 17, `template/` ⇄ `example/` byte-identity, and gitleaks |
+
+The Node floor is **24**: `@nestjs/*` is ESM-only and Jest can only
+`require(esm)` it from Node 24.9 onwards, so Node 22 cannot run the test suite.
+`engines.node` in both folders says the same thing.
+
+The FOSSA job needs a `FOSSA_API_KEY` in the CircleCI project settings; the
+scan surface is pinned by [`.fossa.yml`](./.fossa.yml) because the lockfiles
+live in `template/` and `example/`, not at the repository root.
 
 ---
 
@@ -123,4 +147,4 @@ The full contract lives in [`tools/core-manifest.json`](./tools/core-manifest.js
 
 ## License
 
-MIT
+MIT — see [LICENSE](./LICENSE).

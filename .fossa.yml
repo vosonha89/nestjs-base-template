@@ -1,0 +1,24 @@
+version: 3
+
+# Both folders own a package-lock.json. Without `paths.only` the scan starts at
+# the repository root, finds no lockfile, and reports zero dependencies — the
+# exact reason this gate went quiet after the template extraction.
+project:
+  locator: git+github.com/vosonha89/nestjs-base-template
+  id: github.com/vosonha89/nestjs-base-template
+
+paths:
+  only:
+    - template
+    - example
+  # `fossa analyze` must run with --without-default-filters: FOSSA's default
+  # filters skip any directory named `example/`, which is half of this repo.
+  # These exclusions replace the protection those defaults would have given.
+  exclude:
+    - '**/node_modules/**'
+    - '**/dist/**'
+    - '**/coverage/**'
+
+telemetry:
+  # Quoted on purpose: bare `off` is a YAML boolean and the CLI rejects it.
+  scope: 'off'
