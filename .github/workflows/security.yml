@@ -1,0 +1,77 @@
+name: Security
+
+# Dependency and container gates — the checks that can block a pull request.
+# SAST lives in codeql.yml, the supply-chain posture score in scorecard.yml.
+# Every job here is action-only: no `run:` step means no shell surface for
+# attacker-controlled event payloads to reach.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '30 12 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  # Compares the PR against its base and fails only on vulnerabilities the PR
+  # introduces, so a pre-existing advisory cannot block unrelated work.
+  osv-pr:
+    name: OSV-Scanner (new vulnerabilities)
+    if: github.event_name == 'pull_request'
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@v2.7.1
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+  # Full scan of both lockfiles. Reports everything to Security > Code scanning.
+  osv-scheduled:
+    name: OSV-Scanner (full)
+    if: github.event_name != 'pull_request'
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@v2.7.1
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    with:
+      # Named explicitly, like .fossa.yml: the repository root has no lockfile,
+      # the two real dependency graphs live one level down.
+      scan-args: |-
+        --lockfile=package-lock.json:template/package-lock.json
+        --lockfile=package-lock.json:example/package-lock.json
+      # Report, do not block. Both lockfiles currently carry 8 medium advisories
+      # in dev-only transitive deps (glob, minimatch); failing here would leave
+      # the gate permanently red. Findings still reach Security > Code scanning,
+      # and the PR job above is what blocks a new regression.
+      fail-on-vuln: false
+
+  # Complements Dependabot: Dependabot opens the fix, this blocks the regression.
+  dependency-review:
+    name: Dependency review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/dependency-review-action@v5
+        with:
+          fail-on-severity: high
+
+  hadolint:
+    name: Dockerfile lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # template/ owns the Dockerfile; example/ is a byte-identical copy, so
+      # linting it again would only duplicate every finding.
+      - uses: hadolint/hadolint-action@v3.5.0
+        with:
+          dockerfile: template/Dockerfile
+          # `USER node` is deliberate — the unprivileged user shipped with the
+          # base image. Hadolint reports that as DL3066 (info), and its default
+          # threshold fails on info, so the gate would be red on arrival.
+          # Warnings and errors still block; advisories stay visible in the log.
+          failure-threshold: warning

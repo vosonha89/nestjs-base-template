@@ -3,6 +3,7 @@
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/XezpwfPi1US9RhS159vdjh/Xkysgexu81sGiFtzJyFTrK/tree/main.svg?style=svg)](https://app.circleci.com/pipelines/github/vosonha89/nestjs-base-template?branch=main)
 [![CI](https://github.com/vosonha89/nestjs-base-template/actions/workflows/ci.yml/badge.svg)](https://github.com/vosonha89/nestjs-base-template/actions/workflows/ci.yml)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fvosonha89%2Fnestjs-base-template.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fvosonha89%2Fnestjs-base-template?ref=badge_shield)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/vosonha89/nestjs-base-template/badge)](https://scorecard.dev/viewer/?uri=github.com/vosonha89/nestjs-base-template)
 
 A production-ready **N-layer** NestJS API: `Controller → Service → Repository`,
 TypeORM migrations, JWT authentication, one frozen response envelope, and an
@@ -114,6 +115,7 @@ the whole gate.
 | --- | --- | --- |
 | CircleCI ([`.circleci/config.yml`](./.circleci/config.yml)) | `quality` × `template`/`example`, `e2e-template`, `license` | format, lint, typecheck, coverage, build, the DB-free template e2e suite, and the FOSSA license gate |
 | GitHub Actions ([`.github/workflows/`](./.github/workflows)) | `ci.yml`, `e2e.yml`, `sync-guard.yml`, `secret-scan.yml` | the same quality matrix, the example e2e suite against Postgres 17, `template/` ⇄ `example/` byte-identity, and gitleaks |
+| GitHub Actions — security | `codeql.yml`, `security.yml`, `scorecard.yml` | SAST, dependency vulnerabilities, Dockerfile lint, and the supply-chain posture score |
 
 The Node floor is **24**: `@nestjs/*` is ESM-only and Jest can only
 `require(esm)` it from Node 24.9 onwards, so Node 22 cannot run the test suite.
@@ -122,6 +124,34 @@ The Node floor is **24**: `@nestjs/*` is ESM-only and Jest can only
 The FOSSA job needs a `FOSSA_API_KEY` in the CircleCI project settings; the
 scan surface is pinned by [`.fossa.yml`](./.fossa.yml) because the lockfiles
 live in `template/` and `example/`, not at the repository root.
+
+### Security scanning
+
+All of it is free on a public repository — no account, no token, no paid tier.
+
+| Workflow | Tool | Catches |
+| --- | --- | --- |
+| [`codeql.yml`](./.github/workflows/codeql.yml) | CodeQL (`security-extended`) | injection, path traversal, XSS in the TypeScript source |
+| [`security.yml`](./.github/workflows/security.yml) | OSV-Scanner | known vulnerabilities in both lockfiles; on a PR it blocks only the ones the PR introduces |
+| | dependency-review | a PR that adds a dependency with a `high`/`critical` advisory |
+| | Hadolint | `template/Dockerfile` warnings and errors (`example/` is a byte-identical copy) |
+| [`scorecard.yml`](./.github/workflows/scorecard.yml) | OpenSSF Scorecard | posture gaps: unpinned actions, missing branch protection, token permissions |
+
+The policy is **block regressions, report the rest**. A PR fails if it introduces
+a vulnerability or a `high`/`critical` dependency; the scheduled full scan uploads
+everything to Security > Code scanning without failing, because both lockfiles
+currently carry 8 medium advisories in dev-only transitive dependencies (`glob`,
+`minimatch`). Hadolint ignores info-level advisories — `USER node` is deliberate
+and would otherwise trip DL3066.
+
+Scorecard sits in its own workflow because publishing results imposes strict
+rules on the producing workflow — no workflow-level write permissions and only
+an approved set of actions in that job. Its badge populates after the first run
+on `main`.
+
+Dependabot ([`.github/dependabot.yml`](./.github/dependabot.yml)) opens the
+upgrade PRs; dependency-review and OSV-Scanner are what stop a regression from
+landing while those PRs are open.
 
 ---
 

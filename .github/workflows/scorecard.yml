@@ -1,0 +1,50 @@
+name: Scorecard
+
+# Supply-chain posture score, published so the badge works. This lives in its
+# own workflow because the Scorecard API enforces strict rules on the producing
+# workflow: no top-level env/defaults, no workflow-level write permissions, and
+# only the approved actions inside the analysis job. Mixing it with the other
+# security jobs would risk the publication being rejected.
+on:
+  branch_protection_rule:
+  schedule:
+    - cron: '18 4 * * 2'
+  push:
+    branches: [main]
+
+permissions: read-all
+
+jobs:
+  analysis:
+    name: Scorecard analysis
+    runs-on: ubuntu-latest
+    permissions:
+      # Needed to upload the SARIF result to Security > Code scanning.
+      security-events: write
+      # Needed to publish the result: the OIDC token proves it came from here.
+      id-token: write
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Run analysis
+        uses: ossf/scorecard-action@v2.6.0
+        with:
+          results_file: results.sarif
+          results_format: sarif
+          publish_results: true
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: SARIF file
+          path: results.sarif
+          retention-days: 5
+
+      - name: Upload to code-scanning
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: results.sarif
