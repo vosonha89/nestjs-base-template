@@ -10,9 +10,16 @@ on:
   pull_request:
   schedule:
     - cron: '42 5 * * 1'
+  workflow_dispatch:
 
 permissions:
   contents: read
+
+# A superseded PR push has nothing left to prove. Never cancel a main or
+# scheduled run: those are the history of record for the default branch.
+concurrency:
+  group: license-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   fossa:
@@ -23,20 +30,34 @@ jobs:
       github.event_name != 'pull_request' ||
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      # Fail with a readable instruction rather than a 401 from the FOSSA API.
-      - name: Require FOSSA_API_KEY
+      # `secrets` cannot be read from a job-level `if`, so the key is probed
+      # here, before checkout: a missing key must cost seconds, not a clone.
+      # Missing key => the scan is skipped with a warning, never failed. A
+      # consumer of this template has no FOSSA account, and the FOSSA GitHub
+      # App still reports the license posture on the commit itself.
+      - name: Detect FOSSA_API_KEY
+        id: key
         env:
           FOSSA_API_KEY: ${{ secrets.FOSSA_API_KEY }}
         run: |
-          : "${FOSSA_API_KEY:?FOSSA_API_KEY is not set. Add it under Settings > Secrets and variables > Actions}"
+          if [ -n "${FOSSA_API_KEY//[[:space:]]/}" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "FOSSA_API_KEY is set — running the license gate."
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::warning title=FOSSA license gate skipped::FOSSA_API_KEY is not set, so the license scan is skipped. Add it under Settings > Secrets and variables > Actions."
+          fi
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: steps.key.outputs.present == 'true'
 
       # Pinned release + published checksum: the old `curl install-latest.sh |
       # bash` was a moving target (Scorecard downloadThenRun finding). Bump the
       # version manually; Dependabot cannot track this URL.
       - name: Install FOSSA CLI (pinned v3.20.13)
+        if: steps.key.outputs.present == 'true'
         run: |
           base=https://github.com/fossas/fossa-cli/releases/download/v3.20.13
           curl -sSfL -o fossa.tar.gz "$base/fossa_3.20.13_linux_amd64.tar.gz"
@@ -47,14 +68,20 @@ jobs:
           fossa --version
 
       - name: FOSSA analyze
+        if: steps.key.outputs.present == 'true'
         env:
           FOSSA_API_KEY: ${{ secrets.FOSSA_API_KEY }}
         # --without-default-filters is mandatory: FOSSA skips any directory named
         # `example/` by default, which is half of this repository. The
         # paths.only/exclude rules in .fossa.yml keep the surface tight instead.
-        run: fossa analyze --without-default-filters
+        run: |
+          export FOSSA_API_KEY="${FOSSA_API_KEY//[[:space:]]/}"
+          fossa analyze --without-default-filters
 
       - name: FOSSA license gate
+        if: steps.key.outputs.present == 'true'
         env:
           FOSSA_API_KEY: ${{ secrets.FOSSA_API_KEY }}
-        run: fossa test
+        run: |
+          export FOSSA_API_KEY="${FOSSA_API_KEY//[[:space:]]/}"
+          fossa test

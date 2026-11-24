@@ -34,5 +34,5 @@ disclosure timeline with the reporter.
 - Out of scope: vulnerabilities in Node.js itself — report those upstream via
   the [Node.js security policy](https://github.com/nodejs/node/blob/main/SECURITY.md) —
   and in third-party dependencies, which belong to their respective
-  maintainers. Dependabot, OSV-Scanner and the FOSSA gate in this repository
-  track those fixes.
+  maintainers. Dependabot, OSV-Scanner and the FOSSA scan in this repository
+  track those fixes (the FOSSA workflow runs once `FOSSA_API_KEY` is set).

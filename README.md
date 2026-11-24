@@ -117,7 +117,7 @@ check tells you which guarantee broke.
 | [`e2e.yml`](./.github/workflows/e2e.yml) | the example e2e suite against Postgres 17 — migrations, seed, row locking |
 | [`sync-guard.yml`](./.github/workflows/sync-guard.yml) | `template/` ⇄ `example/` byte-identity |
 | [`secret-scan.yml`](./.github/workflows/secret-scan.yml) | gitleaks over the full history |
-| [`license.yml`](./.github/workflows/license.yml) | the FOSSA license gate |
+| [`license.yml`](./.github/workflows/license.yml) | the FOSSA license gate, when `FOSSA_API_KEY` is set |
 | [`codeql.yml`](./.github/workflows/codeql.yml), [`security.yml`](./.github/workflows/security.yml), [`scorecard.yml`](./.github/workflows/scorecard.yml) | security scanning — see below |
 
 The Node floor is **24**: `@nestjs/*` is ESM-only and Jest can only
@@ -127,7 +127,9 @@ The Node floor is **24**: `@nestjs/*` is ESM-only and Jest can only
 The FOSSA job needs a `FOSSA_API_KEY` repository secret (Settings → Secrets and
 variables → Actions); the scan surface is pinned by [`.fossa.yml`](./.fossa.yml)
 because the lockfiles live in `template/` and `example/`, not at the repository
-root. It is skipped on pull requests from forks, which cannot read secrets.
+root. Without the secret the job is skipped with a warning annotation instead of
+failing, so a fresh copy of this template still gets a green pipeline. It is also
+skipped on pull requests from forks, which cannot read secrets.
 
 ### Security scanning
 
@@ -143,15 +145,20 @@ All of it is free on a public repository — no account, no token, no paid tier.
 
 The policy is **block regressions, report the rest**. A PR fails if it introduces
 a vulnerability or a `high`/`critical` dependency; the scheduled full scan uploads
-everything to Security > Code scanning without failing, because both lockfiles
-currently carry 8 medium advisories in dev-only transitive dependencies (`glob`,
-`minimatch`). Hadolint ignores info-level advisories — `USER node` is deliberate
+everything to Security > Code scanning without failing. Both lockfiles are
+currently clean (`npm audit` and OSV report zero advisories); `fail-on-vuln: false`
+keeps the scheduled scan report-only so a future advisory cannot leave the gate
+permanently red. Hadolint ignores info-level advisories — `USER node` is deliberate
 and would otherwise trip DL3066.
 
 Scorecard sits in its own workflow because publishing results imposes strict
 rules on the producing workflow — no workflow-level write permissions and only
 an approved set of actions in that job. Its badge populates after the first run
 on `main`.
+
+Two failure modes are configuration, not code: `Dependency review` reporting
+`Forbidden` means Settings → Code security → Dependency graph is off; a Scorecard
+`Docker pull failed` is a transient ghcr.io pull — re-run the job.
 
 Dependabot ([`.github/dependabot.yml`](./.github/dependabot.yml)) opens the
 upgrade PRs; dependency-review and OSV-Scanner are what stop a regression from

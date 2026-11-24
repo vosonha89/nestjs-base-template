@@ -41,13 +41,15 @@ jobs:
       scan-args: |-
         --lockfile=package-lock.json:template/package-lock.json
         --lockfile=package-lock.json:example/package-lock.json
-      # Report, do not block. Both lockfiles currently carry 8 medium advisories
-      # in dev-only transitive deps (glob, minimatch); failing here would leave
-      # the gate permanently red. Findings still reach Security > Code scanning,
-      # and the PR job above is what blocks a new regression.
+      # Report, do not block. Both lockfiles are currently clean (npm audit and
+      # OSV report zero advisories); failing here would leave the gate
+      # permanently red the day a new advisory lands. Findings still reach
+      # Security > Code scanning, and the PR job above blocks a new regression.
       fail-on-vuln: false
 
   # Complements Dependabot: Dependabot opens the fix, this blocks the regression.
+  # Requires Settings > Code security > Dependency graph to be enabled, or the
+  # action's diff call returns 403 and this check is red with nothing to blame.
   dependency-review:
     name: Dependency review
     if: github.event_name == 'pull_request'
