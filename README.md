@@ -156,9 +156,11 @@ rules on the producing workflow — no workflow-level write permissions and only
 an approved set of actions in that job. Its badge populates after the first run
 on `main`.
 
-Two failure modes are configuration, not code: `Dependency review` reporting
-`Forbidden` means Settings → Code security → Dependency graph is off; a Scorecard
-`Docker pull failed` is a transient ghcr.io pull — re-run the job.
+`Dependency review` reporting `Forbidden` is configuration, not code: enable
+Settings → Code security → Dependency graph. A Scorecard `Docker pull failed`
+means the action's container image could not be pulled — re-run once, and if it
+persists check that the image's child manifests resolve: a 200 index can hide
+404 children, which is why the action is held at v2.5.0.
 
 Dependabot ([`.github/dependabot.yml`](./.github/dependabot.yml)) opens the
 upgrade PRs; dependency-review and OSV-Scanner are what stop a regression from

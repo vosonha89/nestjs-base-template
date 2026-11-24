@@ -30,6 +30,13 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    ignore:
+      # v2.6.0's container image is broken upstream: the index resolves but both
+      # child manifests 404, so the Scorecard job cannot pull it. Only this exact
+      # version is held back — later releases are still proposed. Drop this bound
+      # once upstream republishes the image.
+      - dependency-name: ossf/scorecard-action
+        versions: ['2.6.0']
 
   # Docker base-image digest bumps. template/ only: example/Dockerfile is a
   # byte-identical synced copy, so a second ecosystem would open divergent PRs
