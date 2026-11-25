@@ -82,6 +82,19 @@ jobs:
         if: steps.key.outputs.present == 'true'
         env:
           FOSSA_API_KEY: ${{ secrets.FOSSA_API_KEY }}
+        # `fossa test` checks security + quality + license issues, but this
+        # gate owns license compliance only. Security issues are tracked via
+        # the FOSSA badge and the security.yml workflow; quality issues are
+        # left to Dependabot. Query the API directly for licensing issues only.
         run: |
           export FOSSA_API_KEY="${FOSSA_API_KEY//[[:space:]]/}"
-          fossa test
+          LOCATOR="git%2Bgithub.com%2Fvosonha89%2Fnestjs-base-template"
+          RESPONSE=$(curl -sS -g -H "Authorization: token ${FOSSA_API_KEY}" \
+            "https://app.fossa.com/api/v2/issues?category=licensing&status=active&scope[type]=project&scope[id]=${LOCATOR}")
+          COUNT=$(echo "$RESPONSE" | jq '.issues | length')
+          if [ "${COUNT:-0}" -gt 0 ] 2>/dev/null; then
+            echo "::error title=FOSSA license issues found::${COUNT} active licensing issue(s). Check https://app.fossa.com/projects/git%2Bgithub.com%2Fvosonha89%2Fnestjs-base-template"
+            echo "$RESPONSE" | jq '.issues'
+            exit 1
+          fi
+          echo "FOSSA license gate passed — no active licensing issues."
