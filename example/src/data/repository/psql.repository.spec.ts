@@ -2,6 +2,7 @@ import { FindManyOptions, Repository } from 'typeorm';
 import { PsqlEntity } from '../entity/psql.entity';
 import { PsqlContext } from '../context/psql.context';
 import { PsqlRepository } from './psql.repository';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 /**
  * Minimal entity used to exercise the generic repository.
@@ -21,7 +22,7 @@ class SampleRepository extends PsqlRepository<SampleEntity, number> {
 }
 
 describe('PsqlRepository', () => {
-	let repository: jest.Mocked<
+	let repository: vi.Mocked<
 		Pick<
 			Repository<SampleEntity>,
 			'create' | 'findOne' | 'find' | 'count' | 'save' | 'update' | 'softDelete' | 'exists'
@@ -32,17 +33,17 @@ describe('PsqlRepository', () => {
 
 	beforeEach(() => {
 		repository = {
-			create: jest.fn(),
-			findOne: jest.fn(),
-			find: jest.fn(),
-			count: jest.fn(),
-			save: jest.fn(),
-			update: jest.fn(),
-			softDelete: jest.fn(),
-			exists: jest.fn()
+			create: vi.fn(),
+			findOne: vi.fn(),
+			find: vi.fn(),
+			count: vi.fn(),
+			save: vi.fn(),
+			update: vi.fn(),
+			softDelete: vi.fn(),
+			exists: vi.fn()
 		};
 
-		context = { getRepository: jest.fn(() => repository) } as unknown as PsqlContext;
+		context = { getRepository: vi.fn(() => repository) } as unknown as PsqlContext;
 		subject = new SampleRepository(context);
 	});
 

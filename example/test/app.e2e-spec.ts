@@ -3,6 +3,7 @@ import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { configureApplication } from '../src/app.setup';
+import { describe, it, expect, beforeAll, afterAll } from "vitest";
 
 /**
  * End-to-end suite.

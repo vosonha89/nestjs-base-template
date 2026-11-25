@@ -5,6 +5,7 @@ import { ROLES_KEY } from '../decorator/roles.decorator';
 import { AppError } from '../exception/client-error';
 import { UserInfo } from '../type/user-info.type';
 import { RolesGuard } from './roles.guard';
+import { describe, it, expect } from 'vitest';
 
 /**
  * Builds an execution context carrying an optional principal.
@@ -25,7 +26,7 @@ function createContext(user?: UserInfo): ExecutionContext {
  * @returns The stub reflector
  */
 function createReflector(roles?: string[]): Reflector {
-	return { getAllAndOverride: jest.fn(() => roles) } as unknown as Reflector;
+	return { getAllAndOverride: vi.fn(() => roles) } as unknown as Reflector;
 }
 
 describe('RolesGuard', () => {

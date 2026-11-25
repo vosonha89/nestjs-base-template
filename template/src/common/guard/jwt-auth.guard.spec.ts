@@ -2,6 +2,7 @@ import { ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../decorator/public.decorator';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { describe, it, expect } from 'vitest';
 
 /**
  * Builds a minimal execution context.
@@ -17,14 +18,14 @@ function createContext(): ExecutionContext {
 
 describe('JwtAuthGuard', () => {
 	it('should let a @Public() route through without invoking passport', () => {
-		const reflector = { getAllAndOverride: jest.fn(() => true) } as unknown as Reflector;
+		const reflector = { getAllAndOverride: vi.fn(() => true) } as unknown as Reflector;
 		const guard = new JwtAuthGuard(reflector);
 
 		expect(guard.canActivate(createContext())).toBe(true);
 	});
 
 	it('should read the public flag from the handler and the class', () => {
-		const reflector = { getAllAndOverride: jest.fn(() => true) } as unknown as Reflector;
+		const reflector = { getAllAndOverride: vi.fn(() => true) } as unknown as Reflector;
 		const guard = new JwtAuthGuard(reflector);
 
 		void guard.canActivate(createContext());

@@ -2,6 +2,7 @@ import { join } from 'node:path';
 import { IDbConfig } from '@config/config.type';
 import { buildDataSourceOptions } from './data-source-options';
 import { ENTITIES } from './feature.registry';
+import { describe, it, expect } from 'vitest';
 
 /**
  * The subset of the Postgres driver options this suite asserts on.

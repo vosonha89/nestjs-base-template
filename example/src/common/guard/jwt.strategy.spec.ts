@@ -1,6 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { IJwtConfig } from '@config/config.type';
 import { IAccessTokenPayload, JwtStrategy } from './jwt.strategy';
+import { describe, it, expect } from 'vitest';
 
 /**
  * Builds the strategy over a stubbed configuration.
@@ -9,7 +10,7 @@ import { IAccessTokenPayload, JwtStrategy } from './jwt.strategy';
  */
 function build(secret = 'x'.repeat(48)): JwtStrategy {
 	const jwt: IJwtConfig = { secret, expiresIn: '1d' };
-	const configService = { getOrThrow: jest.fn(() => jwt) };
+	const configService = { getOrThrow: vi.fn(() => jwt) };
 
 	return new JwtStrategy(configService as unknown as ConfigService);
 }
@@ -17,7 +18,7 @@ function build(secret = 'x'.repeat(48)): JwtStrategy {
 describe('JwtStrategy', () => {
 	it('should read the signing secret through ConfigService', () => {
 		const configService = {
-			getOrThrow: jest.fn(() => ({ secret: 'y'.repeat(48), expiresIn: '1d' }))
+			getOrThrow: vi.fn(() => ({ secret: 'y'.repeat(48), expiresIn: '1d' }))
 		};
 
 		new JwtStrategy(configService as unknown as ConfigService);

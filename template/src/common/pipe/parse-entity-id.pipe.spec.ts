@@ -1,5 +1,6 @@
 import { AppError } from '../exception/client-error';
 import { ParseEntityIdPipe } from './parse-entity-id.pipe';
+import { describe, it, expect, beforeEach } from 'vitest';
 
 describe('ParseEntityIdPipe', () => {
 	let pipe: ParseEntityIdPipe;

@@ -8,12 +8,12 @@ import { UserInfo } from '@common/type/user-info.type';
  */
 export function createRequestContextMock(overrides: Partial<IRequestContextService> = {}): IRequestContextService {
 	return {
-		run: jest.fn(),
-		getRequest: jest.fn(() => undefined),
-		getRequestId: jest.fn(() => undefined),
-		getUser: jest.fn(() => undefined),
-		getLanguage: jest.fn(() => 'en'),
-		getHeader: jest.fn(() => undefined),
+		run: vi.fn(),
+		getRequest: vi.fn(() => undefined),
+		getRequestId: vi.fn(() => undefined),
+		getUser: vi.fn(() => undefined),
+		getLanguage: vi.fn(() => 'en'),
+		getHeader: vi.fn(() => undefined),
 		...overrides
 	};
 }

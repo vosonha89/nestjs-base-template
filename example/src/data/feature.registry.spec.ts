@@ -1,4 +1,5 @@
 import { ENTITIES, REPOSITORY_EXPORTS, REPOSITORY_PROVIDERS } from './feature.registry';
+import { describe, it, expect } from 'vitest';
 
 /**
  * These assertions describe the contract of the registry itself, not its

@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { configureApplication } from './app.setup';
 import { AppEnvironment } from './config/app-environment.enum';
 import { IAppConfig } from './config/config.type';
+import { vi, describe, it, expect } from 'vitest';
 
 /**
  * Builds a resolved application configuration fixture.
@@ -33,12 +34,12 @@ function appConfig(overrides: Partial<IAppConfig> = {}): IAppConfig {
  */
 function createApp(config: IAppConfig) {
 	return {
-		get: jest.fn(() => ({ getOrThrow: jest.fn(() => config) })),
-		use: jest.fn(),
-		enableCors: jest.fn(),
-		setGlobalPrefix: jest.fn(),
-		enableVersioning: jest.fn(),
-		enableShutdownHooks: jest.fn()
+		get: vi.fn(() => ({ getOrThrow: vi.fn(() => config) })),
+		use: vi.fn(),
+		enableCors: vi.fn(),
+		setGlobalPrefix: vi.fn(),
+		enableVersioning: vi.fn(),
+		enableShutdownHooks: vi.fn()
 	};
 }
 

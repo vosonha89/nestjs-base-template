@@ -1,6 +1,7 @@
 import { AppEnvironment } from './app-environment.enum';
 import { appConfig, dbConfig, jwtConfig } from './configuration';
 import { validateEnvironment } from './env.validation';
+import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 
 describe('configuration', () => {
 	const originalEnv = process.env;

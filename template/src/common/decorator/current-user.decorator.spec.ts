@@ -2,6 +2,7 @@ import { ExecutionContext } from '@nestjs/common';
 import { ROUTE_ARGS_METADATA } from '@nestjs/common/constants';
 import { CurrentUser } from './current-user.decorator';
 import { UserInfo } from '../type/user-info.type';
+import { describe, it, expect } from 'vitest';
 
 /**
  * The parameter metadata Nest stores for a decorated handler.

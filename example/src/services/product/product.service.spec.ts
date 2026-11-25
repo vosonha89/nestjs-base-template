@@ -6,6 +6,7 @@ import { RequestContextServiceSymbol } from '@common/service/request-context.ser
 import { ProductEntity } from '@data/entity/product.entity';
 import { ProductRepository, ProductRepositorySymbol } from '@data/repository/product.repository';
 import { ProductService } from './product.service';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 /**
  * Builds a product entity fixture.
@@ -29,7 +30,7 @@ function createProductEntity(overrides: Partial<ProductEntity> = {}): ProductEnt
 
 describe('ProductService', () => {
 	let service: ProductService;
-	let productRepository: jest.Mocked<
+	let productRepository: vi.Mocked<
 		Pick<
 			ProductRepository,
 			| 'withLockedProduct'
@@ -44,27 +45,27 @@ describe('ProductService', () => {
 			| 'existsBy'
 		>
 	>;
-	let loggingService: jest.Mocked<ILoggingService>;
+	let loggingService: vi.Mocked<ILoggingService>;
 
 	beforeEach(async () => {
 		productRepository = {
-			withLockedProduct: jest.fn(),
-			findById: jest.fn(),
-			findOne: jest.fn(),
-			find: jest.fn(),
-			count: jest.fn(),
-			save: jest.fn(),
-			update: jest.fn(),
-			delete: jest.fn(),
-			exists: jest.fn(),
-			existsBy: jest.fn()
+			withLockedProduct: vi.fn(),
+			findById: vi.fn(),
+			findOne: vi.fn(),
+			find: vi.fn(),
+			count: vi.fn(),
+			save: vi.fn(),
+			update: vi.fn(),
+			delete: vi.fn(),
+			exists: vi.fn(),
+			existsBy: vi.fn()
 		};
 
 		loggingService = {
-			debug: jest.fn(),
-			info: jest.fn(),
-			warn: jest.fn(),
-			error: jest.fn()
+			debug: vi.fn(),
+			info: vi.fn(),
+			warn: vi.fn(),
+			error: vi.fn()
 		};
 
 		const moduleRef = await Test.createTestingModule({

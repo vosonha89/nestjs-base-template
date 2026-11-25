@@ -2,6 +2,7 @@ import { CallHandler, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { firstValueFrom, of } from 'rxjs';
 import { ResponseTransformInterceptor } from './response-transform.interceptor';
+import { describe, it, expect, beforeEach } from 'vitest';
 
 /**
  * Builds a minimal HTTP execution context.

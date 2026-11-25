@@ -8,6 +8,7 @@ import { UserUpdateRequest } from './request/user-update.request';
 import { UserController } from './user.controller';
 import { UserDto } from '@services/user/user.dto';
 import { IUserService } from '@services/user/user.service.interface';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 /**
  * Builds a user DTO fixture.
@@ -26,26 +27,26 @@ function createUserDto(): UserDto {
 
 describe('BaseDataController (via UserController)', () => {
 	let controller: UserController;
-	let dataService: jest.Mocked<IUserService>;
-	let loggingService: jest.Mocked<ILoggingService>;
+	let dataService: vi.Mocked<IUserService>;
+	let loggingService: vi.Mocked<ILoggingService>;
 
 	beforeEach(() => {
 		dataService = {
-			findById: jest.fn(),
-			findBy: jest.fn(),
-			create: jest.fn(),
-			update: jest.fn(),
-			delete: jest.fn(),
-			exists: jest.fn(),
-			existsBy: jest.fn(),
-			validateUser: jest.fn()
+			findById: vi.fn(),
+			findBy: vi.fn(),
+			create: vi.fn(),
+			update: vi.fn(),
+			delete: vi.fn(),
+			exists: vi.fn(),
+			existsBy: vi.fn(),
+			validateUser: vi.fn()
 		};
 
 		loggingService = {
-			debug: jest.fn(),
-			info: jest.fn(),
-			warn: jest.fn(),
-			error: jest.fn()
+			debug: vi.fn(),
+			info: vi.fn(),
+			warn: vi.fn(),
+			error: vi.fn()
 		};
 
 		controller = new UserController(loggingService, createRequestContextMock(), dataService);

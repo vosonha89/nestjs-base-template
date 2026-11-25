@@ -1,5 +1,6 @@
 import { Expose } from 'class-transformer';
 import { ObjectHelper } from './object.helper';
+import { describe, it, expect } from 'vitest';
 
 /** Target class exposing only part of its source shape. */
 class NarrowTarget {

@@ -10,6 +10,7 @@ import { UserDto } from '../user/user.dto';
 import { UserServiceSymbol } from '../user/user.service';
 import { IUserService } from '../user/user.service.interface';
 import { AuthService } from './auth.service';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 /**
  * Builds a user DTO fixture.
@@ -29,22 +30,22 @@ function createUserDto(): UserDto {
 
 describe('AuthService', () => {
 	let service: AuthService;
-	let userService: jest.Mocked<Pick<IUserService, 'validateUser'>>;
-	let jwtService: jest.Mocked<Pick<JwtService, 'signAsync'>>;
-	let configService: { getOrThrow: jest.Mock };
-	let loggingService: jest.Mocked<ILoggingService>;
+	let userService: vi.Mocked<Pick<IUserService, 'validateUser'>>;
+	let jwtService: vi.Mocked<Pick<JwtService, 'signAsync'>>;
+	let configService: { getOrThrow: vi.Mock };
+	let loggingService: vi.Mocked<ILoggingService>;
 
 	beforeEach(async () => {
-		userService = { validateUser: jest.fn() };
-		jwtService = { signAsync: jest.fn() };
+		userService = { validateUser: vi.fn() };
+		jwtService = { signAsync: vi.fn() };
 		configService = {
-			getOrThrow: jest.fn(() => ({ secret: 'a'.repeat(40), expiresIn: '1d' }))
+			getOrThrow: vi.fn(() => ({ secret: 'a'.repeat(40), expiresIn: '1d' }))
 		};
 		loggingService = {
-			debug: jest.fn(),
-			info: jest.fn(),
-			warn: jest.fn(),
-			error: jest.fn()
+			debug: vi.fn(),
+			info: vi.fn(),
+			warn: vi.fn(),
+			error: vi.fn()
 		};
 
 		const moduleRef = await Test.createTestingModule({

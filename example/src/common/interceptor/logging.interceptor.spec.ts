@@ -3,6 +3,7 @@ import { lastValueFrom, of, throwError } from 'rxjs';
 import { ILoggingService } from '../service/logging.service.interface';
 import { RequestWithUser } from '../type/request-with-user.type';
 import { LoggingInterceptor } from './logging.interceptor';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 /**
  * Builds an execution context over a request fixture.
@@ -16,11 +17,11 @@ function contextFor(request: Partial<RequestWithUser>): ExecutionContext {
 }
 
 describe('LoggingInterceptor', () => {
-	let logging: jest.Mocked<Pick<ILoggingService, 'info'>>;
+	let logging: vi.Mocked<Pick<ILoggingService, 'info'>>;
 	let interceptor: LoggingInterceptor;
 
 	beforeEach(() => {
-		logging = { info: jest.fn() };
+		logging = { info: vi.fn() };
 		interceptor = new LoggingInterceptor(logging as unknown as ILoggingService);
 	});
 

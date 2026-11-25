@@ -1,4 +1,5 @@
 import { FEATURE_MODULES, SWAGGER_TAGS } from './feature.registry';
+import { describe, it, expect } from 'vitest';
 
 /**
  * Contract-level assertions only: this file is byte-identical in `template/`

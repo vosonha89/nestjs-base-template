@@ -10,6 +10,7 @@ import { BaseFilter } from './base.request';
 import { IBaseRepository } from './base.repository';
 import { BaseType } from './base.type';
 import { BaseDataService } from './base-data.service';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 /** DTO used by the test service, with one non-exposed property. */
 class WidgetDto extends BaseType<number> {
@@ -53,17 +54,17 @@ class WidgetService extends BaseDataService<WidgetDto, WidgetEntity, number> {
  * Builds a fully mocked repository.
  * @returns The mock
  */
-function createRepositoryMock(): jest.Mocked<IBaseRepository<WidgetEntity, number>> {
+function createRepositoryMock(): vi.Mocked<IBaseRepository<WidgetEntity, number>> {
 	return {
-		findById: jest.fn(),
-		findOne: jest.fn(),
-		find: jest.fn(),
-		count: jest.fn(),
-		save: jest.fn(),
-		update: jest.fn(),
-		delete: jest.fn(),
-		exists: jest.fn(),
-		existsBy: jest.fn()
+		findById: vi.fn(),
+		findOne: vi.fn(),
+		find: vi.fn(),
+		count: vi.fn(),
+		save: vi.fn(),
+		update: vi.fn(),
+		delete: vi.fn(),
+		exists: vi.fn(),
+		existsBy: vi.fn()
 	};
 }
 
@@ -100,7 +101,7 @@ function createFilter(
 
 describe('BaseDataService', () => {
 	let service: WidgetService;
-	let repository: jest.Mocked<IBaseRepository<WidgetEntity, number>>;
+	let repository: vi.Mocked<IBaseRepository<WidgetEntity, number>>;
 
 	beforeEach(() => {
 		repository = createRepositoryMock();

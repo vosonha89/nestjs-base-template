@@ -3,6 +3,7 @@ import { LoggingServiceSymbol } from '@common/service/logging.service';
 import { SEEDERS_TOKEN } from './seed.registry';
 import { SeedService } from './seed.service';
 import { ISeeder } from './seeder.interface';
+import { vi, describe, it, expect } from 'vitest';
 
 describe('SeedService', () => {
 	/**
@@ -10,8 +11,8 @@ describe('SeedService', () => {
 	 * @param name - Name reported by the stub
 	 * @returns The stub plus its `run` mock
 	 */
-	function seeder(name: string): { seeder: ISeeder; run: jest.Mock } {
-		const run = jest.fn(() => Promise.resolve());
+	function seeder(name: string): { seeder: ISeeder; run: vi.Mock } {
+		const run = vi.fn(() => Promise.resolve());
 
 		return { seeder: { name, run }, run };
 	}
@@ -21,8 +22,8 @@ describe('SeedService', () => {
 	 * @param seeders - Seeders to register
 	 * @returns The resolved service plus the logger mock
 	 */
-	async function build(seeders: ISeeder[]): Promise<{ service: SeedService; logging: { info: jest.Mock } }> {
-		const logging = { info: jest.fn(), error: jest.fn(), warn: jest.fn(), debug: jest.fn() };
+	async function build(seeders: ISeeder[]): Promise<{ service: SeedService; logging: { info: vi.Mock } }> {
+		const logging = { info: vi.fn(), error: vi.fn(), warn: vi.fn(), debug: vi.fn() };
 
 		const moduleRef = await Test.createTestingModule({
 			providers: [

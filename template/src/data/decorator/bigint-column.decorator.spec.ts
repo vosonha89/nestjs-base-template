@@ -1,5 +1,6 @@
 import { getMetadataArgsStorage } from 'typeorm';
 import { BigIntColumn, BigIntPrimaryColumn, numericTransformer } from './bigint-column.decorator';
+import { describe, it, expect } from 'vitest';
 
 /**
  * Entity declaring both decorators, so the registered metadata can be inspected.

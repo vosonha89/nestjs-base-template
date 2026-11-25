@@ -1,5 +1,6 @@
 import { DataSource, Repository } from 'typeorm';
 import { PsqlContext } from './psql.context';
+import { vi, describe, it, expect } from 'vitest';
 
 describe('PsqlContext', () => {
 	/**
@@ -7,12 +8,12 @@ describe('PsqlContext', () => {
 	 * @param initialized - Value returned by `isInitialized`
 	 * @returns The context plus the stub, so assertions can inspect it
 	 */
-	function build(initialized: boolean): { context: PsqlContext; dataSource: jest.Mocked<DataSource> } {
+	function build(initialized: boolean): { context: PsqlContext; dataSource: vi.Mocked<DataSource> } {
 		const repository = {} as Repository<object>;
 		const dataSource = {
 			isInitialized: initialized,
-			getRepository: jest.fn(() => repository)
-		} as unknown as jest.Mocked<DataSource>;
+			getRepository: vi.fn(() => repository)
+		} as unknown as vi.Mocked<DataSource>;
 
 		return { context: new PsqlContext(dataSource), dataSource };
 	}

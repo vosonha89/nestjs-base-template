@@ -3,6 +3,7 @@ import { Type } from 'class-transformer';
 import { IsNotEmpty, IsOptional, IsString, MaxLength, ValidateNested } from 'class-validator';
 import { ValidationAppError } from '../exception/client-error';
 import { AppValidationPipe } from './app-validation.pipe';
+import { describe, it, expect, beforeEach } from 'vitest';
 
 /** Nested payload used to prove the error tree is walked to the leaf. */
 class NestedPayload {

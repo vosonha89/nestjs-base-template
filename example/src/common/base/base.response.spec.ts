@@ -11,6 +11,7 @@ import {
 	TooManyRequests,
 	Unauthorized
 } from '../exception/error-response';
+import { describe, it, expect } from "vitest";
 
 describe('BaseResponse envelope', () => {
 	it('should mark an OK response as successful', () => {

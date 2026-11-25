@@ -3,6 +3,7 @@ import { RequestWithUser } from '../type/request-with-user.type';
 import { RequestContextService } from './request-context.service';
 import { BcryptHashService } from './bcrypt-hash.service';
 import { CorrelationIdMiddleware } from '../middleware/correlation-id.middleware';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 describe('BcryptHashService', () => {
 	const service = new BcryptHashService();
@@ -83,16 +84,16 @@ describe('RequestContextService', () => {
 });
 
 describe('CorrelationIdMiddleware', () => {
-	let contextService: { run: jest.Mock };
+	let contextService: { run: vi.Mock };
 	let middleware: CorrelationIdMiddleware;
-	let response: { setHeader: jest.Mock };
-	let next: jest.Mock;
+	let response: { setHeader: vi.Mock };
+	let next: vi.Mock;
 
 	beforeEach(() => {
-		contextService = { run: jest.fn((_request: unknown, callback: () => void) => callback()) };
+		contextService = { run: vi.fn((_request: unknown, callback: () => void) => callback()) };
 		middleware = new CorrelationIdMiddleware(contextService as never);
-		response = { setHeader: jest.fn() };
-		next = jest.fn();
+		response = { setHeader: vi.fn() };
+		next = vi.fn();
 	});
 
 	it('should reuse a well formed inbound correlation id', () => {

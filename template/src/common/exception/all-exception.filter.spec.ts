@@ -3,26 +3,27 @@ import { QueryFailedError } from 'typeorm';
 import { AppError, ClientError } from './client-error';
 import { AllExceptionFilter } from './all-exception.filter';
 import { ILoggingService } from '../service/logging.service.interface';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 describe('AllExceptionFilter', () => {
 	let filter: AllExceptionFilter;
-	let loggingService: jest.Mocked<ILoggingService>;
-	let json: jest.Mock;
-	let status: jest.Mock;
+	let loggingService: vi.Mocked<ILoggingService>;
+	let json: vi.Mock;
+	let status: vi.Mock;
 	let host: ArgumentsHost;
 
 	beforeEach(() => {
 		loggingService = {
-			debug: jest.fn(),
-			info: jest.fn(),
-			warn: jest.fn(),
-			error: jest.fn()
+			debug: vi.fn(),
+			info: vi.fn(),
+			warn: vi.fn(),
+			error: vi.fn()
 		};
 
 		filter = new AllExceptionFilter(loggingService);
 
-		json = jest.fn();
-		status = jest.fn(() => ({ json }));
+		json = vi.fn();
+		status = vi.fn(() => ({ json }));
 
 		host = {
 			switchToHttp: () => ({

@@ -3,6 +3,7 @@ import { validateSync } from 'class-validator';
 import { ConstantValue } from '../constant/constant-value';
 import { FilterCondition } from '../constant/filter-condition';
 import { BaseFilter, BaseFilterWhere, BaseGetByIdRequest, BaseSearchRequest, BaseSort } from './base.request';
+import { describe, it, expect } from 'vitest';
 
 /**
  * Validates a plain payload the way `AppValidationPipe` does.

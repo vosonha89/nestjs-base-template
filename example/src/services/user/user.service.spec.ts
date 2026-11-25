@@ -9,6 +9,7 @@ import { RequestContextServiceSymbol } from '@common/service/request-context.ser
 import { UserEntity } from '@data/entity/user.entity';
 import { UserRepository, UserRepositorySymbol } from '@data/repository/user.repository';
 import { UserService } from './user.service';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 /**
  * Builds a user entity fixture.
@@ -31,7 +32,7 @@ function createUserEntity(overrides: Partial<UserEntity> = {}): UserEntity {
 
 describe('UserService', () => {
 	let service: UserService;
-	let userRepository: jest.Mocked<
+	let userRepository: vi.Mocked<
 		Pick<
 			UserRepository,
 			| 'findByEmail'
@@ -46,33 +47,33 @@ describe('UserService', () => {
 			| 'existsBy'
 		>
 	>;
-	let hashService: jest.Mocked<IHashService>;
-	let loggingService: jest.Mocked<ILoggingService>;
+	let hashService: vi.Mocked<IHashService>;
+	let loggingService: vi.Mocked<ILoggingService>;
 
 	beforeEach(async () => {
 		userRepository = {
-			findByEmail: jest.fn(),
-			findById: jest.fn(),
-			findOne: jest.fn(),
-			find: jest.fn(),
-			count: jest.fn(),
-			save: jest.fn(),
-			update: jest.fn(),
-			delete: jest.fn(),
-			exists: jest.fn(),
-			existsBy: jest.fn()
+			findByEmail: vi.fn(),
+			findById: vi.fn(),
+			findOne: vi.fn(),
+			find: vi.fn(),
+			count: vi.fn(),
+			save: vi.fn(),
+			update: vi.fn(),
+			delete: vi.fn(),
+			exists: vi.fn(),
+			existsBy: vi.fn()
 		};
 
 		hashService = {
-			hash: jest.fn(),
-			compare: jest.fn()
+			hash: vi.fn(),
+			compare: vi.fn()
 		};
 
 		loggingService = {
-			debug: jest.fn(),
-			info: jest.fn(),
-			warn: jest.fn(),
-			error: jest.fn()
+			debug: vi.fn(),
+			info: vi.fn(),
+			warn: vi.fn(),
+			error: vi.fn()
 		};
 
 		const moduleRef = await Test.createTestingModule({
