@@ -9,12 +9,12 @@ export default defineConfig({
 			'@data': resolve(__dirname, '../src/data'),
 			'@services': resolve(__dirname, '../src/services'),
 			'@presentation': resolve(__dirname, '../src/presentation'),
-			'@test': resolve(__dirname, '.'),
-		},
+			'@test': resolve(__dirname, '.')
+		}
 	},
 	test: {
 		globals: true,
 		environment: 'node',
-		include: ['test/**/*.e2e-spec.ts'],
-	},
+		include: ['test/**/*.e2e-spec.ts']
+	}
 });

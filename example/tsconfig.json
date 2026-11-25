@@ -38,7 +38,7 @@
       "@presentation/*": ["./src/presentation/*"],
       "@test/*": ["./test/*"]
     },
-    "types": ["jest", "node"]
+    "types": ["node"]
   },
   "include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules", "dist"]

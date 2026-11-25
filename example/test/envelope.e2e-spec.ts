@@ -20,7 +20,7 @@ import { Public } from '../src/common/decorator/public.decorator';
 import { CorrelationIdMiddleware } from '../src/common/middleware/correlation-id.middleware';
 import { AppValidationPipe } from '../src/common/pipe/app-validation.pipe';
 import { configureApplication } from '../src/app.setup';
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 
 /**
  * Payload used to prove the validation contract.

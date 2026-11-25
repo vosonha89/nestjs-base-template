@@ -4,7 +4,7 @@ import { getOptionsToken, seconds } from '@nestjs/throttler';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { configureApplication } from '../src/app.setup';
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 
 /** Quota used by this suite. Small enough to exhaust, large enough to prove a pass. */
 const LIMIT = 2;
