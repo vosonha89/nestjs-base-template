@@ -95,8 +95,8 @@ Max residue major diff = 6 (human-signals 2→8), so rule threshold ≥7 unflags
 
 - [x] Local gates green per batch before commit
 - [x] DB e2e green after B3
-- [ ] CI green on final push
-- [ ] FOSSA API and GitHub check confirm green
+- [x] CI green on final push
+- [ ] FOSSA API and GitHub check confirm green (security+license green; quality pending cloud step)
 
 ## Risks & Mitigations
 
