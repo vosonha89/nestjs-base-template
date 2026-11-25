@@ -99,7 +99,8 @@
     "json-parse-even-better-errors": "^6.0.0",
     "@sindresorhus/is": "^8.1.0",
     "dotenv-expand": "^1000.0.0",
-    "@keyv/bigmap": "^6.1.0"
+    "@keyv/bigmap": "^6.1.0",
+    "postgres-interval": "^4.1.0"
   },
   "jest": {
     "moduleFileExtensions": [
