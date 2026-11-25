@@ -93,7 +93,13 @@
     "diff": "^7.0.0",
     "@tsconfig/node12": "^12.1.9",
     "@tsconfig/node14": "^14.1.10",
-    "@tsconfig/node16": "^16.1.10"
+    "@tsconfig/node16": "^16.1.10",
+    "lru-cache": "^11.5.3",
+    "write-file-atomic": "^8.0.0",
+    "json-parse-even-better-errors": "^6.0.0",
+    "@sindresorhus/is": "^8.1.0",
+    "dotenv-expand": "^1000.0.0",
+    "@keyv/bigmap": "^6.1.0"
   },
   "jest": {
     "moduleFileExtensions": [
