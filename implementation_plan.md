@@ -4,12 +4,12 @@
 
 | # | Goal | Expected outcome |
 |---|------|------------------|
-| 1 | Override 17 CJS-safe transitive deps | 17/38 quality issues really fixed |
-| 2 | FOSSA cloud: raise rule diff 3→7 | 21 ESM-chain residues unflagged durably |
+| 1 | Override 16 CJS-safe transitive deps | 16/38 quality issues really fixed |
+| 2 | FOSSA cloud: raise rule diff 3→7 | 22 ESM-chain residues unflagged durably |
 | 3 | Keep license/security gates untouched | No other CI behavior changes |
 
-- [x] 17/38 issues cleared by verified overrides
-- [ ] 21 residues cleared by rule threshold (fallback: bulk-ignore)
+- [x] 16/38 issues cleared by verified overrides
+- [ ] 22 residues cleared by rule threshold (fallback: bulk-ignore)
 - [ ] CI green and Dependency Quality check green on main HEAD
 
 Overview: the GitHub "Dependency Quality" check is posted by FOSSA cloud, not by `license.yml`; commit `282f0c4` only scoped the local gate. All 38 active quality issues (FOSSA API `/api/v2/issues?category=quality&status=active`, ruleId 38839423 "Major difference of 3 or more") are transitive pins. Implementation order = Key Changes numbering: 1→2→3→4 (repo batches), then 5→6→7 (cloud + verification).
@@ -42,7 +42,7 @@ Overview: the GitHub "Dependency Quality" check is posted by FOSSA cloud, not by
 - [ ] Rescan done, API returns 0 active quality issues
 - [ ] GitHub Dependency Quality check green on main HEAD
 
-### Appendix: override matrix (17 entries clear 17 issues)
+### Appendix: override matrix (16 entries clear 16 issues)
 
 | Package | From | Override to | Consumer chain | Risk |
 |---------|------|-------------|----------------|------|
@@ -63,14 +63,14 @@ Overview: the GitHub "Dependency Quality" check is posted by FOSSA cloud, not by
 | @keyv/bigmap | 1.3.1 | ^6.1.0 | exports expose require; eslint --cache verified | medium |
 | postgres-interval | 1.2.0 | ^4.1.0 | pg-types@2; parse shape verified | medium |
 
-### Appendix: 21 residues (jest-30 CJS chains, ESM-only targets)
+### Appendix: 22 residues (jest-30 CJS chains, ESM-only targets)
 
 | Residue packages (flagged versions) | Why not overridable |
 |-------------------------------------|---------------------|
 | ansi-escapes@4, camelcase@5+6, execa@5, find-up@4+5 | targets within latest−2 are ESM-only |
 | get-stream@6, human-signals@2, locate-path@5, mimic-fn@2 | CJS consumers require() them directly |
 | onetime@5, p-limit@2+3, p-locate@4, parse-json@5 | require(esm) namespace not callable |
-| pkg-dir@4, string-length@4, string-width@4 | same ESM/CJS mismatch |
+| js-tokens@4, pkg-dir@4, string-length@4, string-width@4 | same ESM/CJS mismatch or latent babel path |
 | supports-color@7+8, wrap-ansi@7 | same ESM/CJS mismatch |
 
 Max residue major diff = 6 (human-signals 2→8), so rule threshold ≥7 unflags all of them durably.
@@ -80,7 +80,7 @@ Max residue major diff = 6 (human-signals 2→8), so rule threshold ≥7 unflags
 | Step | Navigation | Action |
 |------|-----------|--------|
 | 1 | Org Settings → Quality rules (or Issue policies) | Edit outdated rule: major diff 3→7 |
-| 2 | Project → Issues → Quality (fallback) | Select 21 active issues, Ignore with note |
+| 2 | Project → Issues → Quality (fallback) | Select 22 active issues, Ignore with note |
 | 3 | Project → latest revision | Rescan or wait for push-triggered scan |
 
 ## Test Plan
