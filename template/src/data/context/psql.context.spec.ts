@@ -1,4 +1,4 @@
-import type { Mocked } from "vitest";
+import type { Mocked } from 'vitest';
 import { DataSource, Repository } from 'typeorm';
 import { PsqlContext } from './psql.context';
 import { vi, describe, it, expect } from 'vitest';

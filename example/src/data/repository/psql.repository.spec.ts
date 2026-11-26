@@ -1,4 +1,3 @@
-
 import { FindManyOptions } from 'typeorm';
 import { PsqlEntity } from '../entity/psql.entity';
 import { PsqlContext } from '../context/psql.context';
@@ -21,7 +20,6 @@ class SampleRepository extends PsqlRepository<SampleEntity, number> {
 		super(context, SampleEntity);
 	}
 }
-
 
 describe('PsqlRepository', () => {
 	let repository: any;

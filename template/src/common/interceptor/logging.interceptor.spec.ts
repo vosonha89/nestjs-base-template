@@ -1,4 +1,4 @@
-import type { Mocked } from "vitest";
+import type { Mocked } from 'vitest';
 import { CallHandler, ExecutionContext } from '@nestjs/common';
 import { lastValueFrom, of, throwError } from 'rxjs';
 import { ILoggingService } from '../service/logging.service.interface';

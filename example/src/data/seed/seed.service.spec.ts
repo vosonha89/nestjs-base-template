@@ -1,4 +1,4 @@
-import type { Mock } from "vitest";
+import type { Mock } from 'vitest';
 
 import { Test } from '@nestjs/testing';
 import { LoggingServiceSymbol } from '@common/service/logging.service';

@@ -1,4 +1,4 @@
-import type { Mock, Mocked } from "vitest";
+import type { Mock, Mocked } from 'vitest';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
@@ -30,8 +30,8 @@ function createUserDto(): UserDto {
 
 describe('AuthService', () => {
 	let service: AuthService;
-	let userService: any // Mocked<Pick<IUserService, 'validateUser'>>;
-	let jwtService: any // Mocked<Pick<JwtService, 'signAsync'>>;
+	let userService: any; // Mocked<Pick<IUserService, 'validateUser'>>;
+	let jwtService: any; // Mocked<Pick<JwtService, 'signAsync'>>;
 	let configService: { getOrThrow: Mock };
 	let loggingService: Mocked<ILoggingService>;
 

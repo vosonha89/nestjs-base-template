@@ -1,4 +1,4 @@
-import type { Mocked } from "vitest";
+import type { Mocked } from 'vitest';
 import { Test } from '@nestjs/testing';
 import { createRequestContextMock } from '@test/support/test-doubles';
 import { LoggingServiceSymbol } from '@common/service/logging.service';

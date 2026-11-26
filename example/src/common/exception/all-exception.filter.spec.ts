@@ -1,4 +1,4 @@
-import type { Mock, Mocked } from "vitest";
+import type { Mock, Mocked } from 'vitest';
 import { ArgumentsHost, BadRequestException, HttpStatus } from '@nestjs/common';
 import { QueryFailedError } from 'typeorm';
 import { AppError, ClientError } from './client-error';

@@ -1,4 +1,4 @@
-import type { Mocked } from "vitest";
+import type { Mocked } from 'vitest';
 import { Expose } from 'class-transformer';
 import { FindManyOptions } from 'typeorm';
 import { createRequestContextMock } from '@test/support/test-doubles';
