@@ -77,6 +77,9 @@ jobs:
           echo "::error::Postgres not ready after 30 seconds"
           exit 1
 
+      - name: Additional wait for Postgres stabilization
+        run: sleep 10
+
       - name: End-to-end tests
         working-directory: example
         run: npm run test:e2e
