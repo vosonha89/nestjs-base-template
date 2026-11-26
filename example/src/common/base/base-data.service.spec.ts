@@ -1,3 +1,4 @@
+import type { Mocked } from "vitest";
 import { Expose } from 'class-transformer';
 import { FindManyOptions } from 'typeorm';
 import { createRequestContextMock } from '@test/support/test-doubles';
@@ -54,7 +55,7 @@ class WidgetService extends BaseDataService<WidgetDto, WidgetEntity, number> {
  * Builds a fully mocked repository.
  * @returns The mock
  */
-function createRepositoryMock(): vi.Mocked<IBaseRepository<WidgetEntity, number>> {
+function createRepositoryMock(): Mocked<IBaseRepository<WidgetEntity, number>> {
 	return {
 		findById: vi.fn(),
 		findOne: vi.fn(),
@@ -101,7 +102,7 @@ function createFilter(
 
 describe('BaseDataService', () => {
 	let service: WidgetService;
-	let repository: vi.Mocked<IBaseRepository<WidgetEntity, number>>;
+	let repository: Mocked<IBaseRepository<WidgetEntity, number>>;
 
 	beforeEach(() => {
 		repository = createRepositoryMock();

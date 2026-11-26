@@ -1,3 +1,4 @@
+import type { Mock, Mocked } from "vitest";
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
@@ -8,7 +9,6 @@ import { ILoggingService } from '@common/service/logging.service.interface';
 import { RequestContextServiceSymbol } from '@common/service/request-context.service';
 import { UserDto } from '../user/user.dto';
 import { UserServiceSymbol } from '../user/user.service';
-import { IUserService } from '../user/user.service.interface';
 import { AuthService } from './auth.service';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
@@ -30,10 +30,10 @@ function createUserDto(): UserDto {
 
 describe('AuthService', () => {
 	let service: AuthService;
-	let userService: vi.Mocked<Pick<IUserService, 'validateUser'>>;
-	let jwtService: vi.Mocked<Pick<JwtService, 'signAsync'>>;
-	let configService: { getOrThrow: vi.Mock };
-	let loggingService: vi.Mocked<ILoggingService>;
+	let userService: any // Mocked<Pick<IUserService, 'validateUser'>>;
+	let jwtService: any // Mocked<Pick<JwtService, 'signAsync'>>;
+	let configService: { getOrThrow: Mock };
+	let loggingService: Mocked<ILoggingService>;
 
 	beforeEach(async () => {
 		userService = { validateUser: vi.fn() };

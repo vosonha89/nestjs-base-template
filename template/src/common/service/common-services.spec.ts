@@ -1,3 +1,4 @@
+import type { Mock } from "vitest";
 import { UserInfo } from '../type/user-info.type';
 import { RequestWithUser } from '../type/request-with-user.type';
 import { RequestContextService } from './request-context.service';
@@ -84,10 +85,10 @@ describe('RequestContextService', () => {
 });
 
 describe('CorrelationIdMiddleware', () => {
-	let contextService: { run: vi.Mock };
+	let contextService: { run: Mock };
 	let middleware: CorrelationIdMiddleware;
-	let response: { setHeader: vi.Mock };
-	let next: vi.Mock;
+	let response: { setHeader: Mock };
+	let next: Mock;
 
 	beforeEach(() => {
 		contextService = { run: vi.fn((_request: unknown, callback: () => void) => callback()) };

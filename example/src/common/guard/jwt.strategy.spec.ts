@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { IJwtConfig } from '@config/config.type';
 import { IAccessTokenPayload, JwtStrategy } from './jwt.strategy';
-import { describe, it, expect } from 'vitest';
+import { vi, describe, it, expect } from 'vitest';
 
 /**
  * Builds the strategy over a stubbed configuration.

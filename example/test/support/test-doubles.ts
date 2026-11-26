@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import { IRequestContextService } from '@common/service/request-context.service.interface';
 import { UserInfo } from '@common/type/user-info.type';
 

@@ -1,3 +1,4 @@
+import type { Mock, Mocked } from "vitest";
 import { ArgumentsHost, BadRequestException, HttpStatus } from '@nestjs/common';
 import { QueryFailedError } from 'typeorm';
 import { AppError, ClientError } from './client-error';
@@ -7,9 +8,9 @@ import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 describe('AllExceptionFilter', () => {
 	let filter: AllExceptionFilter;
-	let loggingService: vi.Mocked<ILoggingService>;
-	let json: vi.Mock;
-	let status: vi.Mock;
+	let loggingService: Mocked<ILoggingService>;
+	let json: Mock;
+	let status: Mock;
 	let host: ArgumentsHost;
 
 	beforeEach(() => {

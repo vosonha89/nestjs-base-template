@@ -28,7 +28,7 @@ describe('ParseEntityIdPipe', () => {
 	it('should report the 4002 error code', () => {
 		try {
 			pipe.transform('abc');
-			fail('expected transform to throw');
+			throw new Error('expected transform to throw');
 		} catch (error) {
 			expect(error).toBeInstanceOf(AppError);
 			expect((error as AppError).exception.errorCode).toEqual('4002');

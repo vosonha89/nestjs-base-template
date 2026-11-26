@@ -1,3 +1,4 @@
+import type { Mocked } from "vitest";
 import { CallHandler, ExecutionContext } from '@nestjs/common';
 import { lastValueFrom, of, throwError } from 'rxjs';
 import { ILoggingService } from '../service/logging.service.interface';
@@ -17,7 +18,7 @@ function contextFor(request: Partial<RequestWithUser>): ExecutionContext {
 }
 
 describe('LoggingInterceptor', () => {
-	let logging: vi.Mocked<Pick<ILoggingService, 'info'>>;
+	let logging: Mocked<Pick<ILoggingService, 'info'>>;
 	let interceptor: LoggingInterceptor;
 
 	beforeEach(() => {

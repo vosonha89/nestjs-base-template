@@ -1,3 +1,5 @@
+import type { Mock } from "vitest";
+
 import { Test } from '@nestjs/testing';
 import { LoggingServiceSymbol } from '@common/service/logging.service';
 import { SEEDERS_TOKEN } from './seed.registry';
@@ -11,7 +13,7 @@ describe('SeedService', () => {
 	 * @param name - Name reported by the stub
 	 * @returns The stub plus its `run` mock
 	 */
-	function seeder(name: string): { seeder: ISeeder; run: vi.Mock } {
+	function seeder(name: string): { seeder: ISeeder; run: Mock } {
 		const run = vi.fn(() => Promise.resolve());
 
 		return { seeder: { name, run }, run };
@@ -22,7 +24,7 @@ describe('SeedService', () => {
 	 * @param seeders - Seeders to register
 	 * @returns The resolved service plus the logger mock
 	 */
-	async function build(seeders: ISeeder[]): Promise<{ service: SeedService; logging: { info: vi.Mock } }> {
+	async function build(seeders: ISeeder[]): Promise<{ service: SeedService; logging: { info: Mock } }> {
 		const logging = { info: vi.fn(), error: vi.fn(), warn: vi.fn(), debug: vi.fn() };
 
 		const moduleRef = await Test.createTestingModule({

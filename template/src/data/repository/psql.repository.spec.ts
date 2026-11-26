@@ -1,4 +1,5 @@
-import { FindManyOptions, Repository } from 'typeorm';
+
+import { FindManyOptions } from 'typeorm';
 import { PsqlEntity } from '../entity/psql.entity';
 import { PsqlContext } from '../context/psql.context';
 import { PsqlRepository } from './psql.repository';
@@ -21,13 +22,9 @@ class SampleRepository extends PsqlRepository<SampleEntity, number> {
 	}
 }
 
+
 describe('PsqlRepository', () => {
-	let repository: vi.Mocked<
-		Pick<
-			Repository<SampleEntity>,
-			'create' | 'findOne' | 'find' | 'count' | 'save' | 'update' | 'softDelete' | 'exists'
-		>
-	>;
+	let repository: any;
 	let context: PsqlContext;
 	let subject: SampleRepository;
 

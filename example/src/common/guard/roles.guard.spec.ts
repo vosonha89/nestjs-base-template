@@ -5,7 +5,7 @@ import { ROLES_KEY } from '../decorator/roles.decorator';
 import { AppError } from '../exception/client-error';
 import { UserInfo } from '../type/user-info.type';
 import { RolesGuard } from './roles.guard';
-import { describe, it, expect } from 'vitest';
+import { vi, describe, it, expect } from 'vitest';
 
 /**
  * Builds an execution context carrying an optional principal.
@@ -66,7 +66,7 @@ describe('RolesGuard', () => {
 
 		try {
 			guard.canActivate(createContext());
-			fail('expected canActivate to throw');
+			throw new Error('expected canActivate to throw');
 		} catch (error) {
 			expect((error as AppError).httpStatus).toEqual(HttpStatus.UNAUTHORIZED);
 		}

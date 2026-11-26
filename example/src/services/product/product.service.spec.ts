@@ -1,3 +1,4 @@
+import type { Mocked } from "vitest";
 import { Test } from '@nestjs/testing';
 import { createRequestContextMock } from '@test/support/test-doubles';
 import { LoggingServiceSymbol } from '@common/service/logging.service';
@@ -30,7 +31,7 @@ function createProductEntity(overrides: Partial<ProductEntity> = {}): ProductEnt
 
 describe('ProductService', () => {
 	let service: ProductService;
-	let productRepository: vi.Mocked<
+	let productRepository: Mocked<
 		Pick<
 			ProductRepository,
 			| 'withLockedProduct'
@@ -45,7 +46,7 @@ describe('ProductService', () => {
 			| 'existsBy'
 		>
 	>;
-	let loggingService: vi.Mocked<ILoggingService>;
+	let loggingService: Mocked<ILoggingService>;
 
 	beforeEach(async () => {
 		productRepository = {

@@ -1,3 +1,4 @@
+import type { Mocked } from "vitest";
 import { HttpStatus } from '@nestjs/common';
 import { createRequestContextMock } from '@test/support/test-doubles';
 import { AppError } from '@common/exception/client-error';
@@ -27,8 +28,8 @@ function createUserDto(): UserDto {
 
 describe('BaseDataController (via UserController)', () => {
 	let controller: UserController;
-	let dataService: vi.Mocked<IUserService>;
-	let loggingService: vi.Mocked<ILoggingService>;
+	let dataService: Mocked<IUserService>;
+	let loggingService: Mocked<ILoggingService>;
 
 	beforeEach(() => {
 		dataService = {

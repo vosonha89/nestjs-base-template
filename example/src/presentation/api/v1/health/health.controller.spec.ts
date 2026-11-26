@@ -1,6 +1,6 @@
 import { HealthCheckService, TypeOrmHealthIndicator } from '@nestjs/terminus';
 import { HealthController } from './health.controller';
-import { describe, it, expect } from 'vitest';
+import { vi, describe, it, expect } from 'vitest';
 
 describe('HealthController', () => {
 	it('should ping the database through Terminus', async () => {

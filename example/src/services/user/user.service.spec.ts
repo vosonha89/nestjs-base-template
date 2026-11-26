@@ -1,3 +1,4 @@
+import type { Mocked } from "vitest";
 import { Test } from '@nestjs/testing';
 import { createRequestContextMock } from '@test/support/test-doubles';
 import { AppError } from '@common/exception/client-error';
@@ -32,7 +33,7 @@ function createUserEntity(overrides: Partial<UserEntity> = {}): UserEntity {
 
 describe('UserService', () => {
 	let service: UserService;
-	let userRepository: vi.Mocked<
+	let userRepository: Mocked<
 		Pick<
 			UserRepository,
 			| 'findByEmail'
@@ -47,8 +48,8 @@ describe('UserService', () => {
 			| 'existsBy'
 		>
 	>;
-	let hashService: vi.Mocked<IHashService>;
-	let loggingService: vi.Mocked<ILoggingService>;
+	let hashService: Mocked<IHashService>;
+	let loggingService: Mocked<ILoggingService>;
 
 	beforeEach(async () => {
 		userRepository = {
