@@ -18,6 +18,8 @@ export { ENTITIES };
  * @returns The options TypeORM needs
  */
 export function buildDataSourceOptions(config: IDbConfig): DataSourceOptions {
+	const isTest = process.env.NODE_ENV === 'test';
+
 	return {
 		type: 'postgres',
 		host: config.host,
@@ -27,7 +29,10 @@ export function buildDataSourceOptions(config: IDbConfig): DataSourceOptions {
 		database: config.database,
 		ssl: config.ssl ? { rejectUnauthorized: config.sslRejectUnauthorized } : false,
 		entities: ENTITIES,
-		migrations: [join(__dirname, 'migration', '*.{ts,js}')],
+		// Disable migrations in test environment to avoid ES module loading race conditions.
+		// Migrations are run separately before e2e tests via `npm run migration:run`.
+		migrations: isTest ? [] : [join(__dirname, 'migration', '*.{ts,js}')],
+		migrationsRun: !isTest,
 		migrationsTableName: 'migration',
 		synchronize: false,
 		logging: config.logging ? ['query', 'error', 'schema'] : ['error'],

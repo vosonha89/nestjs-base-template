@@ -95,11 +95,37 @@ describe('buildDataSourceOptions', () => {
 	});
 
 	it('should use the registry entities and the migration folder', () => {
-		const options = postgresOptions(dbConfig());
+		// Save original NODE_ENV and set it to a non-test value for this test
+		const originalNodeEnv = process.env.NODE_ENV;
+		process.env.NODE_ENV = 'development';
 
-		expect(options.entities).toBe(ENTITIES);
-		expect(options.migrations).toEqual([join(__dirname, 'migration', '*.{ts,js}')]);
-		expect(options.migrationsTableName).toEqual('migration');
+		try {
+			const options = postgresOptions(dbConfig());
+
+			expect(options.entities).toBe(ENTITIES);
+			expect(options.migrations).toEqual([join(__dirname, 'migration', '*.{ts,js}')]);
+			expect(options.migrationsTableName).toEqual('migration');
+		} finally {
+			// Restore original NODE_ENV
+			process.env.NODE_ENV = originalNodeEnv;
+		}
+	});
+
+	it('should disable migrations in test environment', () => {
+		// Save original NODE_ENV and set it to 'test'
+		const originalNodeEnv = process.env.NODE_ENV;
+		process.env.NODE_ENV = 'test';
+
+		try {
+			const options = postgresOptions(dbConfig());
+
+			expect(options.entities).toBe(ENTITIES);
+			expect(options.migrations).toEqual([]);
+			expect(options.migrationsTableName).toEqual('migration');
+		} finally {
+			// Restore original NODE_ENV
+			process.env.NODE_ENV = originalNodeEnv;
+		}
 	});
 
 	it('should size the pool from the configuration', () => {
