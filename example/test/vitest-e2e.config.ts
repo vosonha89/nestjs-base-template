@@ -15,6 +15,9 @@ export default defineConfig({
 	test: {
 		globals: true,
 		environment: 'node',
-		include: ['test/**/*.e2e-spec.ts']
+		include: ['test/**/*.e2e-spec.ts'],
+		// Increase timeout for database operations
+		testTimeout: 60000,
+		hookTimeout: 60000
 	}
 });

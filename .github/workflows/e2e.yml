@@ -83,5 +83,5 @@ jobs:
       - name: End-to-end tests
         working-directory: example
         env:
-          NODE_ENV: development
+          NODE_ENV: test
         run: npm run test:e2e
