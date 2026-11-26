@@ -1,11 +1,24 @@
 {
   "$comment": "Synchronisation contract between template/ and example/. `template/` is the single source of truth: a file in `walk` or `files` is copied verbatim into `example/` and CI fails if the two copies ever diverge. `diverge` lists the extension points each folder owns; `exampleOnly` lists the demo domain that must never leak back into the template.",
   "walk": [
-    { "dir": ".agents" },
-    { "dir": ".clinerules" },
-    { "dir": ".vscode" },
-    { "dir": "src", "extensions": [".ts"] },
-    { "dir": "test/support" }
+    {
+      "dir": ".agents"
+    },
+    {
+      "dir": ".clinerules"
+    },
+    {
+      "dir": ".vscode"
+    },
+    {
+      "dir": "src",
+      "extensions": [
+        ".ts"
+      ]
+    },
+    {
+      "dir": "test/support"
+    }
   ],
   "files": [
     ".dockerignore",
@@ -26,9 +39,9 @@
     "src/presentation/readme.md",
     "src/services/readme.md",
     "test/envelope.e2e-spec.ts",
-    "test/jest-e2e.json",
     "tsconfig.build.json",
-    "tsconfig.json"
+    "tsconfig.json",
+    "test/vitest-e2e.config.ts"
   ],
   "diverge": [
     "src/data/feature.registry.ts",
